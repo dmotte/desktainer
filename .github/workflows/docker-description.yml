@@ -1,0 +1,22 @@
+name: docker-description
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - README.md
+
+jobs:
+  docker-description:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Update repo description
+        uses: peter-evans/dockerhub-description@v2
+        with:
+          username: dmotte
+          password: ${{ secrets.DOCKERHUB_PASSWORD }}
+          repository: dmotte/desktainer
+          short-description: Remote desktop in a container

@@ -25,9 +25,7 @@ TODO screenshot
 
 For a more complex example, refer to the `docker-compose.yml` file.
 
-TODO you can make your own Dockerfile starting from this and/or mount your own supervisord file. See example of how to extend: TODO `example-extended` (sshd + siab + browser)
-
-TODO workflow, license
+TODO you can make your own Dockerfile starting from this and/or mount your own supervisord file. See example of how to extend: TODO `example-extended` (sshd + siab + browser + other packages see t.o.Dockerfile and various p.b.)
 
 ### Environment variables
 
