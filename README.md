@@ -2,7 +2,8 @@
 
 ![](desktainer-icon-128.png)
 
-TODO badges
+[![Docker Pulls](https://img.shields.io/github/workflow/status/dmotte/desktainer/docker?logo=github&style=flat-square)](https://hub.docker.com/r/dmotte/desktainer)
+[![Docker Pulls](https://img.shields.io/docker/pulls/dmotte/desktainer?logo=docker&style=flat-square)](https://hub.docker.com/r/dmotte/desktainer)
 
 :computer: Remote **desk**top in a cont**ainer**.
 
