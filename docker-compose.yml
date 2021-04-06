@@ -13,7 +13,7 @@ services:
       - /etc/timezone:/etc/timezone:ro
       - /etc/localtime:/etc/localtime:ro
     environment:
-      - RESOLUTION=1280x720
+      - RESOLUTION=1920x1080
       - USER=debian
       - PASSWORD=debian
       - VNC_PASSWORD=debian

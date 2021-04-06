@@ -11,5 +11,10 @@ else
     echo "VNC password option removed from supervisord.conf"
 fi
 
+if [ -n "$RESOLUTION" ]; then
+    sed -i "s/1280x720x24/${RESOLUTION}x24/" /etc/supervisor/supervisord.conf
+    echo "Resolution set to $RESOLUTION"
+fi
+
 # Start all the services
 /usr/bin/supervisord
