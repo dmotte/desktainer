@@ -1,0 +1,19 @@
+version: "3"
+
+services:
+  desktainer:
+    image: dmotte/desktainer
+    build: docker-build
+    restart: always
+    hostname: desktainer
+    ports:
+      - "6901:6901" # HTTP
+      - "5901:5901" # VNC
+    volumes:
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+    environment:
+      - RESOLUTION=1280x720
+      - USER=debian
+      - PASSWORD=debian
+      - VNC_PASSWORD=debian
