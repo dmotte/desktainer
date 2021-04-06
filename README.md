@@ -37,4 +37,28 @@ remember to do envvars cleanup! otherwise vnc password would be available, etc.
 
 ## Development
 
-TODO
+If you want to contribute to this project, the first thing you have to do is to **clone this repository** on your local machine:
+
+```bash
+git clone https://github.com/dmotte/desktainer.git
+```
+
+Then you just have to run this command:
+
+```bash
+docker-compose up --build
+```
+
+This will automatically **build the Docker image** using the `docker-build` directory as build context and then the **Docker-Compose stack** will be started.
+
+If you prefer to run the stack in daemon (detached) mode:
+
+```bash
+docker-compose up -d
+```
+
+In this case, you can view the logs using the `docker-compose logs` command:
+
+```bash
+docker-compose logs -ft
+```
