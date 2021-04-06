@@ -8,7 +8,7 @@ ENV DISPLAY :0
 
 # Install required packages
 RUN apt-get update \
-    && apt-get install -y supervisor novnc xvfb x11vnc \
+    && apt-get install -y sudo supervisor novnc xvfb x11vnc \
     && apt-get install -y --no-install-recommends lxde
 
 # Copy the startup script

@@ -25,15 +25,22 @@ Then head over to http://localhost:6901/ to access the remote desktop.
 
 For a more complex example, refer to the `docker-compose.yml` file.
 
-TODO you can make your own Dockerfile starting from this and/or mount your own supervisord file. See example of how to extend: TODO `example-extended` (sshd + siab + browser + other packages see t.o.Dockerfile and various p.b.)
+TODO you can make your own Dockerfile starting from this and/or mount your own supervisord file. See example of how to extend
+
+TODO this image is not meant to be run with the --user docker option
 
 ### Environment variables
 
 List of supported **environment variables**:
 
-TODO: VNC_PASSWORD, USER, PASSWORD, RESOLUTION, VNC_PORT, NOVNC_PORT (see also docker-compose.yml)
-
-remember to do envvars cleanup! otherwise vnc password would be available, etc.
+Variable       | Required               | Description
+-------------- | ---------------------- | ---
+`RESOLUTION`   | No (default: 1280x720) | Screen resolution
+`USER`         | No (default: debian)   | Name of the custom user. If set to `root`, no custom user will be created and the main user will be root
+`PASSWORD`     | No (default: `debian`) | Password of the custom user (if `USER != root`)
+`VNC_PASSWORD` | No (default: `debian`) | Password for the VNC server
+`VNC_PORT`     | No (default: 5901)     | TCP port of the VNC server
+`NOVNC_PORT`   | No (default: 6901)     | TCP port of the noVNC webserver
 
 ## Development
 
