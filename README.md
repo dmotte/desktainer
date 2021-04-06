@@ -21,7 +21,7 @@ docker run -it --rm -p 6901:6901 dmotte/desktainer
 
 Then head over to http://localhost:6901/ to access the remote desktop.
 
-TODO screenshot
+![screen01](screen01.png)
 
 For a more complex example, refer to the `docker-compose.yml` file.
 
