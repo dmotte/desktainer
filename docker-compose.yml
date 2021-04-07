@@ -7,8 +7,8 @@ services:
     restart: always
     hostname: desktainer
     ports:
-      - "6901:6901" # HTTP
       - "5901:5901" # VNC
+      - "6901:6901" # noVNC
     volumes:
       - /etc/timezone:/etc/timezone:ro
       - /etc/localtime:/etc/localtime:ro

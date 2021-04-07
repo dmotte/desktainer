@@ -1,17 +1,20 @@
 version: "3"
 
 services:
-  desktainer:
+  desktainer-extended:
     image: desktainer-extended
     build: docker-build
     restart: always
     hostname: desktainer-extended
     ports:
-      - "6901:6901" # HTTP
       - "5901:5901" # VNC
+      - "6901:6901" # noVNC
+      - "2222:22"   # SSH
+      - "4200:4200" # Shellinabox
     volumes:
       - /etc/timezone:/etc/timezone:ro
       - /etc/localtime:/etc/localtime:ro
+      #TODO ssh host keys
     environment:
       - RESOLUTION=1440x900
       - PASSWORD=debian

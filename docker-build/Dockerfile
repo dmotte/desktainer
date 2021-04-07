@@ -1,6 +1,6 @@
 FROM debian
 
-# Expose the VNC and HTTP ports
+# Expose the VNC and noVNC ports
 EXPOSE 5901 6901
 
 # Install required packages
@@ -19,6 +19,13 @@ RUN chmod +x /startup.sh
 
 # Copy the supervisord configuration file
 COPY supervisord.conf /etc/supervisor/supervisord.conf
+
+# locale: set UTF-8 locale as environment variable
+ENV LC_ALL C.UTF-8
+
+# locale: set UTF-8 locale in /etc/profile.d/
+RUN echo -e '#!/bin/bash\n\nexport LC_ALL=C.UTF-8' \
+    > /etc/profile.d/set-c-utf8-locale.sh
 
 # noVNC: if on ARM architecture, disable the Tight* encodings
 # See https://github.com/fcwu/docker-ubuntu-vnc-desktop/issues/98 for further
