@@ -25,9 +25,9 @@ Then head over to http://localhost:6901/ to access the remote desktop.
 
 For a more complex example, refer to the `docker-compose.yml` file.
 
-TODO you can make your own Dockerfile starting from this and/or mount your own supervisord file. See example of how to extend
+> **Note**: this image is not meant to be run with the `--user` Docker option, because the `startup.sh` script needs to run as root in the initial phase. Moreover, the custom user will be a **sudoer**, so running the container as root is useful in any case.
 
-TODO this image is not meant to be run with the --user docker option
+> :bulb: **Tip**: If you need to, you can extend this project by making your own `Dockerfile` starting from this image (i.e. `FROM dmotte/desktainer`) and/or mount a custom `supervisord.conf` file. See the :file_folder: `example-extended` folder for an example of what I mean.
 
 ### Environment variables
 
