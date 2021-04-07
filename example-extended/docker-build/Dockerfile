@@ -19,6 +19,16 @@ RUN rm /etc/ssh/ssh_host_*_key && rm /etc/ssh/ssh_host_*_key.pub
 # sshd: create the privilege separation directory
 RUN mkdir -p /var/run/sshd
 
-#TODO create debian user
+# Create custom user named "debian"
+RUN useradd \
+    --create-home \
+    --shell /bin/bash \
+    --user-group \
+    --groups adm,sudo \
+    debian
 
-#TODO desktop bg color: copy .config/pcmanfm/LXDE/desktop-items-0.conf test only interested row
+# LXDE: set desktop background color
+RUN mkdir -p "/home/debian/.config/pcmanfm/LXDE" \
+    && echo '[*]\nwallpaper_mode=color\ndesktop_bg=#3a6ea5' \
+        > "/home/debian/.config/pcmanfm/LXDE/desktop-items-0.conf" \
+    && chown -R debian:debian "/home/debian/.config"
