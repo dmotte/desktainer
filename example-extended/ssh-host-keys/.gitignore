@@ -1,0 +1,4 @@
+# Private SSH host keys
+/ssh_host_*_key
+# Public SSH host keys
+/ssh_host_*_key.pub

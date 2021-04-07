@@ -14,7 +14,15 @@ services:
     volumes:
       - /etc/timezone:/etc/timezone:ro
       - /etc/localtime:/etc/localtime:ro
-      #TODO ssh host keys
+      # OpenSSH server host keys
+      - ./ssh-host-keys/ssh_host_dsa_key:/etc/ssh/ssh_host_dsa_key:ro
+      - ./ssh-host-keys/ssh_host_dsa_key.pub:/etc/ssh/ssh_host_dsa_key.pub:ro
+      - ./ssh-host-keys/ssh_host_ecdsa_key:/etc/ssh/ssh_host_ecdsa_key:ro
+      - ./ssh-host-keys/ssh_host_ecdsa_key.pub:/etc/ssh/ssh_host_ecdsa_key.pub:ro
+      - ./ssh-host-keys/ssh_host_ed25519_key:/etc/ssh/ssh_host_ed25519_key:ro
+      - ./ssh-host-keys/ssh_host_ed25519_key.pub:/etc/ssh/ssh_host_ed25519_key.pub:ro
+      - ./ssh-host-keys/ssh_host_rsa_key:/etc/ssh/ssh_host_rsa_key:ro
+      - ./ssh-host-keys/ssh_host_rsa_key.pub:/etc/ssh/ssh_host_rsa_key.pub:ro
     environment:
       - RESOLUTION=1440x900
       - PASSWORD=debian
