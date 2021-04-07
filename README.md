@@ -27,7 +27,7 @@ For a more complex example, refer to the `docker-compose.yml` file.
 
 > **Note**: this image is not meant to be run with the `--user` Docker option, because the `startup.sh` script needs to run as root in the initial phase. Moreover, the custom user will be a **sudoer**, so running the container as root is useful in any case.
 
-> :bulb: **Tip**: If you need to, you can extend this project by making your own `Dockerfile` starting from this image (i.e. `FROM dmotte/desktainer`) and/or mount a custom `supervisord.conf` file. See the :file_folder: `example-extended` folder for an example of what I mean.
+> :bulb: **Tip**: If you need to, you can extend this project by making your own `Dockerfile` starting from this image (i.e. `FROM dmotte/desktainer`) and/or mount custom *supervisor* configuration files. See the :file_folder: `example-extended` folder for an example of what I mean.
 
 ### Environment variables
 
