@@ -17,13 +17,19 @@ else
 
     # If user already exists
     if id "$USER" &> /dev/null; then
+        echo "The custom user $USER already exists"
+
         # If the home directory doesn't exist
         if [ ! -d "$HOME" ]; then
+            echo "Creating home directory for custom user $USER"
+
             # Create it and set the owner
             mkdir -p "$HOME"
             chown -R $USER:$USER "$HOME"
         fi
     else
+        echo "Creating custom user $USER"
+
         # Create the user (and also his home directory, if it doesn't exist)
         useradd \
             --create-home \
@@ -77,21 +83,11 @@ if [ -n "$VNC_PASSWORD" ]; then
 
     sed -i "s/%VNCPWOPTION%/-usepw/" /etc/supervisor/supervisord.conf
     echo "VNC password set"
-
-    #TODO check psw file not readable and encrypted
-    #TODO check no bash history vnc password
 else
     sed -i "s/%VNCPWOPTION%/-nopw/" /etc/supervisor/supervisord.conf
     echo "VNC password disabled"
-
-    #TODO check .vnc dir does not exist
-    #TODO check no warning nopw in vnc log
 fi
 
 ############################## START SUPERVISORD ###############################
 
-#TODO test disable polkit from cfg
-#sed -i "s/^\(polkit\/command.*\)$/#\1/" $HOME/.config/lxsession/LXDE/desktop.conf
-
-#TODO check HOME and USER vars in programs
 /usr/bin/supervisord -c /etc/supervisor/supervisord.conf

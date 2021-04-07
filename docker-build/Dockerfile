@@ -4,12 +4,14 @@ FROM debian
 EXPOSE 5901 6901
 
 # Install required packages
+# Note: dbus-x11 is needed for LXDE apps to work properly (see
+# https://ubuntuforums.org/showthread.php?t=2360777)
+# Note: at-spi2-core is needed for LXDE apps to work properly (see
+# https://www.raspberrypi.org/forums/viewtopic.php?t=196070)
 RUN apt-get update \
-    && apt-get install -y sudo dbus-x11 supervisor novnc xvfb x11vnc \
+    && apt-get install -y sudo supervisor novnc xvfb x11vnc \
+        dbus-x11 at-spi2-core \
     && apt-get install -y --no-install-recommends lxde
-
-#TODO
-RUN apt-get install -y at-spi2-core
 
 # Copy the startup script
 COPY startup.sh /
@@ -34,14 +36,16 @@ RUN mv /usr/share/novnc/vnc.html /usr/share/novnc/index.html
 RUN sed -i "s/\(WebUtil\.getConfigVar[(]'autoconnect', \)false/\1true/" \
     /usr/share/novnc/app/ui.js
 
-#TODO set default terminal to LXTerminal
+# LXDE: set default terminal to LXTerminal
 RUN update-alternatives --set x-terminal-emulator /usr/bin/lxterminal
 
-#TODO disable light-locker because it creates $HOME/core (core dump file)
+# LXDE: disable light-locker because it cannot run inside a container, so it
+# would fail at startup and silently create a $HOME/core core dump file
 RUN rm /etc/xdg/autostart/light-locker.desktop
 
-#TODO disable polkit because of message "No session for pid X"
-#RUN rm /etc/xdg/autostart/lxpolkit.desktop && \
-#    mv /usr/bin/lxpolkit /usr/bin/lxpolkit.bak
+# LXDE: disable polkit because of the "No session for pid ..." message box (see
+# https://github.com/WhitewaterFoundry/Pengwin/issues/429)
+RUN rm /etc/xdg/autostart/lxpolkit.desktop && \
+    mv /usr/bin/lxpolkit /usr/bin/lxpolkit.bak
 
 ENTRYPOINT ["/startup.sh"]
