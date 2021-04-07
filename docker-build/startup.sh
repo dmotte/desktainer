@@ -10,18 +10,18 @@ PASSWORD=${PASSWORD:-debian}
 # If the main user should be root
 if [ "$USER" = "root" ]; then
     echo "The main user is root"
-    HOME=/root
+    HOME="/root"
 else
     echo "Enabling custom user: $USER"
-    HOME=/home/$USER
+    HOME="/home/$USER"
 
     # If user already exists
-    if id "$USER" &>/dev/null; then
+    if id "$USER" &> /dev/null; then
         # If the home directory doesn't exist
         if [ ! -d "$HOME" ]; then
             # Create it and set the owner
-            mkdir -p $HOME
-            chown -R $USER:$USER $HOME
+            mkdir -p "$HOME"
+            chown -R $USER:$USER "$HOME"
         fi
     else
         # Create the user (and also his home directory, if it doesn't exist)
@@ -64,11 +64,14 @@ sed -i -e "s/%USER%/$USER/g" -e "s|%HOME%|$HOME|g" \
 
 ############################# VNC SERVER PASSWORD ##############################
 
-# If the VNC server password should be set
+# If the VNC password should be set
 if [ -n "$VNC_PASSWORD" ]; then
-    mkdir -p /root/.vnc
-    x11vnc -storepasswd "$VNC_PASSWORD" /root/.vnc/passwd
-    chmod 400 /root/.vnc/passwd
+    mkdir -p "$HOME/.vnc"
+    chown -R $USER:$USER "$HOME/.vnc"
+
+    x11vnc -storepasswd "$VNC_PASSWORD" "$HOME/.vnc/passwd"
+    chown -R $USER:$USER "$HOME/.vnc/passwd"
+    chmod 400 "$HOME/.vnc/passwd"
 
     unset VNC_PASSWORD
 
@@ -76,6 +79,7 @@ if [ -n "$VNC_PASSWORD" ]; then
     echo "VNC password set"
 
     #TODO check psw file not readable and encrypted
+    #TODO check no bash history vnc password
 else
     sed -i "s/%VNCPWOPTION%/-nopw/" /etc/supervisor/supervisord.conf
     echo "VNC password disabled"
@@ -86,4 +90,5 @@ fi
 
 ############################## START SUPERVISORD ###############################
 
+#TODO check HOME and USER vars in programs
 /usr/bin/supervisord -c /etc/supervisor/supervisord.conf
