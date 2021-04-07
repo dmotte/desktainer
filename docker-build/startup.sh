@@ -75,6 +75,7 @@ if [ -n "$VNC_PASSWORD" ]; then
     mkdir -p "$HOME/.vnc"
     chown -R $USER:$USER "$HOME/.vnc"
 
+    # Store the password (encrypted and with 400 permissions)
     x11vnc -storepasswd "$VNC_PASSWORD" "$HOME/.vnc/passwd"
     chown -R $USER:$USER "$HOME/.vnc/passwd"
     chmod 400 "$HOME/.vnc/passwd"

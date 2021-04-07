@@ -46,8 +46,8 @@ RUN sed -i "s/\(WebUtil\.getConfigVar[(]'autoconnect', \)false/\1true/" \
 # LXDE: set default terminal to LXTerminal
 RUN update-alternatives --set x-terminal-emulator /usr/bin/lxterminal
 
-# LXDE: disable light-locker because it cannot run inside a container, so it
-# would fail at startup and silently create a $HOME/core core dump file
+# LXDE: disable light-locker because it cannot run inside a container (it would
+# fail at startup and silently create a $HOME/core core dump file)
 RUN rm /etc/xdg/autostart/light-locker.desktop
 
 # LXDE: disable polkit because of the "No session for pid ..." message box (see

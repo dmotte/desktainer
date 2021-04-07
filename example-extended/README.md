@@ -2,7 +2,7 @@
 
 This directory contains an example of **how to extend** the `dmotte/desktainer` Docker image to easily adapt it to your needs.
 
-In addition to the base image, we have:
+On top of the base image, we have:
 
 - installed some **additional packages** (`nano`, `curl`, `zip`, `tmux`, etc.)
 - installed the **Firefox** web browser
@@ -12,7 +12,7 @@ In addition to the base image, we have:
 - installed **Shell In A Box**
   - configured it in *supervisor* as a service
   - running on **port 4200**
-- created a custom user named `debian` and made some customizations to it
+- already created a custom user named `debian` and made some customizations to it
 
 See the `docker-build/Dockerfile` file for further details.
 
