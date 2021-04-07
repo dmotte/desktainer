@@ -90,5 +90,8 @@ fi
 
 ############################## START SUPERVISORD ###############################
 
+#TODO test disable polkit from cfg
+#sed -i "s/^\(polkit\/command.*\)$/#\1/" $HOME/.config/lxsession/LXDE/desktop.conf
+
 #TODO check HOME and USER vars in programs
 /usr/bin/supervisord -c /etc/supervisor/supervisord.conf
