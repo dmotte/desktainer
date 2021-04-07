@@ -1,0 +1,18 @@
+version: "3"
+
+services:
+  desktainer:
+    image: desktainer-extended
+    build: docker-build
+    restart: always
+    hostname: desktainer-extended
+    ports:
+      - "6901:6901" # HTTP
+      - "5901:5901" # VNC
+    volumes:
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+    environment:
+      - RESOLUTION=1440x900
+      - PASSWORD=debian
+      - VNC_PASSWORD=debian
