@@ -1,5 +1,8 @@
 name: docker-description
 
+# This workflow requires a DOCKERHUB_PASSWORD secret to be defined in the GitHub
+# repository settings.
+
 on:
   push:
     branches: [main]
