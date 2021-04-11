@@ -2,7 +2,7 @@
 
 ![](desktainer-icon-128.png)
 
-[![Docker Pulls](https://img.shields.io/github/workflow/status/dmotte/desktainer/docker?logo=github&style=flat-square)](https://hub.docker.com/r/dmotte/desktainer)
+[![GitHub Workflow Status](https://img.shields.io/github/workflow/status/dmotte/desktainer/docker?logo=github&style=flat-square)](https://github.com/dmotte/desktainer/actions)
 [![Docker Pulls](https://img.shields.io/docker/pulls/dmotte/desktainer?logo=docker&style=flat-square)](https://hub.docker.com/r/dmotte/desktainer)
 
 :computer: Remote **desk**top in a cont**ainer**.
