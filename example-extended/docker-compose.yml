@@ -25,6 +25,6 @@ services:
       - ./ssh-host-keys/ssh_host_rsa_key:/etc/ssh/ssh_host_rsa_key:ro
       - ./ssh-host-keys/ssh_host_rsa_key.pub:/etc/ssh/ssh_host_rsa_key.pub:ro
     environment:
-      - RESOLUTION=1440x900
-      - PASSWORD=debian
-      - VNC_PASSWORD=debian
+      RESOLUTION: 1440x900
+      PASSWORD: debian
+      VNC_PASSWORD: debian
