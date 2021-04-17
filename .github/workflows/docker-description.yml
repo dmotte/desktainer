@@ -9,6 +9,7 @@ on:
     branches: [main]
     paths:
       - README.md
+      - .github/workflows/docker-description.yml
 
 jobs:
   docker-description:
