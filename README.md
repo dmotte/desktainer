@@ -11,6 +11,8 @@
 
 Thanks to [fcwu/docker-ubuntu-vnc-desktop](https://github.com/fcwu/docker-ubuntu-vnc-desktop) and [soffchen/tiny-remote-desktop](https://github.com/soffchen/tiny-remote-desktop) for the inspiration.
 
+For an **extended version** of this Docker image, see [dmotte/desktainer-plus](https://github.com/dmotte/desktainer-plus).
+
 ## Usage
 
 The simplest way to try this image is:
