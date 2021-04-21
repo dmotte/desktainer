@@ -101,4 +101,4 @@ rm -f /tmp/.X0-lock
 
 ############################## START SUPERVISORD ###############################
 
-/usr/bin/supervisord -c /etc/supervisor/supervisord.conf
+/usr/bin/supervisord -nc /etc/supervisor/supervisord.conf
