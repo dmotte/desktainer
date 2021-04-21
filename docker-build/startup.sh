@@ -72,13 +72,18 @@ sed -i -e "s/%USER%/$USER/g" -e "s|%HOME%|$HOME|g" \
 
 # If the VNC password should be set
 if [ -n "$VNC_PASSWORD" ]; then
-    mkdir -p "$HOME/.vnc"
-    chown -R $USER:$USER "$HOME/.vnc"
+    # If the .vnc/passwd file doesn't exist
+    if [ ! -f "$HOME/.vnc/passwd" ]; then
+        echo "Storing the VNC password into $HOME/.vnc/passwd"
 
-    # Store the password (encrypted and with 400 permissions)
-    x11vnc -storepasswd "$VNC_PASSWORD" "$HOME/.vnc/passwd"
-    chown -R $USER:$USER "$HOME/.vnc/passwd"
-    chmod 400 "$HOME/.vnc/passwd"
+        mkdir -p "$HOME/.vnc"
+        chown -R $USER:$USER "$HOME/.vnc"
+
+        # Store the password (encrypted and with 400 permissions)
+        x11vnc -storepasswd "$VNC_PASSWORD" "$HOME/.vnc/passwd"
+        chown -R $USER:$USER "$HOME/.vnc/passwd"
+        chmod 400 "$HOME/.vnc/passwd"
+    fi
 
     unset VNC_PASSWORD
 
@@ -89,6 +94,26 @@ else
     echo "VNC password disabled"
 fi
 
+############################# CLEAR Xvfb LOCK FILE #############################
+
+# Remove the X11 lock file if present
+rm -f /tmp/.X0-lock
+
 ############################## START SUPERVISORD ###############################
 
-/usr/bin/supervisord -c /etc/supervisor/supervisord.conf
+# Start supervisord as a child process, but ensure to forward stop signals to it.
+# See the following links for more information:
+#   - https://unix.stackexchange.com/questions/146756/forward-sigterm-to-child-in-bash
+#   - http://supervisord.org/running.html#signal-handlers
+
+_trap_stop_signal () {
+    echo "$0: caught a stop signal. Gracefully stopping supervisord"
+    kill -SIGTERM "$PID" 2>/dev/null
+    wait "$PID"
+}
+trap _trap_stop_signal SIGTERM SIGINT SIGQUIT
+
+echo "Starting supervisord"
+/usr/bin/supervisord -nc /etc/supervisor/supervisord.conf &
+PID=$!
+wait "$PID"
