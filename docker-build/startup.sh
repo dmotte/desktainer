@@ -94,6 +94,11 @@ else
     echo "VNC password disabled"
 fi
 
+############################# CLEAR Xvfb LOCK FILE #############################
+
+# Remove the X11 lock file if present
+rm -f /tmp/.X0-lock
+
 ############################## START SUPERVISORD ###############################
 
 /usr/bin/supervisord -c /etc/supervisor/supervisord.conf
