@@ -53,7 +53,7 @@ git clone https://github.com/dmotte/desktainer.git
 Then you just have to run this command:
 
 ```bash
-docker-compose up --build
+docker-compose down && docker-compose up --build
 ```
 
 This will automatically **build the Docker image** using the `docker-build` directory as build context and then the **Docker-Compose stack** will be started.
