@@ -101,4 +101,19 @@ rm -f /tmp/.X0-lock
 
 ############################## START SUPERVISORD ###############################
 
-/usr/bin/supervisord -nc /etc/supervisor/supervisord.conf
+# Start supervisord as a child process, but ensure to forward stop signals to it.
+# See the following links for more information:
+#   - https://unix.stackexchange.com/questions/146756/forward-sigterm-to-child-in-bash
+#   - http://supervisord.org/running.html#signal-handlers
+
+_trap_stop_signal () {
+    echo "$0: caught a stop signal. Gracefully stopping supervisord"
+    kill -SIGTERM "$PID" 2>/dev/null
+    wait "$PID"
+}
+trap _trap_stop_signal SIGTERM SIGINT SIGQUIT
+
+echo "Starting supervisord"
+/usr/bin/supervisord -nc /etc/supervisor/supervisord.conf &
+PID=$!
+wait "$PID"
