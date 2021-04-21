@@ -72,13 +72,18 @@ sed -i -e "s/%USER%/$USER/g" -e "s|%HOME%|$HOME|g" \
 
 # If the VNC password should be set
 if [ -n "$VNC_PASSWORD" ]; then
-    mkdir -p "$HOME/.vnc"
-    chown -R $USER:$USER "$HOME/.vnc"
+    # If the .vnc/passwd file doesn't exist
+    if [ ! -f "$HOME/.vnc/passwd" ]; then
+        echo "Storing the VNC password into $HOME/.vnc/passwd"
 
-    # Store the password (encrypted and with 400 permissions)
-    x11vnc -storepasswd "$VNC_PASSWORD" "$HOME/.vnc/passwd"
-    chown -R $USER:$USER "$HOME/.vnc/passwd"
-    chmod 400 "$HOME/.vnc/passwd"
+        mkdir -p "$HOME/.vnc"
+        chown -R $USER:$USER "$HOME/.vnc"
+
+        # Store the password (encrypted and with 400 permissions)
+        x11vnc -storepasswd "$VNC_PASSWORD" "$HOME/.vnc/passwd"
+        chown -R $USER:$USER "$HOME/.vnc/passwd"
+        chmod 400 "$HOME/.vnc/passwd"
+    fi
 
     unset VNC_PASSWORD
 
