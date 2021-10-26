@@ -10,6 +10,9 @@ on:
     paths:
       - docker-build/**
       - .github/workflows/docker.yml
+  schedule:
+    # Runs automatically on the 27th of every month at 04.30 UTC
+    - cron:  "30 04 27 * *"
 
 jobs:
   docker:
