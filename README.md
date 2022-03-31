@@ -27,6 +27,8 @@ Then head over to http://localhost:6901/ to access the remote desktop.
 
 ![screen01](screen01.png)
 
+> :bulb: **Tip**: If you want to **change the resolution** while the container is running, you can use the `xrandr --fb 1024x768` command. The new resolution cannot be larger than the one specified in the `RESOLUTION` environment variable though.
+
 For a more complex example, refer to the `docker-compose.yml` file.
 
 > **Note**: this image is not meant to be run with the `--user` Docker option, because the `startup.sh` script needs to run as root in the initial phase. Moreover, the custom user created via the `USER` environment variable (see below) will be a **sudoer**, so running the container as root is useful in any case.
