@@ -1,5 +1,5 @@
 ---
-name: docker-description
+name: dockerhub-description
 
 # This workflow requires a DOCKERHUB_PASSWORD secret to be defined in the GitHub
 # repository settings.
@@ -9,10 +9,10 @@ on:
     branches: [main]
     paths:
       - README.md
-      - .github/workflows/docker-description.yml
+      - .github/workflows/dockerhub-description.yml
 
 jobs:
-  docker-description:
+  dockerhub-description:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout

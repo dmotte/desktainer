@@ -1,5 +1,5 @@
 ---
-name: docker
+name: release
 
 # This workflow requires a DOCKERHUB_PASSWORD secret to be defined in the GitHub
 # repository settings.
@@ -9,13 +9,13 @@ on:
     branches: [main]
     paths:
       - docker-build/**
-      - .github/workflows/docker.yml
+      - .github/workflows/release.yml
   schedule:
-    # Runs automatically on the 27th of every month at 04.30 UTC
+    # Runs automatically on the 27th of every month at 04:30 UTC
     - cron:  "30 04 27 * *"
 
 jobs:
-  docker:
+  release:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
