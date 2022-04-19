@@ -1,6 +1,6 @@
 # desktainer
 
-![](desktainer-icon-128.png)
+![](icon-128.png)
 
 [![GitHub Workflow Status](https://img.shields.io/github/workflow/status/dmotte/desktainer/docker?logo=github&style=flat-square)](https://github.com/dmotte/desktainer/actions)
 [![Docker Pulls](https://img.shields.io/docker/pulls/dmotte/desktainer?logo=docker&style=flat-square)](https://hub.docker.com/r/dmotte/desktainer)
@@ -33,20 +33,20 @@ For a more complex example, refer to the `docker-compose.yml` file.
 
 > **Note**: this image is not meant to be run with the `--user` Docker option, because the `startup.sh` script needs to run as root in the initial phase. Moreover, the custom user created via the `USER` environment variable (see below) will be a **sudoer**, so running the container as root is useful in any case.
 
-> :bulb: **Tip**: If you need to, you can extend this project by making your own `Dockerfile` starting from this image (i.e. `FROM dmotte/desktainer`) and/or mount custom *supervisor* configuration files. See the [dmotte/desktainer-plus](https://github.com/dmotte/desktainer-plus) Docker image for an example of how to do it.
+> :bulb: **Tip**: If you need to, you can extend this project by making your own `Dockerfile` starting from this image (i.e. `FROM dmotte/desktainer`) and/or mount custom _supervisor_ configuration files. See the [dmotte/desktainer-plus](https://github.com/dmotte/desktainer-plus) Docker image for an example of how to do it.
 
 ### Environment variables
 
 List of supported **environment variables**:
 
-Variable       | Required               | Description
--------------- | ---------------------- | ---
-`RESOLUTION`   | No (default: 1280x720) | Screen resolution
-`USER`         | No (default: debian)   | Name of the custom user. If set to `root`, no custom user will be created and the main user will be root
-`PASSWORD`     | No (default: `debian`) | Password of the custom user (if `USER != root`)
-`VNC_PASSWORD` | No (default: `debian`) | Password for the VNC server
-`VNC_PORT`     | No (default: 5901)     | TCP port of the VNC server
-`NOVNC_PORT`   | No (default: 6901)     | TCP port of the noVNC webserver
+| Variable       | Required               | Description                                                                                              |
+| -------------- | ---------------------- | -------------------------------------------------------------------------------------------------------- |
+| `RESOLUTION`   | No (default: 1280x720) | Screen resolution                                                                                        |
+| `USER`         | No (default: debian)   | Name of the custom user. If set to `root`, no custom user will be created and the main user will be root |
+| `PASSWORD`     | No (default: `debian`) | Password of the custom user (if `USER != root`)                                                          |
+| `VNC_PASSWORD` | No (default: `debian`) | Password for the VNC server                                                                              |
+| `VNC_PORT`     | No (default: 5901)     | TCP port of the VNC server                                                                               |
+| `NOVNC_PORT`   | No (default: 6901)     | TCP port of the noVNC webserver                                                                          |
 
 ## Development
 
