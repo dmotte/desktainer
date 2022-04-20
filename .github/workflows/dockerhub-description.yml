@@ -8,7 +8,7 @@ on:
   push:
     branches: [main]
     paths:
-      - README.md
+      - dockerhub-description.md
       - .github/workflows/dockerhub-description.yml
 
 jobs:
@@ -19,9 +19,10 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Update repo description
-        uses: peter-evans/dockerhub-description@v2
+        uses: peter-evans/dockerhub-description@v3
         with:
           username: dmotte
           password: ${{ secrets.DOCKERHUB_PASSWORD }}
           repository: dmotte/desktainer
-          short-description: Remote desktop in a container
+          short-description: ${{ github.event.repository.description }}
+          readme-filepath: dockerhub-description.md
