@@ -25,7 +25,7 @@ docker run -it --rm -p 6901:6901 dmotte/desktainer
 
 Then head over to http://localhost:6901/ to access the remote desktop.
 
-![screen01](screen01.png)
+![Screenshot](screen-01.png)
 
 > :bulb: **Tip**: If you want to **change the resolution** while the container is running, you can use the `xrandr --fb 1024x768` command. The new resolution cannot be larger than the one specified in the `RESOLUTION` environment variable though.
 
