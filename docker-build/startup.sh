@@ -25,7 +25,7 @@ else
 
             # Create it and set the owner
             mkdir -p "$HOME"
-            chown -R $USER:$USER "$HOME"
+            chown -R "$USER:$USER" "$HOME"
         fi
     else
         echo "Creating custom user $USER"
@@ -36,7 +36,7 @@ else
             --shell /bin/bash \
             --user-group \
             --groups adm,sudo \
-            $USER
+            "$USER"
     fi
 
     echo "Setting custom user's password"
@@ -77,11 +77,11 @@ if [ -n "$VNC_PASSWORD" ]; then
         echo "Storing the VNC password into $HOME/.vnc/passwd"
 
         mkdir -p "$HOME/.vnc"
-        chown -R $USER:$USER "$HOME/.vnc"
+        chown -R "$USER:$USER" "$HOME/.vnc"
 
         # Store the password (encrypted and with 400 permissions)
         x11vnc -storepasswd "$VNC_PASSWORD" "$HOME/.vnc/passwd"
-        chown -R $USER:$USER "$HOME/.vnc/passwd"
+        chown -R "$USER:$USER" "$HOME/.vnc/passwd"
         chmod 400 "$HOME/.vnc/passwd"
     fi
 
