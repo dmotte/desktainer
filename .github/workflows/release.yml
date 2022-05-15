@@ -8,7 +8,7 @@ on:
   push:
     branches: [main]
     paths:
-      - docker-build/**
+      - build/**
       - .github/workflows/release.yml
   schedule:
     # Runs automatically on the 27th of every month at 04:30 UTC
@@ -37,7 +37,7 @@ jobs:
         id: docker-build
         uses: docker/build-push-action@v2
         with:
-          context: docker-build
+          context: build
           platforms: linux/386, linux/amd64, linux/arm/v6, linux/arm/v7, linux/arm64
           push: true
           tags: dmotte/desktainer
