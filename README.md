@@ -35,6 +35,8 @@ For a more complex example, refer to the `docker-compose.yml` file.
 
 > :bulb: **Tip**: If you need to, you can extend this project by making your own `Dockerfile` starting from this image (i.e. `FROM dmotte/desktainer`) and/or mount custom _supervisor_ configuration files. See the [dmotte/desktainer-plus](https://github.com/dmotte/desktainer-plus) Docker image for an example of how to do it.
 
+> :bulb: **Tip**: if you need to run commmands at LXDE startup, you can create a launcher file in the `/etc/xdg/autostart` directory.
+
 ### Environment variables
 
 List of supported **environment variables**:
