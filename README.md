@@ -13,7 +13,7 @@
 
 Thanks to [fcwu/docker-ubuntu-vnc-desktop](https://github.com/fcwu/docker-ubuntu-vnc-desktop) and [soffchen/tiny-remote-desktop](https://github.com/soffchen/tiny-remote-desktop) for the inspiration.
 
-:eight_spoked_asterisk: For an **extended version** of this Docker image, see [dmotte/desktainer-plus](https://github.com/dmotte/desktainer-plus).
+:eight_spoked_asterisk: For an **extended version** of this Docker image, see [dmotte/desktainer-plus](https://github.com/dmotte/desktainer-plus). For a **rootless version**, see [dmotte/desktainer-rootless](https://github.com/dmotte/desktainer-rootless).
 
 ## Usage
 
@@ -31,7 +31,7 @@ Then head over to http://localhost:6901/ to access the remote desktop.
 
 For a more complex example, refer to the `docker-compose.yml` file.
 
-> **Note**: this image is not meant to be run with the `--user` Docker option, because the `startup.sh` script needs to run as root in the initial phase. Moreover, the custom user created via the `USER` environment variable (see below) will be a **sudoer**, so running the container as root is useful in any case.
+> **Note**: this image is not meant to be run with the `--user` Docker option, because the `startup.sh` script needs to run as root in the initial phase. Moreover, the custom user created via the `USER` environment variable (see below) will be a **sudoer**, so running the container as root is useful in any case. If you want a **rootless** version of this image, check out [dmotte/desktainer-rootless](https://github.com/dmotte/desktainer-rootless).
 
 > :bulb: **Tip**: If you need to, you can extend this project by making your own `Dockerfile` starting from this image (i.e. `FROM dmotte/desktainer`) and/or mount custom _supervisor_ configuration files. See the [dmotte/desktainer-plus](https://github.com/dmotte/desktainer-plus) Docker image for an example of how to do it.
 
