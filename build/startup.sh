@@ -101,19 +101,8 @@ rm -f /tmp/.X0-lock
 
 ############################## START SUPERVISORD ###############################
 
-# Start supervisord as a child process, but ensure to forward stop signals to it.
-# See the following links for more information:
-#   - https://unix.stackexchange.com/questions/146756/forward-sigterm-to-child-in-bash
-#   - http://supervisord.org/running.html#signal-handlers
-
-_trap_stop_signal () {
-    echo "$0: caught a stop signal. Gracefully stopping supervisord"
-    kill -SIGTERM "$PID" 2>/dev/null
-    wait "$PID"
-}
-trap _trap_stop_signal SIGTERM SIGINT SIGQUIT
-
+# Start supervisord with "exec" to let it become the PID 1 process. This ensures
+# it receives all the stop signals and reaps all the zombie processes inside the
+# container
 echo "Starting supervisord"
-/usr/bin/supervisord -nc /etc/supervisor/supervisord.conf &
-PID=$!
-wait "$PID"
+exec /usr/bin/supervisord -nc /etc/supervisor/supervisord.conf
