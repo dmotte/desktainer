@@ -11,7 +11,8 @@ EXPOSE 5901 6901
 RUN apt-get update \
     && apt-get install -y sudo supervisor novnc xvfb x11vnc \
         dbus-x11 at-spi2-core \
-    && apt-get install -y --no-install-recommends lxde
+    && apt-get install -y --no-install-recommends lxde \
+    && rm -rf /var/lib/apt/lists/*
 
 # Copy the startup script
 COPY startup.sh /
