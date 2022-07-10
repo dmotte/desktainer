@@ -3,9 +3,7 @@ name: shellcheck
 
 on:
   push:
-    paths:
-      - build/startup.sh
-      - .github/workflows/shellcheck.yml
+  pull_request:
 
 jobs:
   shellcheck:
