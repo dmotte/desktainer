@@ -1,0 +1,22 @@
+---
+name: trivy
+
+on:
+  push:
+  pull_request:
+  schedule:
+    # Runs automatically on the 27th of every month at 04:30 UTC
+    - cron: "30 04 27 * *"
+
+jobs:
+  trivy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Run Trivy vulnerability scanner
+        uses: aquasecurity/trivy-action@master
+        with:
+          scan-type: fs
+          exit-code: "1"
