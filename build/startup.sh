@@ -4,8 +4,8 @@ set -e
 
 ################################# CUSTOM USER ##################################
 
-USER=${USER:-debian}
-PASSWORD=${PASSWORD:-debian}
+USER=${USER:-mainuser}
+PASSWORD=${PASSWORD:-mainuser}
 
 # If the main user should be root
 if [ "$USER" = "root" ]; then
@@ -58,7 +58,7 @@ sed -i "s/%NOVNC_PORT%/$NOVNC_PORT/g" /etc/supervisor/supervisord.conf
 echo "noVNC port set to $NOVNC_PORT"
 
 # Set resolution
-RESOLUTION=${RESOLUTION:-1280x720}
+RESOLUTION=${RESOLUTION:-1920x1080}
 sed -i "s/%RESOLUTION%/$RESOLUTION/g" /etc/supervisor/supervisord.conf
 echo "Resolution set to $RESOLUTION"
 

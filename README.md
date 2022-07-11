@@ -41,14 +41,14 @@ For a more complex example, refer to the [`docker-compose.yml`](docker-compose.y
 
 List of supported **environment variables**:
 
-| Variable       | Required               | Description                                                                                              |
-| -------------- | ---------------------- | -------------------------------------------------------------------------------------------------------- |
-| `RESOLUTION`   | No (default: 1280x720) | Screen resolution                                                                                        |
-| `USER`         | No (default: debian)   | Name of the custom user. If set to `root`, no custom user will be created and the main user will be root |
-| `PASSWORD`     | No (default: `debian`) | Password of the custom user (if `USER != root`)                                                          |
-| `VNC_PASSWORD` | No (default: `debian`) | Password for the VNC server                                                                              |
-| `VNC_PORT`     | No (default: 5901)     | TCP port of the VNC server                                                                               |
-| `NOVNC_PORT`   | No (default: 6901)     | TCP port of the noVNC webserver                                                                          |
+| Variable       | Required                 | Description                                                                                              |
+| -------------- | ------------------------ | -------------------------------------------------------------------------------------------------------- |
+| `RESOLUTION`   | No (default: 1920x1080)  | Screen resolution                                                                                        |
+| `USER`         | No (default: mainuser)   | Name of the custom user. If set to `root`, no custom user will be created and the main user will be root |
+| `PASSWORD`     | No (default: `mainuser`) | Password of the custom user (if `USER != root`)                                                          |
+| `VNC_PASSWORD` | No (default: none)       | Password for the VNC server                                                                              |
+| `VNC_PORT`     | No (default: 5901)       | TCP port of the VNC server                                                                               |
+| `NOVNC_PORT`   | No (default: 6901)       | TCP port of the noVNC webserver                                                                          |
 
 ## Development
 
