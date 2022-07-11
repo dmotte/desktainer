@@ -18,6 +18,9 @@ RUN apt-get update \
 COPY startup.sh /
 RUN chmod +x /startup.sh
 
+# Create the /opt/startup-early and /opt/startup-late directories
+RUN mkdir -p /opt/startup-early /opt/startup-late
+
 # Copy the supervisord configuration file
 COPY supervisord.conf /etc/supervisor/supervisord.conf
 

@@ -31,11 +31,20 @@ Then head over to http://localhost:6901/ to access the remote desktop.
 
 For a more complex example, refer to the [`docker-compose.yml`](docker-compose.yml) file.
 
-> **Note**: this image is not meant to be run with the `--user` Docker option, because the `startup.sh` script needs to run as root in the initial phase. Moreover, the custom user created via the `USER` environment variable (see below) will be a **sudoer**, so running the container as root is useful in any case. If you want a **rootless** version of this image, check out [dmotte/desktainer-rootless](https://github.com/dmotte/desktainer-rootless).
+> **Note**: this image is not meant to be run with the `--user` Docker option, because the [`startup.sh`](build/startup.sh) script needs to run as root in the initial phase. Moreover, the custom user created via the `USER` environment variable (see below) will be a **sudoer**, so running the container as root is useful in any case. If you want a **rootless** version of this image, check out [dmotte/desktainer-rootless](https://github.com/dmotte/desktainer-rootless).
 
 > :bulb: **Tip**: If you need to, you can extend this project by making your own `Dockerfile` starting from this image (i.e. `FROM dmotte/desktainer`) and/or mount custom _supervisor_ configuration files. See the [dmotte/desktainer-plus](https://github.com/dmotte/desktainer-plus) Docker image for an example of how to do it.
 
-> :bulb: **Tip**: if you need to run commands at LXDE startup, you can create a launcher file in the `/etc/xdg/autostart` directory.
+### Run commands at container startup
+
+If you need to run commands at container startup, you can create Bash scripts in the following locations:
+
+- `/opt/startup-early/*.sh`: these scripts will be included in alphabetical order **before** the main container initialization process
+- `/opt/startup-late/*.sh`: these scripts will be included in alphabetical order **after** the main container initialization process
+
+See the [`startup.sh`](build/startup.sh) script for more details.
+
+Moreover, if you need to run commands after the LXDE startup, you can create launcher files in the `/etc/xdg/autostart` or the `~/.config/autostart` directory.
 
 ### Environment variables
 

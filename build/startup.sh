@@ -2,10 +2,19 @@
 
 set -e
 
-################################# CUSTOM USER ##################################
+############################ ENVIRONMENT VARIABLES #############################
 
 USER=${USER:-mainuser}
 PASSWORD=${PASSWORD:-mainuser}
+
+################### INCLUDE SCRIPTS FROM /opt/startup-early ####################
+
+for i in /opt/startup-early/*.sh; do
+    [ -f "$i" ] || continue
+    source "$i"
+done
+
+################################# CUSTOM USER ##################################
 
 # If the main user should be root
 if [ "$USER" = "root" ]; then
@@ -99,10 +108,17 @@ fi
 # Remove the X11 lock file if present
 rm -f /tmp/.X0-lock
 
+#################### INCLUDE SCRIPTS FROM /opt/startup-late ####################
+
+for i in /opt/startup-late/*.sh; do
+    [ -f "$i" ] || continue
+    source "$i"
+done
+
 ############################## START SUPERVISORD ###############################
 
 # Start supervisord with "exec" to let it become the PID 1 process. This ensures
-# it receives all the stop signals and reaps all the zombie processes inside the
-# container
+# it receives all the stop signals correctly and reaps all the zombie processes
+# inside the container
 echo "Starting supervisord"
 exec /usr/bin/supervisord -nc /etc/supervisor/supervisord.conf
