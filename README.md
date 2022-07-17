@@ -9,13 +9,9 @@
 
 > :package: This image is also on **Docker Hub** as [`dmotte/desktainer`](https://hub.docker.com/r/dmotte/desktainer) and runs on **several architectures** (e.g. amd64, arm64, ...). To see the full list of supported platforms, please refer to the [`.github/workflows/release.yml`](.github/workflows/release.yml) file. If you need an architecture which is currently unsupported, feel free to open an issue.
 
-> :calendar: The build process of this Docker image is **triggered automatically every month** (thanks, [GitHub Actions](https://github.com/features/actions)! :smile:) to ensure that you get it with all the latest updated packages. See the [workflow file](.github/workflows/release.yml) for further information.
-
 Thanks to [fcwu/docker-ubuntu-vnc-desktop](https://github.com/fcwu/docker-ubuntu-vnc-desktop) and [soffchen/tiny-remote-desktop](https://github.com/soffchen/tiny-remote-desktop) for the inspiration.
 
-:eight_spoked_asterisk: For an **extended version** of this Docker image, see [dmotte/desktainer-plus](https://github.com/dmotte/desktainer-plus). For a **rootless version**, see [dmotte/desktainer-rootless](https://github.com/dmotte/desktainer-rootless).
-
-## Usage
+## Simple usage
 
 The simplest way to try this image is:
 
@@ -27,15 +23,29 @@ Then head over to http://localhost:6901/ to access the remote desktop.
 
 ![Screenshot](screen-01.png)
 
-> :bulb: **Tip**: If you want to **change the resolution** while the container is running, you can use the `xrandr --fb 1024x768` command. The new resolution cannot be larger than the one specified in the `RESOLUTION` environment variable though.
+## Standard usage
 
-For a more complex example, refer to the [`docker-compose.yml`](docker-compose.yml) file.
+The [`docker-compose.yml`](docker-compose.yml) file contains a complete usage example for this image. Feel free to simplify it and adapt it to your needs. Unless you want to build the image from scratch, comment out the `build: build` line to use the pre-built one from _Docker Hub_ instead.
 
-> **Note**: this image is not meant to be run with the `--user` Docker option, because the [`startup.sh`](build/startup.sh) script needs to run as root in the initial phase. Moreover, the custom user created via the `USER` environment variable (see below) will be a **sudoer**, so running the container as root is useful in any case. If you want a **rootless** version of this image, check out [dmotte/desktainer-rootless](https://github.com/dmotte/desktainer-rootless).
+To start the Docker-Compose stack in daemon (detached) mode:
 
-> :bulb: **Tip**: If you need to, you can extend this project by making your own `Dockerfile` starting from this image (i.e. `FROM dmotte/desktainer`) and/or mount custom _supervisor_ configuration files. See the [dmotte/desktainer-plus](https://github.com/dmotte/desktainer-plus) Docker image for an example of how to do it.
+```bash
+docker-compose up -d
+```
 
-### Run commands at container startup
+Then you can view the logs using this command:
+
+```bash
+docker-compose logs -ft
+```
+
+## Tips
+
+- :bulb: If you want to **change the resolution** while the container is running, you can use the `xrandr --fb 1024x768` command. The new resolution cannot be larger than the one specified in the `RESOLUTION` environment variable though
+- :bulb: If you need to, you can extend this project by making your own `Dockerfile` starting from this image (i.e. `FROM dmotte/desktainer`) and/or mount custom _supervisor_ configuration files. See the [`example`](example) folder for an example of how to do it
+- :bulb: This image is not meant to be run with the `--user` Docker option, because the [`startup.sh`](build/startup.sh) script needs to run as root in the initial phase. Moreover, the custom user created via the `USER` environment variable (see below) will be a **sudoer**, so running the container as root is useful in any case. If you want a **rootless** version of this image, check out [dmotte/desktainer-rootless](https://github.com/dmotte/desktainer-rootless)
+
+## Running commands at container startup
 
 If you need to run commands at container startup, you can create Bash scripts in the following locations:
 
@@ -46,7 +56,7 @@ See the [`startup.sh`](build/startup.sh) script for more details.
 
 Moreover, if you need to run commands after the LXDE startup, you can create launcher files in the `/etc/xdg/autostart` or the `~/.config/autostart` directory.
 
-### Environment variables
+## Environment variables
 
 List of supported **environment variables**:
 
@@ -61,28 +71,8 @@ List of supported **environment variables**:
 
 ## Development
 
-If you want to contribute to this project, the first thing you have to do is to **clone this repository** on your local machine:
-
-```bash
-git clone https://github.com/dmotte/desktainer.git
-```
-
-Then you just have to run this command:
+If you want to contribute to this project, you can use the following one-liner to **rebuild the image** and bring up the **Docker-Compose stack** every time you make a change to the code:
 
 ```bash
 docker-compose down && docker-compose up --build
-```
-
-This will automatically **build the Docker image** using the `build` directory as build context and then the **Docker-Compose stack** will be started.
-
-If you prefer to run the stack in daemon (detached) mode:
-
-```bash
-docker-compose up -d
-```
-
-In this case, you can view the logs using the `docker-compose logs` command:
-
-```bash
-docker-compose logs -ft
 ```
