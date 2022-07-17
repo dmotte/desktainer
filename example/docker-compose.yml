@@ -2,11 +2,11 @@
 version: "3"
 
 services:
-  desktainer-plus:
-    image: dmotte/desktainer-plus
+  dt01:
+    image: dt01
     build: build
     restart: always
-    hostname: desktainer-plus
+    hostname: dt01
     ports:
       - "5901:5901" # VNC
       - "6901:6901" # noVNC
