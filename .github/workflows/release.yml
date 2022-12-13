@@ -33,6 +33,10 @@ jobs:
           username: dmotte
           password: ${{ secrets.DOCKERHUB_PASSWORD }}
 
+      - name: Get version number based on current date and time
+        id: get-version
+        run: echo "version=$(date +%Y.%m.%d.%H%M)" >> $GITHUB_OUTPUT
+
       - name: Build and push
         id: docker-build
         uses: docker/build-push-action@v3
@@ -40,7 +44,7 @@ jobs:
           context: build
           platforms: linux/386, linux/amd64, linux/arm/v6, linux/arm/v7, linux/arm64
           push: true
-          tags: dmotte/desktainer
+          tags: dmotte/desktainer:latest,dmotte/desktainer:${{ steps.get-version.outputs.version }}
 
       - name: Image digest
         run: echo ${{ steps.docker-build.outputs.digest }}
