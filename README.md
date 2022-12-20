@@ -5,7 +5,7 @@
 [![GitHub Workflow Status](https://img.shields.io/github/workflow/status/dmotte/desktainer/release?logo=github&style=flat-square)](https://github.com/dmotte/desktainer/actions)
 [![Docker Pulls](https://img.shields.io/docker/pulls/dmotte/desktainer?logo=docker&style=flat-square)](https://hub.docker.com/r/dmotte/desktainer)
 
-:computer: Remote **desk**top in a cont**ainer**.
+:computer: Remote **desk**top in a con**tainer**.
 
 > :package: This image is also on **Docker Hub** as [`dmotte/desktainer`](https://hub.docker.com/r/dmotte/desktainer) and runs on **several architectures** (e.g. amd64, arm64, ...). To see the full list of supported platforms, please refer to the [`.github/workflows/release.yml`](.github/workflows/release.yml) file. If you need an architecture which is currently unsupported, feel free to open an issue.
 
