@@ -4,8 +4,8 @@ set -e
 
 ############################ ENVIRONMENT VARIABLES #############################
 
-USER=${USER:-mainuser}
-PASSWORD=${PASSWORD:-mainuser}
+: "${USER:=mainuser}"
+: "${PASSWORD:=mainuser}"
 
 ################### INCLUDE SCRIPTS FROM /opt/startup-early ####################
 
@@ -58,17 +58,17 @@ unset PASSWORD
 ##################### SUPERVISORD CONFIG MAIN REPLACEMENTS #####################
 
 # Set VNC port
-VNC_PORT=${VNC_PORT:-5901}
+: "${VNC_PORT:=5901}"
 sed -i "s/%VNC_PORT%/$VNC_PORT/g" /etc/supervisor/supervisord.conf
 echo "VNC port set to $VNC_PORT"
 
 # Set noVNC port
-NOVNC_PORT=${NOVNC_PORT:-6901}
+: "${NOVNC_PORT:=6901}"
 sed -i "s/%NOVNC_PORT%/$NOVNC_PORT/g" /etc/supervisor/supervisord.conf
 echo "noVNC port set to $NOVNC_PORT"
 
 # Set resolution
-RESOLUTION=${RESOLUTION:-1920x1080}
+: "${RESOLUTION:=1920x1080}"
 sed -i "s/%RESOLUTION%/$RESOLUTION/g" /etc/supervisor/supervisord.conf
 echo "Resolution set to $RESOLUTION"
 
