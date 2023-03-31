@@ -45,7 +45,7 @@ else
             --create-home \
             --shell /bin/bash \
             --user-group \
-            --groups adm,sudo \
+            --groups sudo \
             "$USER"
     fi
 

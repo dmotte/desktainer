@@ -37,7 +37,7 @@ RUN useradd \
     --create-home \
     --shell /bin/bash \
     --user-group \
-    --groups adm,sudo \
+    --groups sudo \
     mainuser
 
 # Startup script for persistent directory initialization
