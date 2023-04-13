@@ -15,7 +15,7 @@ RUN apt-get update \
     && rm -rf /var/lib/apt/lists/*
 
 # Copy the additional supervisor configuration files
-COPY supervisor-confd/* /etc/supervisor/conf.d/
+COPY --chown=root:root --chmod=644 supervisor-confd/* /etc/supervisor/conf.d/
 
 # sshd: Remove the generated SSH host keys! For obvious security reasons
 RUN rm /etc/ssh/ssh_host_*_key && rm /etc/ssh/ssh_host_*_key.pub
@@ -41,7 +41,7 @@ RUN useradd \
     mainuser
 
 # Copy the screenrec.sh script
-COPY screenrec.sh /opt/
+COPY --chown=root:root --chmod=755 screenrec.sh /opt/
 
 # Startup script for persistent directory initialization
 RUN echo 'mkdir -p /data/mainuser && chown mainuser:mainuser /data/mainuser' \
@@ -55,10 +55,10 @@ WORKDIR /home/mainuser
 RUN mkdir -p ".config/autostart" ".config/pcmanfm/LXDE" "Desktop"
 
 # Copy the mimeapps.list file (for file types associations)
-COPY mimeapps.list .config
+COPY --chown=mainuser:mainuser --chmod=644 mimeapps.list .config/
 
 # Copy the initial dconf settings file
-COPY initial.dconf .config
+COPY --chown=mainuser:mainuser --chmod=644 initial.dconf .config/
 
 # LXDE launcher: load initial dconf settings
 RUN echo '[Desktop Entry]\nType=Application\nName=dconf-load\nExec=/bin/sh -c "/usr/bin/dconf load / < ~/.config/initial.dconf"\nNoDisplay=true' \
