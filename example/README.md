@@ -15,6 +15,9 @@ On top of the base image, we have:
   - running on **port 4200**
 - already created a custom user named `mainuser` and made some customizations to it
 - declared a persistent `/data` volume
+- installed a **screen recording** service
+  - always running in background
+  - configured it in _supervisor_ as a service
 
 See [`build/Dockerfile`](build/Dockerfile) for further details.
 

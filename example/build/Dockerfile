@@ -10,7 +10,7 @@ VOLUME /data
 RUN apt-get update \
     && apt-get install -y git htop nano tmux tree wget zip curl socat procps \
         iputils-ping iproute2 \
-        openssh-server shellinabox \
+        openssh-server shellinabox ffmpeg \
         firefox-esr dirmngr lynx dconf-cli \
     && rm -rf /var/lib/apt/lists/*
 
@@ -39,6 +39,9 @@ RUN useradd \
     --user-group \
     --groups sudo \
     mainuser
+
+# Copy the screenrec.sh script
+COPY screenrec.sh /opt/
 
 # Startup script for persistent directory initialization
 RUN echo 'mkdir -p /data/mainuser && chown mainuser:mainuser /data/mainuser' \
