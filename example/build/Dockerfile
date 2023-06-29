@@ -36,7 +36,7 @@ RUN sed -Ei 's/^#?PermitRootLogin.*$/PermitRootLogin no/' /etc/ssh/sshd_config &
 
 # sshd: startup script for missing host keys generation
 RUN mkdir /etc/ssh/host-keys
-COPY --chown=root:root --chmod=700 50-host-keys.sh /opt/startup-late/
+COPY --chown=root:root --chmod=700 50-ssh-host-keys.sh /opt/startup-late/
 
 # Create custom user named "mainuser"
 RUN useradd \
