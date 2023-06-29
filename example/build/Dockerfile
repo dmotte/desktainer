@@ -27,7 +27,12 @@ RUN mkdir -p /var/run/sshd
 # This makes SSH X11 forwarding work. Usually, Docker containers do not have an
 # IPv6 address and, by default, SSH X11 forwarding listens on [::1]:6010 on the
 # server, but we want it to listen on 127.0.0.1 instead
-RUN sed -i 's/^.*AddressFamily.*$/AddressFamily inet/' /etc/ssh/sshd_config
+RUN sed -Ei 's/^#?AddressFamily.*$/AddressFamily inet/' /etc/ssh/sshd_config
+
+# sshd: Hardening
+RUN sed -Ei 's/^#?PermitRootLogin.*$/PermitRootLogin no/' /etc/ssh/sshd_config && \
+    sed -Ei 's/^#?HostbasedAuthentication.*$/HostbasedAuthentication no/' /etc/ssh/sshd_config && \
+    sed -Ei 's/^#?PermitEmptyPasswords.*$/PermitEmptyPasswords no/' /etc/ssh/sshd_config
 
 # sshd: startup script for missing host keys generation
 RUN echo 'ssh-keygen -A' > "/opt/startup-late/50-hostkeys.sh"
