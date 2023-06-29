@@ -16,16 +16,12 @@ services:
       - /etc/timezone:/etc/timezone:ro
       - /etc/localtime:/etc/localtime:ro
       # OpenSSH server host keys
-      # - ./hostkeys/ssh_host_ecdsa_key:/etc/ssh/ssh_host_ecdsa_key:ro
-      # - ./hostkeys/ssh_host_ecdsa_key.pub:/etc/ssh/ssh_host_ecdsa_key.pub:ro
-      # - ./hostkeys/ssh_host_ed25519_key:/etc/ssh/ssh_host_ed25519_key:ro
-      # - ./hostkeys/ssh_host_ed25519_key.pub:/etc/ssh/ssh_host_ed25519_key.pub:ro
-      # - ./hostkeys/ssh_host_rsa_key:/etc/ssh/ssh_host_rsa_key:ro
-      # - ./hostkeys/ssh_host_rsa_key.pub:/etc/ssh/ssh_host_rsa_key.pub:ro
+      - ssh-host-keys:/etc/ssh/host-keys
       # Persistent data directory
       - data:/data
     environment:
       VNC_PASSWORD: mainuser
 
 volumes:
+  ssh-host-keys: {}
   data: {}
