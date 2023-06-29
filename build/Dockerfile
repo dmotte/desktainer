@@ -8,11 +8,11 @@ EXPOSE 5901 6901
 # https://ubuntuforums.org/showthread.php?t=2360777)
 # Note: at-spi2-core is needed for LXDE apps to work properly (see
 # https://www.raspberrypi.org/forums/viewtopic.php?t=196070)
-RUN apt-get update \
-    && apt-get install -y sudo supervisor novnc xvfb x11vnc \
-        dbus-x11 at-spi2-core \
-    && apt-get install -y --no-install-recommends lxde \
-    && rm -rf /var/lib/apt/lists/*
+RUN apt-get update && \
+    apt-get install -y sudo supervisor novnc xvfb x11vnc \
+        dbus-x11 at-spi2-core && \
+    apt-get install -y --no-install-recommends lxde && \
+    rm -rf /var/lib/apt/lists/*
 
 # Copy the startup script
 COPY --chown=root:root --chmod=755 startup.sh /
