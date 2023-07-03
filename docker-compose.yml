@@ -3,7 +3,7 @@ version: "3"
 
 services:
   desktainer:
-    image: dmotte/desktainer
+    image: docker.io/dmotte/desktainer:latest
     build: build
     restart: always
     hostname: desktainer
