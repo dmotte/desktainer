@@ -1,4 +1,5 @@
-FROM dmotte/desktainer
+# Tested with docker.io/dmotte/desktainer:2023.06.27.0437
+FROM docker.io/dmotte/desktainer:latest
 
 # Expose the SSH and Shellinabox ports
 EXPOSE 22 4200

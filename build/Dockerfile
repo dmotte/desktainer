@@ -1,4 +1,4 @@
-FROM debian:12
+FROM docker.io/library/debian:12
 
 # Expose the VNC and noVNC ports
 EXPOSE 5901 6901
