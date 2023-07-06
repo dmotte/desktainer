@@ -9,7 +9,7 @@ VOLUME /data
 
 # Install additional packages
 RUN apt-get update && \
-    apt-get install -y git htop nano tmux tree wget zip curl socat procps \
+    apt-get install -y git nano tmux tree wget zip curl socat procps \
         iputils-ping iproute2 \
         openssh-server shellinabox ffmpeg \
         firefox-esr dirmngr lynx dconf-cli && \
