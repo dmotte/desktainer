@@ -41,12 +41,7 @@ RUN mkdir /etc/ssh/host-keys
 COPY --chown=root:root --chmod=700 50-ssh-host-keys.sh /opt/startup-late/
 
 # Create custom user named "mainuser"
-RUN useradd \
-    --create-home \
-    --shell /bin/bash \
-    --user-group \
-    --groups sudo \
-    mainuser
+RUN useradd -UGsudo -ms/bin/bash mainuser
 
 # Copy the screenrec.sh script
 COPY --chown=root:root --chmod=755 screenrec.sh /opt/

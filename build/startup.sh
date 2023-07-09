@@ -41,12 +41,7 @@ else
         echo "Creating custom user $USER"
 
         # Create the user (and also his home directory, if it doesn't exist)
-        useradd \
-            --create-home \
-            --shell /bin/bash \
-            --user-group \
-            --groups sudo \
-            "$USER"
+        useradd -UGsudo -ms/bin/bash "$USER"
     fi
 
     echo "Setting custom user's password"
