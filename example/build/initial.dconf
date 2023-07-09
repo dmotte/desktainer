@@ -15,7 +15,6 @@ insert-spaces=true
 
 auto-indent=true
 
-
 [org/xfce/mousepad/preferences/window]
 statusbar-visible=true
 toolbar-visible=true
