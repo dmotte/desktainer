@@ -31,9 +31,10 @@ RUN mkdir -p /var/run/sshd
 RUN sed -Ei 's/^#?AddressFamily.*$/AddressFamily inet/' /etc/ssh/sshd_config
 
 # sshd: Hardening
-RUN sed -Ei 's/^#?PermitRootLogin.*$/PermitRootLogin no/' /etc/ssh/sshd_config && \
-    sed -Ei 's/^#?HostbasedAuthentication.*$/HostbasedAuthentication no/' /etc/ssh/sshd_config && \
-    sed -Ei 's/^#?PermitEmptyPasswords.*$/PermitEmptyPasswords no/' /etc/ssh/sshd_config
+RUN sed -Ei /etc/ssh/sshd_config \
+    -e 's/^#?PermitRootLogin.*$/PermitRootLogin no/' \
+    -e 's/^#?HostbasedAuthentication.*$/HostbasedAuthentication no/' \
+    -e 's/^#?PermitEmptyPasswords.*$/PermitEmptyPasswords no/'
 
 # sshd: startup script for missing host keys generation
 RUN mkdir /etc/ssh/host-keys
