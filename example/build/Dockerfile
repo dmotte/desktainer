@@ -19,7 +19,7 @@ RUN apt-get update && \
 COPY --chown=root:root --chmod=644 supervisor-confd/* /etc/supervisor/conf.d/
 
 # sshd: Remove the generated SSH host keys! For obvious security reasons
-RUN rm /etc/ssh/ssh_host_*_key && rm /etc/ssh/ssh_host_*_key.pub
+RUN rm -f /etc/ssh/ssh_host_*_key /etc/ssh/ssh_host_*_key.pub
 
 # sshd: Create the privilege separation directory
 RUN mkdir -p /var/run/sshd
