@@ -4,34 +4,20 @@ This is an example of how to extend the [dmotte/desktainer](https://github.com/d
 
 In short, on top of the base image, we have:
 
+- declared a persistent `/data` volume
 - installed some **additional packages** (e.g. `nano`, `curl`, `zip`, `tmux`, etc.)
 - installed the **Firefox** web browser
-- installed the **OpenSSH server**
-  - configured it in _supervisor_ as a service
-  - running on **port 22**
-  - missing OpenSSH server **host keys** are **generated automatically** at container startup, and also copied to `/etc/ssh/host-keys`
-- installed **Shell In A Box**
-  - configured it in _supervisor_ as a service
-  - running on **port 4200**
-- already created a custom user named `mainuser` and made some customizations to it
-- declared a persistent `/data` volume
-- installed a **screen recording** service
-  - always running in background
-  - configured it in _supervisor_ as a service
-
-TODO complete the list of additions
-TODOEND see differences and test them
-
-TODO: Purposes of the users:
-
-- `mainuser`:
-  - access to the desktop
-  - run services locally
-  - use `supervisorctl` (with `sudo`)
-  - connect with SSH (even _VSCode Remote-SSH_ should work)
-- `alice`:
-  - access to local TCP ports (via SSH tunnel)
-  - expose TCP ports `8001-8005` locally (via SSH tunnel)
+- configured some **additional services**
+  - refer to the [`build/setup/main.sh`](build/setup/main.sh) file for further details
+  - note that some of them are actually commented
+- already created a **custom user** named `mainuser`
+  - can access the desktop
+  - can use `supervisorctl` (with `sudo`)
+  - full access via SSH (even _Visual Studio Code Remote-SSH_ should work)
+- created an **additional user** named `alice`
+  - limited access via SSH - **port forwarding** only
+    - access to local TCP ports
+    - expose TCP ports `8001-8005` locally
 
 ## Usage
 

@@ -36,15 +36,15 @@ chmod 700 /opt/startup-{early,late}
 
 #################################### lognot ####################################
 
-cat << 'EOF' > /etc/supervisor/conf.d/lognot.conf
-[program:lognot]
-command=/bin/bash -c 'bash /opt/lognot/get.sh |
-    while read -r i; do echo "$HOSTNAME: $i"; done |
-    /opt/lognot/venv/bin/python3 -um msgbuf \
-        -l INFO -i 10 -m 2048 -f /opt/lognot/buffer.txt \
-        /opt/lognot/venv/bin/python3 /opt/lognot/tg.py'
-priority=50
-EOF
+# cat << 'EOF' > /etc/supervisor/conf.d/lognot.conf
+# [program:lognot]
+# command=/bin/bash -c 'bash /opt/lognot/get.sh |
+#     while read -r i; do echo "$HOSTNAME: $i"; done |
+#     /opt/lognot/venv/bin/python3 -um msgbuf \
+#         -l INFO -i 10 -m 2048 -f /opt/lognot/buffer.txt \
+#         /opt/lognot/venv/bin/python3 /opt/lognot/tg.py'
+# priority=50
+# EOF
 
 dirownmod /opt/lognot root:root 700
 fileownmod /opt/lognot/get.sh root:root 700 < /setup/lognot/get.sh
@@ -98,13 +98,13 @@ EOF
 
 ################################ Shell In A Box ################################
 
-cat << 'EOF' > /etc/supervisor/conf.d/shellinabox.conf
-[program:shellinabox]
-command=/usr/bin/shellinaboxd -q -p 4200 -u shellinabox -g shellinabox
-    --user-css "White on Black:+/etc/shellinabox/options-enabled/00_White On Black.css;Color Terminal:+/etc/shellinabox/options-enabled/01+Color Terminal.css"
-    --disable-ssl --service "/:AUTH:HOME:tmux new-session -As main"
-priority=10
-EOF
+# cat << 'EOF' > /etc/supervisor/conf.d/shellinabox.conf
+# [program:shellinabox]
+# command=/usr/bin/shellinaboxd -q -p 4200 -u shellinabox -g shellinabox
+#     --user-css "White on Black:+/etc/shellinabox/options-enabled/00_White On Black.css;Color Terminal:+/etc/shellinabox/options-enabled/01+Color Terminal.css"
+#     --disable-ssl --service "/:AUTH:HOME:tmux new-session -As main"
+# priority=10
+# EOF
 
 ################################ USER: mainuser ################################
 
@@ -126,14 +126,14 @@ EOF
 
 ############################ mainuser: portmap-ssh #############################
 
-cat << 'EOF' > /etc/supervisor/conf.d/portmap-ssh.conf
-[program:portmap-ssh]
-command=/usr/bin/ssh -i /home/mainuser/.ssh/portmap-ssh.pem
-    -o ServerAliveInterval=30 -o ExitOnForwardFailure=yes
-    myuser@myserver.example.com -Nv -R 12345:127.0.0.1:22
-priority=10
-user=mainuser
-EOF
+# cat << 'EOF' > /etc/supervisor/conf.d/portmap-ssh.conf
+# [program:portmap-ssh]
+# command=/usr/bin/ssh -i /home/mainuser/.ssh/portmap-ssh.pem
+#     -o ServerAliveInterval=30 -o ExitOnForwardFailure=yes
+#     myuser@myserver.example.com -Nv -R 12345:127.0.0.1:22
+# priority=10
+# user=mainuser
+# EOF
 
 appownmod ~mainuser/.ssh/known_hosts mainuser:mainuser 600 << 'EOF'
 (put-public-ssh-host-key-here)
@@ -219,12 +219,12 @@ chown -h mainuser:mainuser ~mainuser/Desktop/persistent
 
 ############################# mainuser: screenrec ##############################
 
-cat << 'EOF' > /etc/supervisor/conf.d/screenrec.conf
-[program:screenrec]
-command=/bin/bash /opt/screenrec.sh
-priority=30
-user=mainuser
-EOF
+# cat << 'EOF' > /etc/supervisor/conf.d/screenrec.conf
+# [program:screenrec]
+# command=/bin/bash /opt/screenrec.sh
+# priority=30
+# user=mainuser
+# EOF
 
 fileownmod /opt/screenrec.sh mainuser:mainuser 700 << 'EOF'
 #!/bin/bash
