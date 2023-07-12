@@ -28,7 +28,7 @@ The [`docker-compose.yml`](docker-compose.yml) file should be pretty self-explan
 If you want to **build the image faster** (useful for testing), you can optionally trick your local Docker instance by **pre-installing some packages** and tag the resulting image as `docker.io/dmotte/desktainer:latest` itself:
 
 ```bash
-docker build -t docker.io/dmotte/desktainer:latest -f- << 'EOF'
+docker build -t docker.io/dmotte/desktainer:latest - << 'EOF'
 FROM docker.io/dmotte/desktainer:latest
 RUN apt-get update && \
     apt-get install -y ... && \
