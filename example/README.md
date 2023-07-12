@@ -6,6 +6,7 @@ In short, on top of the base image, we have:
 
 - declared a persistent `/data` volume
 - installed some **additional packages**
+- did some **hardening**
 - installed the **Firefox** web browser
 - configured some **additional services**
   - refer to the [`build/setup/main.sh`](build/setup/main.sh) file for further details
