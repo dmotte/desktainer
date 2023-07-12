@@ -5,7 +5,7 @@ This is an example of how to extend the [dmotte/desktainer](https://github.com/d
 In short, on top of the base image, we have:
 
 - declared a persistent `/data` volume
-- installed some **additional packages** (e.g. `nano`, `curl`, `zip`, `tmux`, etc.)
+- installed some **additional packages**
 - installed the **Firefox** web browser
 - configured some **additional services**
   - refer to the [`build/setup/main.sh`](build/setup/main.sh) file for further details
