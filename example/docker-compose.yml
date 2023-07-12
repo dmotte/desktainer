@@ -8,19 +8,22 @@ services:
     restart: always
     hostname: dt01
     ports:
-      - "5901:5901" # VNC
-      - "6901:6901" # noVNC
-      - "2222:22"   # SSH
-      - "4200:4200" # Shellinabox
+      - "5901:5901"
+      - "6901:6901"
+      - "2222:22"
+      - "4200:4200"
     volumes:
       - /etc/timezone:/etc/timezone:ro
       - /etc/localtime:/etc/localtime:ro
-      # OpenSSH server host keys
       - ssh-host-keys:/etc/ssh/host-keys
-      # Persistent data directory
       - data:/data
     environment:
-      VNC_PASSWORD: mainuser
+      PASSWORD: mypassword
+      VNC_PASSWORD: mypassword
+      PORTMAP_SSH_CLIENT_KEY: |-
+        (put-private-ssh-key-here)
+      LOGNOT_BOT_TOKEN: (put-bot-token-here)
+      LOGNOT_CHAT_ID: (put-chat-id-here)
 
 volumes:
   ssh-host-keys: {}
