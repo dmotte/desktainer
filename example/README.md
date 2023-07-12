@@ -24,3 +24,16 @@ In short, on top of the base image, we have:
 The first thing to do is to replace all the `(put-...-here)` placeholders in all the files with your actual values. Also, make sure that all the dummy values (e.g. `myuser`, `myserver`, etc.) are properly replaced.
 
 The [`docker-compose.yml`](docker-compose.yml) file should be pretty self-explanatory. The commands are similar to those of the parent project.
+
+If you want to **build the image faster** (useful for testing), you can optionally trick your local Docker instance by **pre-installing some packages** and tag the resulting image as `docker.io/dmotte/desktainer:latest` itself:
+
+```bash
+docker build -t docker.io/dmotte/desktainer:latest -f- << 'EOF'
+FROM docker.io/dmotte/desktainer:latest
+RUN apt-get update && \
+    apt-get install -y ... && \
+    rm -rf /var/lib/apt/lists/*
+EOF
+```
+
+> **Note**: this is not recommended because it will also affect other stuff that rely on the `docker.io/dmotte/desktainer:latest` image on your computer. Only do this if you know what you're doing.
