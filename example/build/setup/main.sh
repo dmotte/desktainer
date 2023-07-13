@@ -119,9 +119,11 @@ appownmod ~mainuser/.ssh/authorized_keys mainuser:mainuser 600 << 'EOF'
 EOF
 
 cat << 'EOF' > /opt/startup-late/50-data-mainuser.sh
-mkdir -p /data/mainuser
-chown mainuser:mainuser /data/mainuser
-chmod 700 /data/mainuser
+if [ ! -d /data/mainuser ]; then
+    mkdir /data/mainuser
+    chown mainuser:mainuser /data/mainuser
+    chmod 700 /data/mainuser
+fi
 EOF
 
 ############################ mainuser: portmap-ssh #############################
@@ -140,9 +142,11 @@ appownmod ~mainuser/.ssh/known_hosts mainuser:mainuser 600 << 'EOF'
 EOF
 
 cat << 'EOF' > /opt/startup-late/50-portmap-ssh-client-key.sh
-echo "$PORTMAP_SSH_CLIENT_KEY" > ~mainuser/.ssh/portmap-ssh.pem
-chown mainuser:mainuser ~mainuser/.ssh/portmap-ssh.pem
-chmod 600 ~mainuser/.ssh/portmap-ssh.pem
+if [ ! -f ~mainuser/.ssh/portmap-ssh.pem ]; then
+    echo "$PORTMAP_SSH_CLIENT_KEY" > ~mainuser/.ssh/portmap-ssh.pem
+    chown mainuser:mainuser ~mainuser/.ssh/portmap-ssh.pem
+    chmod 600 ~mainuser/.ssh/portmap-ssh.pem
+fi
 unset PORTMAP_SSH_CLIENT_KEY
 EOF
 
