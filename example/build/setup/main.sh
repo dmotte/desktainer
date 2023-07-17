@@ -102,7 +102,7 @@ cat << 'EOF' > /etc/supervisor/conf.d/shellinabox.conf
 [program:shellinabox]
 command=/usr/bin/shellinaboxd -q -p 4200 -u shellinabox -g shellinabox
     --user-css "White on Black:+/etc/shellinabox/options-enabled/00_White On Black.css;Color Terminal:+/etc/shellinabox/options-enabled/01+Color Terminal.css"
-    --disable-ssl --service "/:AUTH:HOME:tmux new-session -As main"
+    --disable-ssl --service "/:AUTH:HOME:tmux new-session -Asmain"
 priority=10
 EOF
 
