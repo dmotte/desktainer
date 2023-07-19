@@ -70,8 +70,7 @@ echo "Resolution set to $RESOLUTION"
 # Replace %USER% and %HOME% variables in supervisord.conf
 # Note: we use the pipe character as delimiter in the expression #2 because the
 # $HOME variable contains slashes
-sed -i -e "s/%USER%/$USER/g" -e "s|%HOME%|$HOME|g" \
-    /etc/supervisor/supervisord.conf
+sed -i "s/%USER%/$USER/g;s|%HOME%|$HOME|g" /etc/supervisor/supervisord.conf
 
 ############################# VNC SERVER PASSWORD ##############################
 
