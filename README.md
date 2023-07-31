@@ -78,3 +78,5 @@ If you want to contribute to this project, you can use the following one-liner t
 ```bash
 docker-compose down && docker-compose up --build
 ```
+
+> **Note**: I know that this Docker image has many **layers**, but this shouldn't be a problem in most cases. If you want to reduce its number of layers, there are several techniques out there, e.g. see [this](https://stackoverflow.com/questions/39695031/how-make-docker-layer-to-single-layer)
