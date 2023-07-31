@@ -22,32 +22,30 @@ ENV LC_ALL C.UTF-8
 RUN echo '#!/bin/bash\n\nexport LC_ALL=C.UTF-8' \
     > /etc/profile.d/set-c-utf8-locale.sh
 
-# noVNC: if on ARM architecture, disable the Tight* encodings
-# See https://github.com/fcwu/docker-ubuntu-vnc-desktop/issues/98 for further
-# information
+# Some adjustments, including:
+# - noVNC: if on ARM architecture, disable the Tight* encodings. See
+#   https://github.com/fcwu/docker-ubuntu-vnc-desktop/issues/98 for further
+#   information
+# - LXDE: disable light-locker because it cannot run inside a container (it
+#   would fail at startup and silently create a ~/core core dump file)
+# - LXDE: disable polkit because of the "No session for pid ..." message box
+#   (see https://github.com/WhitewaterFoundry/Pengwin/issues/429)
 RUN ARCH="$(uname -m)"; \
     if [ "$ARCH" != "${ARCH#arm}" ]; then \
         sed -i 's/\(encs\.push[(]encodings\.encodingTight\)/\/\/ \1/' \
         /usr/share/novnc/core/rfb.js; \
-    fi
-
-# noVNC: make the vnc.html page the default one
-RUN mv /usr/share/novnc/vnc.html /usr/share/novnc/index.html
-
-# noVNC: set default autoconnect=true
-RUN sed -i "s/\(WebUtil\.getConfigVar[(]'autoconnect', \)false/\1true/" \
-    /usr/share/novnc/app/ui.js
-
-# LXDE: set default terminal to LXTerminal
-RUN update-alternatives --set x-terminal-emulator /usr/bin/lxterminal
-
-# LXDE: disable light-locker because it cannot run inside a container (it would
-# fail at startup and silently create a $HOME/core core dump file)
-RUN rm /etc/xdg/autostart/light-locker.desktop
-
-# LXDE: disable polkit because of the "No session for pid ..." message box (see
-# https://github.com/WhitewaterFoundry/Pengwin/issues/429)
-RUN rm /etc/xdg/autostart/lxpolkit.desktop && \
+    fi && \
+    \
+    mv /usr/share/novnc/vnc.html /usr/share/novnc/index.html && \
+    \
+    sed -i "s/\(WebUtil\.getConfigVar[(]'autoconnect', \)false/\1true/" \
+    /usr/share/novnc/app/ui.js && \
+    \
+    update-alternatives --set x-terminal-emulator /usr/bin/lxterminal && \
+    \
+    rm /etc/xdg/autostart/light-locker.desktop && \
+    \
+    rm /etc/xdg/autostart/lxpolkit.desktop && \
     mv /usr/bin/lxpolkit /usr/bin/lxpolkit.bak
 
 ENTRYPOINT ["/startup.sh"]
