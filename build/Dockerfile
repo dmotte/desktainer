@@ -1,9 +1,7 @@
 FROM docker.io/library/debian:12
 
-# Expose the VNC and noVNC ports
 EXPOSE 5901 6901
 
-# Install required packages
 # Note: dbus-x11 is needed for LXDE apps to work properly (see
 # https://ubuntuforums.org/showthread.php?t=2360777)
 # Note: at-spi2-core is needed for LXDE apps to work properly (see
@@ -14,19 +12,13 @@ RUN apt-get update && \
     apt-get install -y --no-install-recommends lxde && \
     rm -rf /var/lib/apt/lists/*
 
-# Copy the startup script
 COPY --chown=root:root --chmod=755 startup.sh /
 
-# Create the /opt/startup-early and /opt/startup-late directories
 RUN mkdir -p /opt/startup-early /opt/startup-late
 
-# Copy the supervisord configuration file
 COPY --chown=root:root --chmod=644 supervisord.conf /etc/supervisor/supervisord.conf
 
-# locale: set UTF-8 locale as environment variable
 ENV LC_ALL C.UTF-8
-
-# locale: set UTF-8 locale in /etc/profile.d/
 RUN echo '#!/bin/bash\n\nexport LC_ALL=C.UTF-8' \
     > /etc/profile.d/set-c-utf8-locale.sh
 
