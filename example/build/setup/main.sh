@@ -4,8 +4,6 @@ set -ex
 
 fileownmod() { cat > "$1" && chown "$2" "$1" && chmod "$3" "$1"; }
 appownmod() { touch "$1" && cat >> "$1" && chown "$2" "$1" && chmod "$3" "$1"; }
-dirownmod() { mkdir "$1" && chown "$2" "$1" && chmod "$3" "$1"; }
-dirpownmod() { mkdir -p "$1" && chown "$2" "$1" && chmod "$3" "$1"; }
 
 ################################### Generic ####################################
 
@@ -46,7 +44,7 @@ chmod 700 /opt/startup-{early,late}
 # priority=50
 # EOF
 
-dirownmod /opt/lognot root:root 700
+install -dm700 /opt/lognot
 fileownmod /opt/lognot/get.sh root:root 700 < /setup/lognot/get.sh
 python3 -m venv /opt/lognot/venv
 /opt/lognot/venv/bin/pip3 install requests==2.* msgbuf==1.*
@@ -113,7 +111,7 @@ useradd -UGsudo -ms/bin/bash mainuser
 echo 'mainuser ALL=(ALL) NOPASSWD: ALL' | \
     fileownmod /etc/sudoers.d/mainuser-nopassword root:root 440
 
-dirownmod ~mainuser/.ssh mainuser:mainuser 700
+install -d -omainuser -gmainuser -m700 ~mainuser/.ssh
 appownmod ~mainuser/.ssh/authorized_keys mainuser:mainuser 600 << 'EOF'
 (put-public-ssh-key-here)
 EOF
@@ -152,7 +150,7 @@ EOF
 
 ############################## mainuser: desktop ###############################
 
-dirpownmod ~mainuser/.config mainuser:mainuser 755
+install -d -omainuser -gmainuser ~mainuser/.config
 
 fileownmod ~mainuser/.config/mimeapps.list mainuser:mainuser 644 << 'EOF'
 [Added Associations]
@@ -182,7 +180,7 @@ statusbar-visible=true
 toolbar-visible=true
 EOF
 
-dirpownmod ~mainuser/.config/autostart mainuser:mainuser 755
+install -d -omainuser -gmainuser ~mainuser/.config/autostart
 
 fileownmod ~mainuser/.config/autostart/dconf-load.desktop \
     mainuser:mainuser 644 << 'EOF'
@@ -202,7 +200,7 @@ Exec=/usr/bin/xrandr --fb 1920x900
 NoDisplay=true
 EOF
 
-dirpownmod ~mainuser/.config/pcmanfm/LXDE mainuser:mainuser 755
+install -d -omainuser -gmainuser ~mainuser/.config/pcmanfm{,/LXDE}
 fileownmod ~mainuser/.config/pcmanfm/LXDE/pcmanfm.conf \
     mainuser:mainuser 644 << 'EOF'
 [ui]
@@ -216,7 +214,7 @@ wallpaper_mode=color
 desktop_bg=#3a6ea5
 EOF
 
-dirpownmod ~mainuser/Desktop mainuser:mainuser 755
+install -d -omainuser -gmainuser ~mainuser/Desktop
 
 ln -s /data/mainuser ~mainuser/Desktop/persistent
 chown -h mainuser:mainuser ~mainuser/Desktop/persistent
@@ -265,7 +263,7 @@ Match User alice
     PermitTTY no
     ForceCommand echo "This account can only be used for port forwarding"
 EOF
-dirownmod ~alice/.ssh alice:alice 700
+install -d -oalice -galice -m700 ~alice/.ssh
 appownmod ~alice/.ssh/authorized_keys alice:alice 600 << 'EOF'
 (put-public-ssh-key-here)
 EOF
