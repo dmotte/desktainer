@@ -45,10 +45,10 @@ chmod 700 /opt/startup-{early,late}
 # EOF
 
 install -dm700 /opt/lognot
-fileownmod /opt/lognot/get.sh root:root 700 < /setup/lognot/get.sh
+install -m700 /{setup,opt}/lognot/get.sh
 python3 -m venv /opt/lognot/venv
 /opt/lognot/venv/bin/pip3 install requests==2.* msgbuf==1.*
-fileownmod /opt/lognot/tg.py root:root 600 < /setup/lognot/tg.py
+install -m600 /{setup,opt}/lognot/tg.py
 cat << 'EOF' > /opt/startup-late/50-lognot-secrets.sh
 sed -i /opt/lognot/tg.py \
     -e "s/{{ lognot_bot_token }}/$LOGNOT_BOT_TOKEN/" \
