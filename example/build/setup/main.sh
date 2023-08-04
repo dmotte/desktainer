@@ -78,16 +78,11 @@ mkdir /etc/ssh/host-keys
 cat << 'EOF' > /opt/startup-late/50-ssh-host-keys.sh
 # Get host keys from the volume
 rm -f /etc/ssh/ssh_host_*_key /etc/ssh/ssh_host_*_key.pub
-cp /etc/ssh/host-keys/ssh_host_*_key /etc/ssh/ 2>/dev/null || :
-cp /etc/ssh/host-keys/ssh_host_*_key.pub /etc/ssh/ 2>/dev/null || :
+install -m600 -t/etc/ssh /etc/ssh/host-keys/ssh_host_*_key 2>/dev/null || :
+install -m644 -t/etc/ssh /etc/ssh/host-keys/ssh_host_*_key.pub 2>/dev/null || :
 
 # Generate the missing host keys
 ssh-keygen -A
-
-# Set correct permissions on host keys
-chown root:root /etc/ssh/ssh_host_*_key /etc/ssh/ssh_host_*_key.pub
-chmod 600 /etc/ssh/ssh_host_*_key
-chmod 644 /etc/ssh/ssh_host_*_key.pub
 
 # Copy the (previously missing) generated host keys to the volume
 cp -n /etc/ssh/ssh_host_*_key /etc/ssh/host-keys/ 2>/dev/null || :
