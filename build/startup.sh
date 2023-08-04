@@ -30,13 +30,10 @@ else
 
         if [ ! -d "$HOME" ]; then
             echo "Creating home directory for custom user $USER"
-
-            mkdir -p "$HOME"
-            chown -R "$USER:$USER" "$HOME"
+            install -d -o"$USER" -g"$USER" "$HOME"
         fi
     else
         echo "Creating custom user $USER"
-
         useradd -UGsudo -ms/bin/bash "$USER"
     fi
 
@@ -70,12 +67,11 @@ if [ -n "$VNC_PASSWORD" ]; then
     if [ ! -f "$HOME/.vnc/passwd" ]; then
         echo "Storing the VNC password into $HOME/.vnc/passwd"
 
-        mkdir -p "$HOME/.vnc"
-        chown -R "$USER:$USER" "$HOME/.vnc"
+        install -d -o"$USER" -g"$USER" "$HOME/.vnc"
 
         # Store the password encrypted and with 400 permissions
         x11vnc -storepasswd "$VNC_PASSWORD" "$HOME/.vnc/passwd"
-        chown -R "$USER:$USER" "$HOME/.vnc/passwd"
+        chown "$USER:$USER" "$HOME/.vnc/passwd"
         chmod 400 "$HOME/.vnc/passwd"
     fi
 
