@@ -14,6 +14,9 @@ on:
     # Runs automatically on the 27th of every month at 04:30 UTC
     - cron: "30 04 27 * *"
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+
 jobs:
   release:
     runs-on: ubuntu-latest
