@@ -2,8 +2,7 @@
 name: shellcheck
 
 on:
-  push:
-  pull_request:
+  push: # All branches and tags
 
 jobs:
   shellcheck:
