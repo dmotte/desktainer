@@ -12,7 +12,7 @@ set -e
 for i in /opt/startup-early/*.sh; do
     [ -f "$i" ] || continue
     # shellcheck source=/dev/null
-    source "$i"
+    . "$i"
 done
 
 ################################# CUSTOM USER ##################################
@@ -93,7 +93,7 @@ rm -f /tmp/.X0-lock
 for i in /opt/startup-late/*.sh; do
     [ -f "$i" ] || continue
     # shellcheck source=/dev/null
-    source "$i"
+    . "$i"
 done
 
 ############################## START SUPERVISORD ###############################
