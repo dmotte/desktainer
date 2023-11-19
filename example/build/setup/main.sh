@@ -118,9 +118,11 @@ echo 'install -d -omainuser -gmainuser -m700 /data/mainuser' \
 
 # cat << 'EOF' > /etc/supervisor/conf.d/portmap-ssh.conf
 # [program:portmap-ssh]
-# command=/usr/bin/ssh -i /home/mainuser/.ssh/portmap-ssh.pem
-#     -o ServerAliveInterval=30 -o ExitOnForwardFailure=yes
-#     myuser@myserver.example.com -Nv -R 12345:127.0.0.1:22
+# command=/bin/bash -c 'ssh -i /home/mainuser/.ssh/portmap-ssh.pem \
+#     -o ServerAliveInterval=30 -o ExitOnForwardFailure=yes \
+#     myuser@myserver.example.com -Nv -R 12345:127.0.0.1:22 \
+#     || result="$?"; sleep 30; exit "${result:-0}"'
+# startsecs=0
 # priority=10
 # user=mainuser
 # EOF
