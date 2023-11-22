@@ -40,7 +40,7 @@ chmod 700 /opt/startup-{early,late}
 #     while read -r i; do echo "$HOSTNAME: $i"; done |
 #     /opt/lognot/venv/bin/python3 -um msgbuf \
 #         -l INFO -i 10 -m 2048 -f /opt/lognot/buffer.txt \
-#         /opt/lognot/venv/bin/python3 /opt/lognot/tg.py'
+#         /bin/bash /opt/lognot/tg.sh'
 # priority=50
 # EOF
 
@@ -48,9 +48,9 @@ install -dm700 /opt/lognot
 install -m700 /{setup,opt}/lognot/get.sh
 python3 -m venv /opt/lognot/venv
 /opt/lognot/venv/bin/pip3 install 'requests==2.*' 'msgbuf==1.*'
-install -m600 /{setup,opt}/lognot/tg.py
+install -m700 /{setup,opt}/lognot/tg.sh
 cat << 'EOF' > /opt/startup-late/50-lognot-secrets.sh
-sed -i /opt/lognot/tg.py \
+sed -i /opt/lognot/tg.sh \
     -e "s/{{ lognot_bot_token }}/$LOGNOT_BOT_TOKEN/" \
     -e "s/{{ lognot_chat_id }}/$LOGNOT_CHAT_ID/"
 unset LOGNOT_{BOT_TOKEN,CHAT_ID}
