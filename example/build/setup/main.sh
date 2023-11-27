@@ -9,7 +9,7 @@ appownmod() { touch "$1" && cat >> "$1" && chown "$2" "$1" && chmod "$3" "$1"; }
 
 apt-get update
 apt-get install -y git nano tmux tree wget zip curl socat procps jq yq \
-    iputils-ping iproute2 openssh-server python3-pip python3-venv \
+    iputils-ping iproute2 openssh-server \
     shellinabox ffmpeg firefox-esr dirmngr dconf-cli
 rm -rf /var/lib/apt/lists/*
 
@@ -38,16 +38,17 @@ chmod 700 /opt/startup-{early,late}
 # [program:lognot]
 # command=/bin/bash -c 'bash /opt/lognot/get.sh |
 #     while read -r i; do echo "$HOSTNAME: $i"; done |
-#     /opt/lognot/venv/bin/python3 -um msgbuf \
-#         -l INFO -i 10 -m 2048 -f /opt/lognot/buffer.txt \
-#         /bin/bash /opt/lognot/tg.sh'
+#     /opt/lognot/msgbuf -i10 -m2048 -- /bin/bash /opt/lognot/tg.sh'
 # priority=50
 # EOF
 
 install -dm700 /opt/lognot
 install -m700 /{setup,opt}/lognot/get.sh
-python3 -m venv /opt/lognot/venv
-/opt/lognot/venv/bin/pip3 install 'requests==2.*' 'msgbuf==1.*'
+curl -Lo /opt/lognot/msgbuf \
+    "https://github.com/dmotte/msgbuf/releases/latest/download/msgbuf-$(uname -m)-unknown-linux-gnu"
+echo '3fcec4e61ef0fdbc9e4a703ba3c5b3075b20336d57b963e05676ccdab3ad5ca4' \
+    /opt/lognot/msgbuf | sha256sum -c # Checksum for v1.0.2
+chmod +x /opt/lognot/msgbuf
 install -m700 /{setup,opt}/lognot/tg.sh
 cat << 'EOF' > /opt/startup-late/50-lognot-secrets.sh
 sed -i /opt/lognot/tg.sh \
