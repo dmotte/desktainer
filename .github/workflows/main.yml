@@ -1,0 +1,25 @@
+---
+name: main
+
+on:
+  push: # All branches and tags
+  schedule:
+    # Runs automatically on the 27th of every month at 04:30 UTC
+    - cron: "30 04 27 * *"
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+
+jobs:
+  job:
+    uses: dmotte/misc/.github/workflows/cicd-with-script.yml@main
+    with:
+      script: >
+        DOCKERHUB_USERNAME=dmotte
+        IMG_AUTHOR=dmotte IMG_NAME=desktainer
+        IMG_DESCRIPTION="${{ github.event.repository.description }}"
+        IMG_FULL_DESCRIPTION_FILE=dockerhub-description.md
+        IMG_PLATFORMS=linux/386,linux/amd64,linux/arm/v6,linux/arm/v7,linux/arm64
+        bash "$(realpath "$GITHUB_ACTION_PATH/../../scripts/cicd/docker-img.sh")"
+    secrets:
+      secret01: ${{ secrets.DOCKERHUB_PASSWORD }}
