@@ -2,8 +2,7 @@
 
 set -ex
 
-fileownmod() { cat > "$1" && chown "$2" "$1" && chmod "$3" "$1"; }
-appownmod() { touch "$1" && cat >> "$1" && chown "$2" "$1" && chmod "$3" "$1"; }
+appownmod() { touch "$1"; cat >> "$1"; chown "$2" "$1"; chmod "$3" "$1"; }
 
 ################################### Generic ####################################
 
@@ -105,7 +104,7 @@ EOF
 useradd -UGsudo -ms/bin/bash mainuser
 
 echo 'mainuser ALL=(ALL) NOPASSWD: ALL' | \
-    fileownmod /etc/sudoers.d/mainuser-nopassword root:root 440
+    install -m440 /dev/stdin /etc/sudoers.d/mainuser-nopassword
 
 install -d -omainuser -gmainuser -m700 ~mainuser/.ssh
 appownmod ~mainuser/.ssh/authorized_keys mainuser:mainuser 600 << 'EOF'
@@ -144,12 +143,14 @@ EOF
 
 install -d -omainuser -gmainuser ~mainuser/.config
 
-fileownmod ~mainuser/.config/mimeapps.list mainuser:mainuser 644 << 'EOF'
+install -omainuser -gmainuser -m644 /dev/stdin \
+    ~mainuser/.config/mimeapps.list << 'EOF'
 [Added Associations]
 text/plain=org.xfce.mousepad.desktop
 EOF
 
-fileownmod ~mainuser/.config/initial.dconf mainuser:mainuser 644 << 'EOF'
+install -omainuser -gmainuser -m644 /dev/stdin \
+    ~mainuser/.config/initial.dconf << 'EOF'
 [org/xfce/mousepad/preferences/view]
 show-line-numbers=true
 
@@ -174,8 +175,8 @@ EOF
 
 install -d -omainuser -gmainuser ~mainuser/.config/autostart
 
-fileownmod ~mainuser/.config/autostart/dconf-load.desktop \
-    mainuser:mainuser 644 << 'EOF'
+install -omainuser -gmainuser -m644 /dev/stdin \
+    ~mainuser/.config/autostart/dconf-load.desktop << 'EOF'
 [Desktop Entry]
 Type=Application
 Name=dconf-load
@@ -183,8 +184,8 @@ Exec=/bin/sh -c "/usr/bin/dconf load / < ~/.config/initial.dconf"
 NoDisplay=true
 EOF
 
-fileownmod ~mainuser/.config/autostart/xrandr-fb.desktop \
-    mainuser:mainuser 644 << 'EOF'
+install -omainuser -gmainuser -m644 /dev/stdin \
+    ~mainuser/.config/autostart/xrandr-fb.desktop << 'EOF'
 [Desktop Entry]
 Type=Application
 Name=xrandr-fb
@@ -193,14 +194,14 @@ NoDisplay=true
 EOF
 
 install -d -omainuser -gmainuser ~mainuser/.config/pcmanfm{,/LXDE}
-fileownmod ~mainuser/.config/pcmanfm/LXDE/pcmanfm.conf \
-    mainuser:mainuser 644 << 'EOF'
+install -omainuser -gmainuser -m644 /dev/stdin \
+    ~mainuser/.config/pcmanfm/LXDE/pcmanfm.conf << 'EOF'
 [ui]
 show_hidden=1
 EOF
 
-fileownmod ~mainuser/.config/pcmanfm/LXDE/desktop-items-0.conf \
-    mainuser:mainuser 644 << 'EOF'
+install -omainuser -gmainuser -m644 /dev/stdin \
+     ~mainuser/.config/pcmanfm/LXDE/desktop-items-0.conf << 'EOF'
 [*]
 wallpaper_mode=color
 desktop_bg=#3a6ea5
@@ -220,7 +221,7 @@ chown -h mainuser:mainuser ~mainuser/Desktop/persistent
 # user=mainuser
 # EOF
 
-fileownmod /opt/screenrec.sh mainuser:mainuser 700 << 'EOF'
+install -omainuser -gmainuser -m700 /dev/stdin /opt/screenrec.sh << 'EOF'
 #!/bin/bash
 
 set -e
