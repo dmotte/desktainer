@@ -103,8 +103,8 @@ EOF
 
 useradd -UGsudo -ms/bin/bash mainuser
 
-echo 'mainuser ALL=(ALL) NOPASSWD: ALL' | \
-    install -m440 /dev/stdin /etc/sudoers.d/mainuser-nopassword
+install -m440 <(echo 'mainuser ALL=(ALL) NOPASSWD: ALL') \
+    /etc/sudoers.d/mainuser-nopassword
 
 install -d -omainuser -gmainuser -m700 ~mainuser/.ssh
 appownmod ~mainuser/.ssh/authorized_keys mainuser:mainuser 600 << 'EOF'
