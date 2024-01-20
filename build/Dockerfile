@@ -30,8 +30,8 @@ RUN echo '#!/bin/bash\n\nexport LC_ALL=C.UTF-8' \
 #   would fail at startup and silently create a ~/core core dump file)
 # - LXDE: disable polkit because of the "No session for pid ..." message box
 #   (see https://github.com/WhitewaterFoundry/Pengwin/issues/429)
-RUN ARCH="$(uname -m)"; \
-    if [ "$ARCH" != "${ARCH#arm}" ]; then \
+RUN arch=$(uname -m); \
+    if [ "$arch" != "${arch#arm}" ]; then \
         sed -i 's/\(encs\.push[(]encodings\.encodingTight\)/\/\/ \1/' \
         /usr/share/novnc/core/rfb.js; \
     fi && \
