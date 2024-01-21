@@ -121,7 +121,7 @@ echo 'install -d -omainuser -gmainuser -m700 /data/mainuser' \
 # command=/bin/bash -c 'ssh -i /home/mainuser/.ssh/portmap-ssh.pem \
 #     -o ServerAliveInterval=30 -o ExitOnForwardFailure=yes \
 #     myuser@myserver.example.com -Nv -R 12345:127.0.0.1:22 \
-#     || result="$?"; sleep 30; exit "${result:-0}"'
+#     || result=$?; sleep 30; exit "${result:-0}"'
 # startsecs=0
 # priority=10
 # user=mainuser
