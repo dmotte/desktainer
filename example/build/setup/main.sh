@@ -43,7 +43,7 @@ chmod 700 /opt/startup-{early,late}
 
 install -dm700 /opt/lognot
 install -m700 /{setup,opt}/lognot/get.sh
-curl -Lo /opt/lognot/msgbuf \
+curl -fLo /opt/lognot/msgbuf \
     "https://github.com/dmotte/msgbuf/releases/latest/download/msgbuf-$(uname -m)-unknown-linux-gnu"
 echo '3fcec4e61ef0fdbc9e4a703ba3c5b3075b20336d57b963e05676ccdab3ad5ca4' \
     /opt/lognot/msgbuf | sha256sum -c # Checksum for v1.0.2
