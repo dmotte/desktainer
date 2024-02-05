@@ -35,7 +35,7 @@ chmod 700 /opt/startup-{early,late}
 
 # cat << 'EOF' > /etc/supervisor/conf.d/lognot.conf
 # [program:lognot]
-# command=/bin/bash -c 'bash /opt/lognot/get.sh |
+# command=/bin/bash -ec 'bash /opt/lognot/get.sh |
 #     while read -r i; do echo "$HOSTNAME: $i"; done |
 #     /opt/lognot/msgbuf -i10 -m2048 -- /bin/bash /opt/lognot/tg.sh'
 # priority=50
@@ -118,7 +118,7 @@ echo 'install -d -omainuser -gmainuser -m700 /data/mainuser' \
 
 # cat << 'EOF' > /etc/supervisor/conf.d/portmap-ssh.conf
 # [program:portmap-ssh]
-# command=/bin/bash -c 'ssh -i /home/mainuser/.ssh/portmap-ssh.pem \
+# command=/bin/bash -ec 'ssh -i /home/mainuser/.ssh/portmap-ssh.pem \
 #     -o ServerAliveInterval=30 -o ExitOnForwardFailure=yes \
 #     myuser@myserver.example.com -Nv -R 12345:127.0.0.1:22 \
 #     || result=$?; sleep 30; exit "${result:-0}"'
@@ -180,7 +180,7 @@ install -omainuser -gmainuser -m644 /dev/stdin \
 [Desktop Entry]
 Type=Application
 Name=dconf-load
-Exec=/bin/sh -c "/usr/bin/dconf load / < ~/.config/initial.dconf"
+Exec=/bin/sh -ec '/usr/bin/dconf load / < ~/.config/initial.dconf'
 NoDisplay=true
 EOF
 
