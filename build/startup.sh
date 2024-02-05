@@ -17,9 +17,9 @@ done
 
 ################################# CUSTOM USER ##################################
 
-if [ "$USER" = "root" ]; then
-    echo "The main user is root"
-    HOME="/root"
+if [ "$USER" = root ]; then
+    echo 'The main user is root'
+    HOME=/root
 else
     echo "Enabling custom user: $USER"
     HOME="/home/$USER"
@@ -35,10 +35,10 @@ else
     else
         echo "Creating custom user $USER"
         useradd -UGsudo -ms/bin/bash "$USER"
-    fi
 
-    echo "Setting custom user's password"
-    echo "$USER:$PASSWORD" | chpasswd
+        echo "Setting custom user's password"
+        echo "$USER:$PASSWORD" | chpasswd
+    fi
 fi
 
 unset PASSWORD
@@ -78,10 +78,10 @@ if [ -n "$VNC_PASSWORD" ]; then
     unset VNC_PASSWORD
 
     sed -i "s/%VNCPWOPTION%/-usepw/" /etc/supervisor/supervisord.conf
-    echo "VNC password set"
+    echo 'VNC password set'
 else
     sed -i "s/%VNCPWOPTION%/-nopw/" /etc/supervisor/supervisord.conf
-    echo "VNC password disabled"
+    echo 'VNC password disabled'
 fi
 
 ############################# CLEAR Xvfb LOCK FILE #############################
@@ -101,5 +101,5 @@ done
 # Start supervisord with "exec" to let it become the PID 1 process. This ensures
 # it receives all the stop signals correctly and reaps all the zombie processes
 # inside the container
-echo "Starting supervisord"
+echo 'Starting supervisord'
 exec /usr/bin/supervisord -nc /etc/supervisor/supervisord.conf
