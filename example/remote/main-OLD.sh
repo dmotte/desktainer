@@ -1,35 +1,8 @@
 #!/bin/bash
 
-set -ex
+set -e
 
-appownmod() { touch "$1"; cat >> "$1"; chown "$2" "$1"; chmod "$3" "$1"; }
-
-################################### Generic ####################################
-
-apt-get update
-apt-get install -y git nano tmux tree wget zip curl socat procps jq yq \
-    iputils-ping iproute2 openssh-server \
-    shellinabox ffmpeg firefox-esr dirmngr dconf-cli
-rm -rf /var/lib/apt/lists/*
-
-sed -Ei 's/^#?UMASK.*$/UMASK 077/' /etc/login.defs
-sed -Ei 's/^#?DIR_MODE=.*$/DIR_MODE=0700/' /etc/adduser.conf
-
-cat << 'EOF' >> /etc/supervisor/supervisord.conf
-[unix_http_server]
-file=/run/supervisor.sock
-chown=root:root
-chmod=0700
-
-[rpcinterface:supervisor]
-supervisor.rpcinterface_factory = supervisor.rpcinterface:make_main_rpcinterface
-
-[supervisorctl]
-serverurl=unix:///run/supervisor.sock
-EOF
-
-chmod 700 /var/log/supervisor
-chmod 700 /opt/startup-{early,late}
+# TODO move everything from this script to the new one
 
 #################################### lognot ####################################
 

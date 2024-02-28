@@ -38,3 +38,15 @@ EOF
 ```
 
 > **Warning**: this is not recommended because it will also affect other stuff that rely on the `docker.io/dmotte/desktainer:latest` image on your computer. Only do this if you know what you're doing.
+
+## TODO new commands for testing
+
+TODO prerequisites: place your `.pem` file inside the `remote` dir, set the lognot bot token and chat ID
+
+TODO we use the [`remote-dir-run.sh`](https://github.com/dmotte/misc/blob/main/scripts/remote-dir-run.sh) script
+
+```bash
+docker-compose up -d
+
+time remote-dir-run.sh remote docker-compose exec -T dt01 bash -ec; echo $?
+```

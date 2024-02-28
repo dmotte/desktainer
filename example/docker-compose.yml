@@ -3,8 +3,8 @@ version: "3"
 
 services:
   dt01:
-    image: dt01
-    build: build
+    # Tested with docker.io/dmotte/desktainer:v2024.02.05.2216
+    image: docker.io/dmotte/desktainer:latest
     restart: always
     hostname: dt01
     ports:
@@ -20,10 +20,6 @@ services:
     environment:
       PASSWORD: mypassword
       VNC_PASSWORD: mypassword
-      PORTMAP_SSH_CLIENT_KEY: |-
-        (put-private-ssh-key-here)
-      LOGNOT_BOT_TOKEN: (put-bot-token-here)
-      LOGNOT_CHAT_ID: (put-chat-id-here)
 
 volumes:
   ssh-host-keys: {}
