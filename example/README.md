@@ -48,5 +48,5 @@ TODO we use the [`remote-dir-run.sh`](https://github.com/dmotte/misc/blob/main/s
 ```bash
 docker-compose up -d
 
-time remote-dir-run.sh remote docker-compose exec -T dt01 bash -ec; echo $?
+time remote-dir-run.sh remote docker-compose exec -TeSUPERVISOR_RELOAD=true dt01 bash -ec; echo $?
 ```

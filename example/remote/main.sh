@@ -54,3 +54,10 @@ setup_lognot -b'(put-bot-token-here)' -c'(put-chat-id-here)' \
 install -m700 lognot-get.sh /opt/lognot/get.sh
 
 bash helpers/sshd.sh
+
+################################################################################
+
+if [ "$SUPERVISOR_RELOAD" = 'true' ]; then
+    echo 'Sending SIGHUP to supervisord (pid 1)'
+    kill -sHUP 1
+fi
