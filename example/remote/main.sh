@@ -22,7 +22,7 @@ apt_update_if_old() {
 apt_update_if_old
 apt-get install -y git nano tmux tree wget zip curl socat procps jq yq \
     iputils-ping iproute2 firefox-esr dirmngr
-    # TODO closer to their config (using "command -v" to be faster): openssh-server shellinabox ffmpeg dconf-cli
+    # TODO closer to their config (using "command -v" to be faster): shellinabox ffmpeg dconf-cli
 
 ################################################################################
 
@@ -52,3 +52,5 @@ bash helpers/supervisorctl.sh
 setup_lognot -b'(put-bot-token-here)' -c'(put-chat-id-here)' \
     'bash /opt/lognot/get.sh | while read -r i; do echo "$HOSTNAME: $i"; done'
 install -m700 lognot-get.sh /opt/lognot/get.sh
+
+bash helpers/sshd.sh
