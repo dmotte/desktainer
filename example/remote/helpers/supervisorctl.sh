@@ -6,6 +6,8 @@ set -e
 
 if ! grep -Fx '[unix_http_server]' \
     /etc/supervisor/supervisord.conf >/dev/null 2>&1; then
+    echo 'Adding supervisorctl config to supervisord.conf'
+
     cat << 'EOF' >> /etc/supervisor/supervisord.conf
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

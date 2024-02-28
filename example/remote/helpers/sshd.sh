@@ -17,6 +17,8 @@ dpkg -s openssh-server >/dev/null 2>&1 ||{
     rm -f /etc/ssh/ssh_host_*_key /etc/ssh/ssh_host_*_key.pub
 }
 
+echo 'Creating sshd service files'
+
 cat << 'EOF' > /etc/supervisor/conf.d/sshd.conf
 [program:sshd]
 command=/usr/sbin/sshd -De
@@ -25,12 +27,16 @@ EOF
 
 mkdir -p /var/run/sshd
 
+echo 'Configuring sshd'
+
 sed -Ei /etc/ssh/sshd_config \
     -e 's/^#?AddressFamily.*$/AddressFamily inet/' \
     -e 's/^#?PermitRootLogin.*$/PermitRootLogin no/' \
     -e 's/^#?HostbasedAuthentication.*$/HostbasedAuthentication no/' \
     -e 's/^#?PermitEmptyPasswords.*$/PermitEmptyPasswords no/' \
     -e 's/^#?PasswordAuthentication.*$/PasswordAuthentication no/'
+
+echo 'Setting up 50-ssh-host-keys.sh'
 
 mkdir -p /etc/ssh/host-keys
 
