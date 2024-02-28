@@ -53,3 +53,8 @@ ssh-keygen -A
 cp -n /etc/ssh/ssh_host_*_key /etc/ssh/host-keys/ 2>/dev/null || :
 cp -n /etc/ssh/ssh_host_*_key.pub /etc/ssh/host-keys/ 2>/dev/null || :
 EOF
+
+echo 'Including 50-ssh-host-keys.sh'
+
+# shellcheck source=/dev/null
+. /opt/startup-late/50-ssh-host-keys.sh
