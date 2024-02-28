@@ -4,31 +4,6 @@ set -e
 
 # TODO move everything from this script to the new one
 
-#################################### lognot ####################################
-
-# cat << 'EOF' > /etc/supervisor/conf.d/lognot.conf
-# [program:lognot]
-# command=/bin/bash -ec 'bash /opt/lognot/get.sh |
-#     while read -r i; do echo "$HOSTNAME: $i"; done |
-#     /opt/lognot/msgbuf -i10 -m2048 -- /bin/bash /opt/lognot/tg.sh'
-# priority=50
-# EOF
-
-install -dm700 /opt/lognot
-install -m700 /{setup,opt}/lognot/get.sh
-curl -fLo /opt/lognot/msgbuf \
-    "https://github.com/dmotte/msgbuf/releases/latest/download/msgbuf-$(uname -m)-unknown-linux-gnu"
-echo '3fcec4e61ef0fdbc9e4a703ba3c5b3075b20336d57b963e05676ccdab3ad5ca4' \
-    /opt/lognot/msgbuf | sha256sum -c # Checksum for v1.0.2
-chmod +x /opt/lognot/msgbuf
-install -m700 /{setup,opt}/lognot/tg.sh
-cat << 'EOF' > /opt/startup-late/50-lognot-secrets.sh
-sed -i /opt/lognot/tg.sh \
-    -e "s/{{ lognot_bot_token }}/$LOGNOT_BOT_TOKEN/" \
-    -e "s/{{ lognot_chat_id }}/$LOGNOT_CHAT_ID/"
-unset LOGNOT_{BOT_TOKEN,CHAT_ID}
-EOF
-
 ################################ OpenSSH server ################################
 
 cat << 'EOF' > /etc/supervisor/conf.d/sshd.conf
