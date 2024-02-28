@@ -21,8 +21,34 @@ apt_update_if_old() {
 
 apt_update_if_old
 apt-get install -y git nano tmux tree wget zip curl socat procps jq yq \
-    iputils-ping iproute2 openssh-server \
-    shellinabox ffmpeg firefox-esr dirmngr dconf-cli # TODO move things like shellinabox, openssh-server, etc. closer to their config! And you can use "command -v" to be faster there
+    iputils-ping iproute2 firefox-esr dirmngr
+    # TODO closer to their config (using "command -v" to be faster): openssh-server shellinabox ffmpeg dconf-cli
+
+################################################################################
+
+fetch_and_check() { # Src: https://github.com/dmotte/misc
+    local c s; c=$(curl -fsSL "$1"; echo x) && \
+    s=$(echo -n "${c%x}" | sha256sum | cut -d' ' -f1) && \
+    if [ "$s" = "$2" ]; then echo -n "${c%x}"
+    else echo "Checksum verification failed for $1: got $s, expected $2" >&2
+    return 1; fi
+}
+
+script_lognot=$(fetch_and_check \
+    'https://raw.githubusercontent.com/dmotte/misc/main/scripts/provisioning/lognot.sh' \
+    'f84b6c3ecf726c2d7605164770ccef7c725731ea3897aad2d6d70d7ae6cfb31f')
+setup_lognot() { bash <(echo "$script_lognot") "$@"; }
+script_portmap=$(fetch_and_check \
+    'https://raw.githubusercontent.com/dmotte/misc/main/scripts/provisioning/portmap.sh' \
+    'fd5b05aae3a11bc2898970424b316afb373f2c93480098428f8d3cec1b8963f4')
+setup_portmap() { bash <(echo "$script_portmap") "$@"; }
+
+################################################################################
 
 bash helpers/hardening.sh
 bash helpers/supervisorctl.sh
+
+# shellcheck disable=SC2016
+setup_lognot -b'(put-bot-token-here)' -c'(put-chat-id-here)' \
+    'bash /opt/lognot/get.sh | while read -r i; do echo "$HOSTNAME: $i"; done'
+install -m700 lognot-get.sh /opt/lognot/get.sh
