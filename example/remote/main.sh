@@ -30,7 +30,7 @@ dpkg -s curl >/dev/null 2>&1 || {
         iputils-ping iproute2 firefox-esr dirmngr
 }
 
-# TODO packages that should be closer to their config (using "command -v" to be faster): ffmpeg dconf-cli
+# TODO packages that should be closer to their config (using "command -v" to be faster): ffmpeg
 
 ################################################################################
 
@@ -95,6 +95,11 @@ install -d -omainuser -gmainuser -m700 /data/mainuser
 
 # setup_portmap -nssh -rmainuser -- '-i ~/.ssh/portmap-ssh.pem' \
 #     'myuser@myserver.example.com -NvR12345:127.0.0.1:22'
+
+################################################################################
+
+bash helpers/mainuser-desktop.sh \
+    --mimeapps-file=mimeapps.list --dconf-file=initial.dconf
 
 ################################################################################
 
