@@ -19,10 +19,13 @@ apt_update_if_old() {
 # TODO remove appownmod from everywhere!
 # TODO always check with grep before using ">>"
 
-apt_update_if_old
-apt-get install -y git nano tmux tree wget zip curl socat procps jq yq \
-    iputils-ping iproute2 firefox-esr dirmngr
-    # TODO closer to their config (using "command -v" to be faster): shellinabox ffmpeg dconf-cli
+dpkg -s curl >/dev/null 2>&1 || {
+    apt_update_if_old; apt-get install -y \
+        git nano tmux tree wget zip curl socat procps jq yq \
+        iputils-ping iproute2 firefox-esr dirmngr
+}
+
+# TODO closer to their config (using "command -v" to be faster): shellinabox ffmpeg dconf-cli
 
 ################################################################################
 

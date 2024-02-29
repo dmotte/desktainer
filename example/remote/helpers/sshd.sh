@@ -12,7 +12,7 @@ apt_update_if_old() {
 
 ################################################################################
 
-dpkg -s openssh-server >/dev/null 2>&1 ||{
+dpkg -s openssh-server >/dev/null 2>&1 || {
     apt_update_if_old; apt-get install -y openssh-server
     rm -f /etc/ssh/ssh_host_*_key /etc/ssh/ssh_host_*_key.pub
 }
