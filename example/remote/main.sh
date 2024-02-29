@@ -30,8 +30,6 @@ dpkg -s curl >/dev/null 2>&1 || {
         iputils-ping iproute2 firefox-esr dirmngr
 }
 
-# TODO packages that should be closer to their config (using "command -v" to be faster): ffmpeg
-
 ################################################################################
 
 fetch_and_check() { # Src: https://github.com/dmotte/misc
@@ -100,6 +98,8 @@ install -d -omainuser -gmainuser -m700 /data/mainuser
 
 bash helpers/mainuser-desktop.sh \
     --mimeapps-file=mimeapps.list --dconf-file=initial.dconf
+
+# bash helpers/screenrec.sh /data/mainuser/screenrec
 
 ################################################################################
 
