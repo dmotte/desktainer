@@ -14,11 +14,11 @@ apt_update_if_old() {
 
 ################################################################################
 
-# TODOEND: remember that everything must be idempotent
-
-# TODO remove appownmod from everywhere!
-# TODO always check with grep before using ">>"
-# TODO always run scripts from /opt/startup-late after creating them
+# TODOEND remember that everything must be idempotent
+# TODOEND remove appownmod from everywhere!
+# TODOEND check that you always check with grep before using ">>"
+# TODOEND check that you always run scripts from /opt/startup-late after creating them
+# TODOEND disable lognot and portmap, as in the old script
 
 dpkg -s curl >/dev/null 2>&1 || {
     apt_update_if_old; apt-get install -y \
@@ -26,7 +26,7 @@ dpkg -s curl >/dev/null 2>&1 || {
         iputils-ping iproute2 firefox-esr dirmngr
 }
 
-# TODO closer to their config (using "command -v" to be faster): ffmpeg dconf-cli
+# TODO packages that should be closer to their config (using "command -v" to be faster): ffmpeg dconf-cli
 
 ################################################################################
 
@@ -63,6 +63,8 @@ bash helpers/shellinabox.sh
 
 ################################################################################
 
+echo 'Performing basic mainuser setup'
+
 install -m440 <(echo 'mainuser ALL=(ALL) NOPASSWD: ALL') \
     /etc/sudoers.d/mainuser-nopassword
 
@@ -71,6 +73,23 @@ install -omainuser -gmainuser -m600 authorized-keys-mainuser.txt \
     ~mainuser/.ssh/authorized_keys
 
 install -d -omainuser -gmainuser -m700 /data/mainuser
+
+################################################################################
+
+[ -e ~mainuser/.ssh/known_hosts ] || \
+    install -omainuser -gmainuser -m600 /dev/null ~mainuser/.ssh/known_hosts
+
+if ! grep '^myserver\.example\.com ' \
+    ~mainuser/.ssh/known_hosts >/dev/null 2>&1; then
+    cat << 'EOF' >> ~mainuser/.ssh/known_hosts
+myserver.example.com (put-public-ssh-host-key-here)
+EOF
+fi
+
+install -omainuser -gmainuser -m600 portmap-ssh.pem ~mainuser/.ssh/
+
+setup_portmap -nssh -rmainuser -- '-i ~/.ssh/portmap-ssh.pem' \
+    'myuser@myserver.example.com -NvR12345:127.0.0.1:22'
 
 ################################################################################
 

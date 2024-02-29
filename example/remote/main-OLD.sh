@@ -4,31 +4,6 @@ set -e
 
 # TODO move everything from this script to the new one
 
-############################ mainuser: portmap-ssh #############################
-
-# cat << 'EOF' > /etc/supervisor/conf.d/portmap-ssh.conf
-# [program:portmap-ssh]
-# command=/bin/bash -ec 'ssh -i ~/.ssh/portmap-ssh.pem \
-#     -oServerAliveInterval=30 -oExitOnForwardFailure=yes \
-#     myuser@myserver.example.com -NvR12345:127.0.0.1:22 \
-#     || result=$?; sleep 30; exit "${result:-0}"'
-# startsecs=0
-# priority=10
-# user=mainuser
-# EOF
-
-appownmod ~mainuser/.ssh/known_hosts mainuser:mainuser 600 << 'EOF'
-(put-public-ssh-host-key-here)
-EOF
-
-cat << 'EOF' > /opt/startup-late/50-portmap-ssh-client-key.sh
-if [ ! -f ~mainuser/.ssh/portmap-ssh.pem ]; then
-    install -omainuser -gmainuser -m600 \
-        <(echo "$PORTMAP_SSH_CLIENT_KEY") ~mainuser/.ssh/portmap-ssh.pem
-fi
-unset PORTMAP_SSH_CLIENT_KEY
-EOF
-
 ############################## mainuser: desktop ###############################
 
 install -d -omainuser -gmainuser ~mainuser/.config

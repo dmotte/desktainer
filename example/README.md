@@ -41,7 +41,7 @@ EOF
 
 ## TODO new commands for testing
 
-TODO prerequisites: place your `.pem` file inside the `remote` dir, set the lognot bot token and chat ID
+TODO prerequisites: place your `.pem` file inside the `remote` dir, set the lognot bot token and chat ID, etc.
 
 TODO we use the [`remote-dir-run.sh`](https://github.com/dmotte/misc/blob/main/scripts/remote-dir-run.sh) script
 
