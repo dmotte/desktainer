@@ -18,6 +18,7 @@ apt_update_if_old() {
 
 # TODO remove appownmod from everywhere!
 # TODO always check with grep before using ">>"
+# TODO always run scripts from /opt/startup-late after creating them
 
 dpkg -s curl >/dev/null 2>&1 || {
     apt_update_if_old; apt-get install -y \
@@ -59,6 +60,17 @@ install -m700 lognot-get.sh /opt/lognot/get.sh
 bash helpers/sshd.sh
 
 bash helpers/shellinabox.sh
+
+################################################################################
+
+install -m440 <(echo 'mainuser ALL=(ALL) NOPASSWD: ALL') \
+    /etc/sudoers.d/mainuser-nopassword
+
+install -d -omainuser -gmainuser -m700 ~mainuser/.ssh
+install -omainuser -gmainuser -m600 authorized-keys-mainuser.txt \
+    ~mainuser/.ssh/authorized_keys
+
+install -d -omainuser -gmainuser -m700 /data/mainuser
 
 ################################################################################
 

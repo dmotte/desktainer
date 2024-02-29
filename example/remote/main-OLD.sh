@@ -4,21 +4,6 @@ set -e
 
 # TODO move everything from this script to the new one
 
-################################ USER: mainuser ################################
-
-useradd -UGsudo -ms/bin/bash mainuser
-
-install -m440 <(echo 'mainuser ALL=(ALL) NOPASSWD: ALL') \
-    /etc/sudoers.d/mainuser-nopassword
-
-install -d -omainuser -gmainuser -m700 ~mainuser/.ssh
-appownmod ~mainuser/.ssh/authorized_keys mainuser:mainuser 600 << 'EOF'
-(put-public-ssh-key-here)
-EOF
-
-echo 'install -d -omainuser -gmainuser -m700 /data/mainuser' \
-    > /opt/startup-late/50-data-mainuser.sh
-
 ############################ mainuser: portmap-ssh #############################
 
 # cat << 'EOF' > /etc/supervisor/conf.d/portmap-ssh.conf
