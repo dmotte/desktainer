@@ -83,3 +83,9 @@ if [ "$SUPERVISOR_UPDATE" = 'true' ]; then
     echo 'Running supervisorctl update'
     supervisorctl update
 fi
+
+if [ "$SUPERVISOR_SHUTDOWN" = 'true' ]; then
+    echo 'Shutting down supervisor'
+    # The container will restart if its restart policy is set that way
+    kill 1
+fi
