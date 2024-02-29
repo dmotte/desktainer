@@ -6,6 +6,10 @@ cd "$(dirname "$0")"
 
 [ "$EUID" = 0 ] || { echo 'This script must be run as root' >&2; exit 1; }
 
+for i in portmap-ssh.pem authorized-keys-mainuser.txt; do
+    [ -f "$i" ] || { echo "File $i not found" >&2; exit 1; }
+done
+
 apt_update_if_old() {
     if [ -z "$(find /var/lib/apt/lists -maxdepth 1 -mmin -60)" ]; then
         apt-get update
@@ -53,9 +57,9 @@ bash helpers/hardening.sh
 bash helpers/supervisorctl.sh
 
 # shellcheck disable=SC2016
-setup_lognot -b'(put-bot-token-here)' -c'(put-chat-id-here)' \
-    'bash /opt/lognot/get.sh | while read -r i; do echo "$HOSTNAME: $i"; done'
-install -m700 lognot-get.sh /opt/lognot/get.sh
+# setup_lognot -b'(put-bot-token-here)' -c'(put-chat-id-here)' \
+#     'bash /opt/lognot/get.sh | while read -r i; do echo "$HOSTNAME: $i"; done'
+# install -m700 lognot-get.sh /opt/lognot/get.sh
 
 bash helpers/sshd.sh
 
@@ -69,6 +73,7 @@ install -m440 <(echo 'mainuser ALL=(ALL) NOPASSWD: ALL') \
     /etc/sudoers.d/mainuser-nopassword
 
 install -d -omainuser -gmainuser -m700 ~mainuser/.ssh
+
 install -omainuser -gmainuser -m600 authorized-keys-mainuser.txt \
     ~mainuser/.ssh/authorized_keys
 
@@ -76,20 +81,20 @@ install -d -omainuser -gmainuser -m700 /data/mainuser
 
 ################################################################################
 
-[ -e ~mainuser/.ssh/known_hosts ] || \
-    install -omainuser -gmainuser -m600 /dev/null ~mainuser/.ssh/known_hosts
+# [ -e ~mainuser/.ssh/known_hosts ] || \
+#     install -omainuser -gmainuser -m600 /dev/null ~mainuser/.ssh/known_hosts
 
-if ! grep '^myserver\.example\.com ' \
-    ~mainuser/.ssh/known_hosts >/dev/null 2>&1; then
-    cat << 'EOF' >> ~mainuser/.ssh/known_hosts
-myserver.example.com (put-public-ssh-host-key-here)
-EOF
-fi
+# if ! grep '^myserver\.example\.com ' \
+#     ~mainuser/.ssh/known_hosts >/dev/null 2>&1; then
+#     cat << 'EOF' >> ~mainuser/.ssh/known_hosts
+# myserver.example.com (put-public-ssh-host-key-here)
+# EOF
+# fi
 
-install -omainuser -gmainuser -m600 portmap-ssh.pem ~mainuser/.ssh/
+# install -omainuser -gmainuser -m600 portmap-ssh.pem ~mainuser/.ssh/
 
-setup_portmap -nssh -rmainuser -- '-i ~/.ssh/portmap-ssh.pem' \
-    'myuser@myserver.example.com -NvR12345:127.0.0.1:22'
+# setup_portmap -nssh -rmainuser -- '-i ~/.ssh/portmap-ssh.pem' \
+#     'myuser@myserver.example.com -NvR12345:127.0.0.1:22'
 
 ################################################################################
 
