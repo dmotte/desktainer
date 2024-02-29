@@ -4,16 +4,6 @@ set -e
 
 # TODO move everything from this script to the new one
 
-################################ Shell In A Box ################################
-
-cat << 'EOF' > /etc/supervisor/conf.d/shellinabox.conf
-[program:shellinabox]
-command=/usr/bin/shellinaboxd -q -p 4200 -u shellinabox -g shellinabox
-    --user-css "White on Black:+/etc/shellinabox/options-enabled/00_White On Black.css;Color Terminal:+/etc/shellinabox/options-enabled/01+Color Terminal.css"
-    --disable-ssl --service "/:AUTH:HOME:tmux new-session -As0"
-priority=10
-EOF
-
 ################################ USER: mainuser ################################
 
 useradd -UGsudo -ms/bin/bash mainuser

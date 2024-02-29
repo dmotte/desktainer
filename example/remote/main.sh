@@ -25,7 +25,7 @@ dpkg -s curl >/dev/null 2>&1 || {
         iputils-ping iproute2 firefox-esr dirmngr
 }
 
-# TODO closer to their config (using "command -v" to be faster): shellinabox ffmpeg dconf-cli
+# TODO closer to their config (using "command -v" to be faster): ffmpeg dconf-cli
 
 ################################################################################
 
@@ -57,6 +57,8 @@ setup_lognot -b'(put-bot-token-here)' -c'(put-chat-id-here)' \
 install -m700 lognot-get.sh /opt/lognot/get.sh
 
 bash helpers/sshd.sh
+
+bash helpers/shellinabox.sh
 
 ################################################################################
 
