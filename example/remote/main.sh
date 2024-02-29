@@ -64,3 +64,8 @@ if [ "$SUPERVISOR_RELOAD" = 'true' ]; then
     echo 'Sending SIGHUP to supervisord (pid 1)'
     kill -sHUP 1
 fi
+
+if [ "$SUPERVISOR_UPDATE" = 'true' ]; then
+    echo 'Running supervisorctl update'
+    supervisorctl update
+fi
