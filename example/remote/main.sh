@@ -101,6 +101,14 @@ bash helpers/mainuser-desktop.sh \
 
 # bash helpers/screenrec.sh /data/mainuser/screenrec
 
+bash helpers/portfwd-user.sh --user=alice --allow-tcp-forwarding=yes \
+    --authorized-keys-file=authorized-keys-alice.txt \
+    --permit-listen='8001 8002 8003 8004 8005' --permit-open=any
+
+bash helpers/portfwd-user.sh --user=bob --allow-tcp-forwarding=local \
+    --authorized-keys-file=authorized-keys-bob.txt \
+    --permit-listen=none --permit-open='127.0.0.1:8001 127.0.0.1:8002'
+
 ################################################################################
 
 if [ "$SUPERVISOR_RELOAD" = 'true' ]; then
