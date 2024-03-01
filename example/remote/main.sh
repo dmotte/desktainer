@@ -107,7 +107,7 @@ bash helpers/portfwd-user.sh --user=alice --allow-tcp-forwarding=yes \
 
 bash helpers/portfwd-user.sh --user=bob --allow-tcp-forwarding=local \
     --authorized-keys-file=authorized-keys-bob.txt \
-    --permit-listen=none --permit-open='127.0.0.1:8001 127.0.0.1:8002'
+    --permit-open='127.0.0.1:8001 127.0.0.1:8002'
 
 ################################################################################
 
