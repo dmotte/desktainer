@@ -25,7 +25,7 @@ else
     HOME="/home/$USER"
 
     # If user already exists
-    if id "$USER" &>/dev/null; then
+    if id "$USER" >/dev/null 2>&1; then
         echo "The custom user $USER already exists"
 
         if [ ! -d "$HOME" ]; then
