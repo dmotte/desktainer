@@ -87,19 +87,16 @@ else
 fi
 
 if [[ "$wallpaper" = \#* ]]; then
-    wallpaper_mode=color; wallpaper_spec="desktop_bg=$wallpaper"
+    wallpaper_mode=color; wallpaper_key=desktop_bg
 else
-    wallpaper_mode=crop; wallpaper_spec="wallpaper=$wallpaper"
+    wallpaper_mode=crop; wallpaper_key=wallpaper
 fi
 
-echo "Setting wallpaper_mode=$wallpaper_mode, $wallpaper_spec"
+echo "Setting wallpaper_mode=$wallpaper_mode, $wallpaper_key=$wallpaper"
 
-install -omainuser -gmainuser -m644 /dev/stdin \
-     ~mainuser/.config/pcmanfm/LXDE/desktop-items-0.conf << EOF
-[*]
-wallpaper_mode=$wallpaper_mode
-$wallpaper_spec
-EOF
+sed -Ei ~mainuser/.config/pcmanfm/LXDE/desktop-items-0.conf \
+    -e "s/^wallpaper_mode=.*$/wallpaper_mode=$wallpaper_mode/" \
+    -e "s|^$wallpaper_key=.*$|$wallpaper_key=$wallpaper|"
 
 install -d -omainuser -gmainuser ~mainuser/Desktop
 
