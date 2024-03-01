@@ -18,12 +18,6 @@ apt_update_if_old() {
 
 ################################################################################
 
-# TODOEND remember that everything must be idempotent
-# TODOEND remove appownmod from everywhere!
-# TODOEND check that you always check with grep before using ">>"
-# TODOEND check that you always run scripts from /opt/startup-late after creating them
-# TODOEND disable lognot and portmap, as in the old script
-
 dpkg -s curl >/dev/null 2>&1 || {
     apt_update_if_old; apt-get install -y \
         git nano tmux tree wget zip curl socat procps jq yq \
