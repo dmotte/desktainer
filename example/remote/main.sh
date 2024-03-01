@@ -6,7 +6,7 @@ cd "$(dirname "$0")"
 
 [ "$EUID" = 0 ] || { echo 'This script must be run as root' >&2; exit 1; }
 
-for i in portmap-ssh.pem authorized-keys-mainuser.txt; do
+for i in portmap-ssh.pem authorized-keys-{mainuser,alice,bob}.txt; do
     [ -f "$i" ] || { echo "File $i not found" >&2; exit 1; }
 done
 
