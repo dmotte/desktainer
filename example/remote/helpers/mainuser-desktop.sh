@@ -40,10 +40,14 @@ dpkg -s dconf-cli >/dev/null 2>&1 || \
 install -d -omainuser -gmainuser ~mainuser/.config{,/autostart,/pcmanfm{,/LXDE}}
 
 if [ -n "$mimeapps_file" ]; then
-    echo "Installing mimeapps file $mimeapps_file"
-
-    install -omainuser -gmainuser -m644 "$mimeapps_file" \
-        ~mainuser/.config/mimeapps.list
+    if [ -e ~mainuser/.config/mimeapps.list ]; then
+        # We can skip this, it's not so important
+        echo 'Mimeapps file already exists. Skipping'
+    else
+        echo "Installing mimeapps file $mimeapps_file"
+        install -omainuser -gmainuser -m600 "$mimeapps_file" \
+            ~mainuser/.config/mimeapps.list
+    fi
 fi
 
 if [ -n "$dconf_file" ]; then
@@ -73,11 +77,14 @@ Exec=/usr/bin/xrandr --fb $xrandr_fb
 NoDisplay=true
 EOF
 
-install -omainuser -gmainuser -m644 /dev/stdin \
-    ~mainuser/.config/pcmanfm/LXDE/pcmanfm.conf << 'EOF'
-[ui]
-show_hidden=1
-EOF
+if [ -e ~mainuser/.config/pcmanfm/LXDE/pcmanfm.conf ]; then
+    # We can skip this, it's not so important
+    echo 'The pcmanfm.conf file already exists. Skipping'
+else
+    echo 'Installing pcmanfm.conf file'
+    install -omainuser -gmainuser -m644 <(echo -e '[ui]\nshow_hidden=1') \
+        ~mainuser/.config/pcmanfm/LXDE/pcmanfm.conf
+fi
 
 if [[ "$wallpaper" = \#* ]]; then
     wallpaper_mode=color; wallpaper_spec="desktop_bg=$wallpaper"
