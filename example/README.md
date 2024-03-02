@@ -17,5 +17,6 @@ docker-compose up -d
 Then we can leverage the [`remote-dir-run.sh`](https://github.com/dmotte/misc/blob/main/scripts/remote-dir-run.sh) script to provision the container using the content of the `remote` directory:
 
 ```bash
-time remote-dir-run.sh remote docker-compose exec -TeSUPERVISOR_RELOAD=true dt01 bash -ec; echo $?
+time remote-dir-run.sh remote docker-compose exec -T dt01 bash -c ++ \
+    env SUPERVISOR_RELOAD=true bash main.sh; echo $?
 ```
