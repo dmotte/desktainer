@@ -19,6 +19,7 @@ tail -f /var/log/supervisor/portmap-ssh-stderr-* | \
     grep --line-buffered client_request_forwarded_tcpip | \
     withprefix 'portmap-ssh.E: ' &
 
+rm -f /tmp/lognot-misc.sock
 socat UNIX-LISTEN:/tmp/lognot-misc.sock,mode=666,fork STDOUT | \
     withprefix 'misc: ' &
 
