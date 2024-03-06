@@ -4,7 +4,7 @@ set -e
 
 [ "$EUID" = 0 ] || { echo 'This script must be run as root' >&2; exit 1; }
 
-options=$(getopt -o '' -l user: -l authorized-keys-file: \
+options=$(getopt -o + -l user: -l authorized-keys-file: \
     -l allow-tcp-forwarding: -l permit-listen: -l permit-open: -- "$@")
 eval "set -- $options"
 

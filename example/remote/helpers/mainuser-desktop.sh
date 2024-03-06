@@ -4,7 +4,7 @@ set -e
 
 [ "$EUID" = 0 ] || { echo 'This script must be run as root' >&2; exit 1; }
 
-options=$(getopt -o '' -l mimeapps-file: -l dconf-file: \
+options=$(getopt -o + -l mimeapps-file: -l dconf-file: \
     -l xrandr-fb: -l wallpaper: -- "$@")
 eval "set -- $options"
 
