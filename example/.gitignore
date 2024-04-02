@@ -1,4 +1,6 @@
-*.pem
+/remote/lognot-bot-token.txt
 /remote/authorized-keys-*.txt
+
+*.pem
 
 /remote-dir-run.sh

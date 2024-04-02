@@ -6,7 +6,7 @@ cd "$(dirname "$0")"
 
 [ "$EUID" = 0 ] || { echo 'This script must be run as root' >&2; exit 1; }
 
-for i in portmap-ssh.pem authorized-keys-{mainuser,alice,bob}.txt; do
+for i in lognot-bot-token.txt authorized-keys-{mainuser,alice,bob}.txt portmap-ssh.pem; do
     [ -f "$i" ] || { echo "File $i not found" >&2; exit 1; }
 done
 
@@ -48,8 +48,10 @@ setup_portmap() { bash <(echo "$script_portmap") "$@"; }
 bash helpers/hardening.sh
 bash helpers/supervisorctl.sh
 
+# lognot_bot_token=$(tr -d '\r' < lognot-bot-token.txt)
+
 # shellcheck disable=SC2016
-# setup_lognot -b'(put-bot-token-here)' -c'(put-chat-id-here)' \
+# setup_lognot -b"$lognot_bot_token" -c'(put-chat-id-here)' \
 #     'bash /opt/lognot/get.sh | while read -r i; do echo "$HOSTNAME: $i"; done'
 # install -m700 lognot-get.sh /opt/lognot/get.sh
 
