@@ -14,7 +14,7 @@ apt_update_if_old() {
 
 ################################################################################
 
-dpkg -s ffmpeg >/dev/null 2>&1 || \
+dpkg -s ffmpeg >/dev/null 2>&1 ||
     { apt_update_if_old; apt-get install -y ffmpeg; }
 
 echo 'Creating screenrec service files'

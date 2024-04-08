@@ -27,8 +27,8 @@ dpkg -s curl >/dev/null 2>&1 || {
 ################################################################################
 
 fetch_and_check() { # Src: https://github.com/dmotte/misc
-    local c s; c=$(curl -fsSL "$1"; echo x) && \
-    s=$(echo -n "${c%x}" | sha256sum | cut -d' ' -f1) && \
+    local c s; c=$(curl -fsSL "$1"; echo x) &&
+    s=$(echo -n "${c%x}" | sha256sum | cut -d' ' -f1) &&
     if [ "$s" = "$2" ]; then echo -n "${c%x}"
     else echo "Checksum verification failed for $1: got $s, expected $2" >&2
     return 1; fi
@@ -75,7 +75,7 @@ install -d -omainuser -gmainuser -m700 /data/mainuser
 
 ################################################################################
 
-# [ -e ~mainuser/.ssh/known_hosts ] || \
+# [ -e ~mainuser/.ssh/known_hosts ] ||
 #     install -omainuser -gmainuser -m600 /dev/null ~mainuser/.ssh/known_hosts
 
 # if ! grep '^myserver\.example\.com ' \

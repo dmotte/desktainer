@@ -34,7 +34,7 @@ apt_update_if_old() {
 
 echo 'Configuring mainuser desktop'
 
-dpkg -s dconf-cli >/dev/null 2>&1 || \
+dpkg -s dconf-cli >/dev/null 2>&1 ||
     { apt_update_if_old; apt-get install -y dconf-cli; }
 
 install -d -omainuser -gmainuser ~mainuser/.config{,/autostart,/pcmanfm{,/LXDE}}

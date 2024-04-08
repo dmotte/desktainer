@@ -12,7 +12,7 @@ apt_update_if_old() {
 
 ################################################################################
 
-dpkg -s shellinabox >/dev/null 2>&1 || \
+dpkg -s shellinabox >/dev/null 2>&1 ||
     { apt_update_if_old; apt-get install -y shellinabox; }
 
 echo 'Creating shellinabox service files'
