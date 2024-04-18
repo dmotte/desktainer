@@ -2,7 +2,7 @@
 version: "3"
 
 services:
-  desktainer:
+  main:
     image: docker.io/dmotte/desktainer:latest
     build: build
     restart: always
