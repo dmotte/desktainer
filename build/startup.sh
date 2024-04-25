@@ -2,10 +2,18 @@
 
 set -e
 
-############################ ENVIRONMENT VARIABLES #############################
+################################## VARIABLES ###################################
 
-: "${USER:=mainuser}"
-: "${PASSWORD:=mainuser}"
+resolution=${RESOLUTION:-1920x1080}
+
+mainuser_name=${MAINUSER_NAME:-mainuser}
+mainuser_pass=${MAINUSER_PASS:-mainuser}
+unset MAINUSER_PASS
+
+vnc_pass=${VNC_PASS:-}
+unset VNC_PASS
+vnc_port=${VNC_PORT:-5901}
+novnc_port=${NOVNC_PORT:-6901}
 
 ################### INCLUDE SCRIPTS FROM /opt/startup-early ####################
 
@@ -15,72 +23,65 @@ for i in /opt/startup-early/*.sh; do
     . "$i"
 done
 
-################################# CUSTOM USER ##################################
+################################## MAIN USER ###################################
 
-if [ "$USER" = root ]; then
+if [ "$mainuser_name" = root ]; then
     echo 'The main user is root'
-    HOME=/root
+    mainuser_home=/root
 else
-    echo "Enabling custom user: $USER"
-    HOME="/home/$USER"
+    mainuser_home=/home/$mainuser_name
 
-    # If user already exists
-    if id "$USER" >/dev/null 2>&1; then
-        echo "The custom user $USER already exists"
+    # If the user already exists
+    if id "$mainuser_name" >/dev/null 2>&1; then
+        echo "User $mainuser_name already exists"
 
-        if [ ! -d "$HOME" ]; then
-            echo "Creating home directory for custom user $USER"
-            install -d -o"$USER" -g"$USER" "$HOME"
+        if [ ! -d "$mainuser_home" ]; then
+            echo "Creating home directory $mainuser_home"
+            install -d -o"$mainuser_name" -g"$mainuser_name" "$mainuser_home"
         fi
     else
-        echo "Creating custom user $USER"
-        useradd -UGsudo -ms/bin/bash "$USER"
+        echo "Creating user $mainuser_name"
+        useradd -UGsudo -ms/bin/bash "$mainuser_name"
 
-        echo "Setting custom user's password"
-        echo "$USER:$PASSWORD" | chpasswd
+        echo "Setting the main user's password"
+        echo "$mainuser_name:$mainuser_pass" | chpasswd
     fi
 fi
 
-unset PASSWORD
-
 ##################### SUPERVISORD CONFIG MAIN REPLACEMENTS #####################
 
-: "${VNC_PORT:=5901}"
-sed -i "s/%VNC_PORT%/$VNC_PORT/g" /etc/supervisor/supervisord.conf
-echo "VNC port set to $VNC_PORT"
+sed -i "s/%vnc_port%/$vnc_port/g" /etc/supervisor/supervisord.conf
+echo "VNC port set to $vnc_port"
 
-: "${NOVNC_PORT:=6901}"
-sed -i "s/%NOVNC_PORT%/$NOVNC_PORT/g" /etc/supervisor/supervisord.conf
-echo "noVNC port set to $NOVNC_PORT"
+sed -i "s/%novnc_port%/$novnc_port/g" /etc/supervisor/supervisord.conf
+echo "noVNC port set to $novnc_port"
 
-: "${RESOLUTION:=1920x1080}"
-sed -i "s/%RESOLUTION%/$RESOLUTION/g" /etc/supervisor/supervisord.conf
-echo "Resolution set to $RESOLUTION"
+sed -i "s/%resolution%/$resolution/g" /etc/supervisor/supervisord.conf
+echo "Resolution set to $resolution"
 
 # Note: we use the pipe character as delimiter in the expression #2 because the
-# $HOME variable contains slashes
-sed -i "s/%USER%/$USER/g;s|%HOME%|$HOME|g" /etc/supervisor/supervisord.conf
+# $mainuser_home variable contains slashes
+sed -i "s/%mainuser_name%/$mainuser_name/g;s|%mainuser_home%|$mainuser_home|g" \
+    /etc/supervisor/supervisord.conf
 
 ############################# VNC SERVER PASSWORD ##############################
 
-if [ -n "$VNC_PASSWORD" ]; then
-    if [ ! -f "$HOME/.vnc/passwd" ]; then
-        echo "Storing the VNC password into $HOME/.vnc/passwd"
+if [ -n "$vnc_pass" ]; then
+    if [ ! -f "$mainuser_home/.vnc/passwd" ]; then
+        echo "Storing the VNC password into $mainuser_home/.vnc/passwd"
 
-        install -d -o"$USER" -g"$USER" "$HOME/.vnc"
+        install -d -o"$mainuser_name" -g"$mainuser_name" "$mainuser_home/.vnc"
 
         # Store the password encrypted and with 400 permissions
-        x11vnc -storepasswd "$VNC_PASSWORD" "$HOME/.vnc/passwd"
-        chown "$USER:$USER" "$HOME/.vnc/passwd"
-        chmod 400 "$HOME/.vnc/passwd"
+        x11vnc -storepasswd "$vnc_pass" "$mainuser_home/.vnc/passwd"
+        chown "$mainuser_name:$mainuser_name" "$mainuser_home/.vnc/passwd"
+        chmod 400 "$mainuser_home/.vnc/passwd"
     fi
 
-    unset VNC_PASSWORD
-
-    sed -i "s/%VNCPWOPTION%/-usepw/" /etc/supervisor/supervisord.conf
+    sed -i "s/%vncpwoption%/-usepw/" /etc/supervisor/supervisord.conf
     echo 'VNC password set'
 else
-    sed -i "s/%VNCPWOPTION%/-nopw/" /etc/supervisor/supervisord.conf
+    sed -i "s/%vncpwoption%/-nopw/" /etc/supervisor/supervisord.conf
     echo 'VNC password disabled'
 fi
 

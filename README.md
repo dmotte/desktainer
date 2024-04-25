@@ -45,7 +45,7 @@ docker-compose logs -ft
 
 - :bulb: If you want to **change the resolution** while the container is running, you can use the `xrandr --fb 1024x768` command. The new resolution cannot be larger than the one specified in the `RESOLUTION` environment variable though
 - :bulb: If you need to, you can extend this project by making your own `Dockerfile` starting from this image (i.e. `FROM dmotte/desktainer`) and/or mount custom _supervisor_ configuration files. See the [`example`](example) folder for an example of how to do it
-- :bulb: This image is not meant to be run with the `--user` Docker option, because the [`startup.sh`](build/startup.sh) script needs to run as root in the initial phase. Moreover, the custom user created via the `USER` environment variable (see below) will be a **sudoer**, so running the container as root is useful in any case. If you want a **rootless** version of this image, check out [dmotte/desktainer-rootless](https://github.com/dmotte/desktainer-rootless)
+- :bulb: This image is not meant to be run with the `--user` Docker option, because the [`startup.sh`](build/startup.sh) script needs to run as root in the initial phase. Moreover, the user created via the `MAINUSER_NAME` environment variable (see below) will be a **sudoer**, so running the container as root is useful in any case. If you want a **rootless** version of this image, check out [dmotte/desktainer-rootless](https://github.com/dmotte/desktainer-rootless)
 
 ## Running commands at container startup
 
@@ -62,14 +62,14 @@ Moreover, if you need to run commands after the LXDE startup, you can create lau
 
 List of supported **environment variables**:
 
-| Variable       | Required                 | Description                                                                                              |
-| -------------- | ------------------------ | -------------------------------------------------------------------------------------------------------- |
-| `RESOLUTION`   | No (default: 1920x1080)  | Screen resolution                                                                                        |
-| `USER`         | No (default: mainuser)   | Name of the custom user. If set to `root`, no custom user will be created and the main user will be root |
-| `PASSWORD`     | No (default: `mainuser`) | Password of the custom user (if `USER != root`)                                                          |
-| `VNC_PASSWORD` | No (default: none)       | Password for the VNC server                                                                              |
-| `VNC_PORT`     | No (default: 5901)       | TCP port of the VNC server                                                                               |
-| `NOVNC_PORT`   | No (default: 6901)       | TCP port of the noVNC webserver                                                                          |
+| Variable        | Required                 | Description                                                                                     |
+| --------------- | ------------------------ | ----------------------------------------------------------------------------------------------- |
+| `RESOLUTION`    | No (default: 1920x1080)  | Screen resolution                                                                               |
+| `MAINUSER_NAME` | No (default: mainuser)   | Name of the main user. If set to `root`, no user will be created and the main user will be root |
+| `MAINUSER_PASS` | No (default: `mainuser`) | Password of the main user (if `MAINUSER_NAME != root`)                                          |
+| `VNC_PASS`      | No (default: none)       | Password for the VNC server                                                                     |
+| `VNC_PORT`      | No (default: 5901)       | TCP port of the VNC server                                                                      |
+| `NOVNC_PORT`    | No (default: 6901)       | TCP port of the noVNC webserver                                                                 |
 
 ## Development
 

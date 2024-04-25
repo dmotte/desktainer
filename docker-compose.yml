@@ -14,4 +14,4 @@ services:
       - /etc/timezone:/etc/timezone:ro
       - /etc/localtime:/etc/localtime:ro
     environment:
-      VNC_PASSWORD: mainuser
+      VNC_PASS: mainuser

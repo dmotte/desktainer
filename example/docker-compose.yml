@@ -18,8 +18,8 @@ services:
       - ssh-host-keys:/etc/ssh/host-keys
       - data:/data
     environment:
-      PASSWORD: mypassword
-      VNC_PASSWORD: mypassword
+      MAINUSER_PASS: mypassword
+      VNC_PASS: mypassword
 
 volumes:
   ssh-host-keys: {}
