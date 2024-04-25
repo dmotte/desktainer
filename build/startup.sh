@@ -43,21 +43,21 @@ else
         echo "Creating user $mainuser_name"
         useradd -UGsudo -ms/bin/bash "$mainuser_name"
 
-        echo "Setting the main user's password"
+        echo "Setting the user's password"
         echo "$mainuser_name:$mainuser_pass" | chpasswd
     fi
 fi
 
 ##################### SUPERVISORD CONFIG MAIN REPLACEMENTS #####################
 
+echo "Setting VNC port to $vnc_port"
 sed -i "s/%vnc_port%/$vnc_port/g" /etc/supervisor/supervisord.conf
-echo "VNC port set to $vnc_port"
 
+echo "Setting noVNC port to $novnc_port"
 sed -i "s/%novnc_port%/$novnc_port/g" /etc/supervisor/supervisord.conf
-echo "noVNC port set to $novnc_port"
 
+echo "Setting resolution to $resolution"
 sed -i "s/%resolution%/$resolution/g" /etc/supervisor/supervisord.conf
-echo "Resolution set to $resolution"
 
 # Note: we use the pipe character as delimiter in the expression #2 because the
 # $mainuser_home variable contains slashes
@@ -78,11 +78,11 @@ if [ -n "$vnc_pass" ]; then
         chmod 400 "$mainuser_home/.vnc/passwd"
     fi
 
+    echo 'Enabling VNC password'
     sed -i "s/%vncpwoption%/-usepw/" /etc/supervisor/supervisord.conf
-    echo 'VNC password set'
 else
+    echo 'Disabling VNC password'
     sed -i "s/%vncpwoption%/-nopw/" /etc/supervisor/supervisord.conf
-    echo 'VNC password disabled'
 fi
 
 ############################# CLEAR Xvfb LOCK FILE #############################
