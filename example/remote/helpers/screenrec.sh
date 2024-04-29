@@ -4,7 +4,7 @@ set -e
 
 [ "$EUID" = 0 ] || { echo 'This script must be run as root' >&2; exit 1; }
 
-data_dir="$1"
+data_dir=${1:?}
 
 apt_update_if_old() {
     if [ -z "$(find /var/lib/apt/lists -maxdepth 1 -mmin -60)" ]; then

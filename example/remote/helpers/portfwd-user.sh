@@ -19,11 +19,11 @@ permit_open='none'
 
 while :; do
     case "$1" in
-        --user) shift; user="$1";;
-        --authorized-keys-file) shift; authorized_keys_file="$1";;
-        --allow-tcp-forwarding) shift; allow_tcp_forwarding="$1";;
-        --permit-listen) shift; permit_listen="$1";;
-        --permit-open) shift; permit_open="$1";;
+        --user) shift; user=$1;;
+        --authorized-keys-file) shift; authorized_keys_file=$1;;
+        --allow-tcp-forwarding) shift; allow_tcp_forwarding=$1;;
+        --permit-listen) shift; permit_listen=$1;;
+        --permit-open) shift; permit_open=$1;;
         --) shift; break;;
     esac
     shift

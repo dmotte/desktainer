@@ -15,10 +15,10 @@ wallpaper='#3a6ea5'
 
 while :; do
     case "$1" in
-        --mimeapps-file) shift; mimeapps_file="$1";;
-        --dconf-file) shift; dconf_file="$1";;
-        --xrandr-fb) shift; xrandr_fb="$1";;
-        --wallpaper) shift; wallpaper="$1";;
+        --mimeapps-file) shift; mimeapps_file=$1;;
+        --dconf-file) shift; dconf_file=$1;;
+        --xrandr-fb) shift; xrandr_fb=$1;;
+        --wallpaper) shift; wallpaper=$1;;
         --) shift; break;;
     esac
     shift
