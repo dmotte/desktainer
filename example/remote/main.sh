@@ -107,17 +107,17 @@ bash helpers/portfwd-user.sh --user=bob --allow-tcp-forwarding=local \
 
 ################################################################################
 
-if [ "$SUPERVISOR_RELOAD" = 'true' ]; then
+if [ "$SUPERVISOR_RELOAD" = true ]; then
     echo 'Sending SIGHUP to supervisord (pid 1)'
     kill -sHUP 1
 fi
 
-if [ "$SUPERVISOR_UPDATE" = 'true' ]; then
+if [ "$SUPERVISOR_UPDATE" = true ]; then
     echo 'Running supervisorctl update'
     supervisorctl update
 fi
 
-if [ "$SUPERVISOR_SHUTDOWN" = 'true' ]; then
+if [ "$SUPERVISOR_SHUTDOWN" = true ]; then
     echo 'Shutting down supervisor'
     # The container will restart if its restart policy is set that way
     kill 1
