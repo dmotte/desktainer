@@ -14,7 +14,7 @@ RUN apt-get update && \
 
 COPY --chown=root:root --chmod=755 startup.sh /
 
-RUN mkdir -p /opt/startup-early /opt/startup-late
+RUN install -dm700 /opt/startup-early /opt/startup-late
 
 COPY --chown=root:root --chmod=644 supervisord.conf /etc/supervisor/supervisord.conf
 
