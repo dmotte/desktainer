@@ -25,7 +25,7 @@ command=/usr/sbin/sshd -De
 priority=10
 EOF
 
-mkdir -p /var/run/sshd
+mkdir -p /run/sshd
 
 echo 'Configuring sshd'
 
