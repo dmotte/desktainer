@@ -16,7 +16,8 @@ COPY --chown=root:root --chmod=755 startup.sh /
 
 RUN install -dm700 /opt/startup-early /opt/startup-late
 
-COPY --chown=root:root --chmod=644 supervisord.conf /etc/supervisor/supervisord.conf
+COPY --chown=root:root --chmod=644 supervisord.conf \
+    /etc/supervisor/supervisord.conf
 
 ENV LC_ALL C.UTF-8
 RUN echo '#!/bin/bash\n\nexport LC_ALL=C.UTF-8' \
