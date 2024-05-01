@@ -30,11 +30,11 @@ mkdir -p /run/sshd
 echo 'Configuring sshd'
 
 sed -Ei /etc/ssh/sshd_config \
-    -e 's/^#?AddressFamily.*$/AddressFamily inet/' \
-    -e 's/^#?PermitRootLogin.*$/PermitRootLogin no/' \
-    -e 's/^#?HostbasedAuthentication.*$/HostbasedAuthentication no/' \
-    -e 's/^#?PermitEmptyPasswords.*$/PermitEmptyPasswords no/' \
-    -e 's/^#?PasswordAuthentication.*$/PasswordAuthentication no/'
+    -e 's/^#?AddressFamily[ \t].*$/AddressFamily inet/' \
+    -e 's/^#?PermitRootLogin[ \t].*$/PermitRootLogin no/' \
+    -e 's/^#?HostbasedAuthentication[ \t].*$/HostbasedAuthentication no/' \
+    -e 's/^#?PermitEmptyPasswords[ \t].*$/PermitEmptyPasswords no/' \
+    -e 's/^#?PasswordAuthentication[ \t].*$/PasswordAuthentication no/'
 
 echo 'Setting up 50-ssh-host-keys.sh'
 
