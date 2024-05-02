@@ -87,7 +87,7 @@ install -d -omainuser -gmainuser -m700 /data/mainuser
 
 # install -omainuser -gmainuser -m600 portmap-ssh.pem ~mainuser/.ssh/
 
-# setup_portmap -nssh -rmainuser -- '-i ~/.ssh/portmap-ssh.pem' \
+# setup_portmap -nssh -rmainuser -- '-i /home/mainuser/.ssh/portmap-ssh.pem' \
 #     'myuser@myserver.example.com -NvR12345:127.0.0.1:22'
 
 ################################################################################
