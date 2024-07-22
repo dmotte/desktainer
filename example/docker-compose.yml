@@ -1,6 +1,4 @@
 ---
-version: "3"
-
 services:
   dt01:
     # Tested with docker.io/dmotte/desktainer:v2024.02.05.2216
