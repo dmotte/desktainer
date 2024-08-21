@@ -50,8 +50,8 @@ install -m644 -t/etc/ssh /etc/ssh/host-keys/ssh_host_*_key.pub 2>/dev/null || :
 ssh-keygen -A
 
 # Copy the (previously missing) generated host keys to the volume
-cp -n /etc/ssh/ssh_host_*_key /etc/ssh/host-keys/ 2>/dev/null || :
-cp -n /etc/ssh/ssh_host_*_key.pub /etc/ssh/host-keys/ 2>/dev/null || :
+cp -nt/etc/ssh/host-keys /etc/ssh/ssh_host_*_key 2>/dev/null || :
+cp -nt/etc/ssh/host-keys /etc/ssh/ssh_host_*_key.pub 2>/dev/null || :
 EOF
 
 echo 'Including 50-ssh-host-keys.sh'
