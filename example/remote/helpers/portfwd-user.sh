@@ -40,7 +40,7 @@ fi
 
 echo "Creating sshd config file $user.conf"
 
-cat << EOF > "/etc/ssh/sshd_config.d/$user.conf"
+cat << EOF > "/etc/ssh/sshd_config.d/user-$user.conf"
 Match User $user
     AllowAgentForwarding no
     AllowTcpForwarding $allow_tcp_forwarding
