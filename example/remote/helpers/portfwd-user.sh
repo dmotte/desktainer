@@ -50,6 +50,7 @@ Match User $user
     PermitListen $permit_listen
     PermitOpen $permit_open
     PermitTTY no
+    ClientAliveInterval 30
     ForceCommand echo "This account can only be used for port forwarding"
 EOF
 
