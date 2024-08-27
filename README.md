@@ -62,14 +62,15 @@ Moreover, if you need to run commands after the LXDE startup, you can create lau
 
 List of supported **environment variables**:
 
-| Variable        | Required                 | Description                                                                                     |
-| --------------- | ------------------------ | ----------------------------------------------------------------------------------------------- |
-| `RESOLUTION`    | No (default: 1920x1080)  | Screen resolution                                                                               |
-| `MAINUSER_NAME` | No (default: mainuser)   | Name of the main user. If set to `root`, no user will be created and the main user will be root |
-| `MAINUSER_PASS` | No (default: `mainuser`) | Password of the main user (if `MAINUSER_NAME != root`)                                          |
-| `VNC_PASS`      | No (default: none)       | Password for the VNC server                                                                     |
-| `VNC_PORT`      | No (default: 5901)       | TCP port of the VNC server                                                                      |
-| `NOVNC_PORT`    | No (default: 6901)       | TCP port of the noVNC webserver                                                                 |
+| Variable              | Required                 | Description                                                                                     |
+| --------------------- | ------------------------ | ----------------------------------------------------------------------------------------------- |
+| `RESOLUTION`          | No (default: 1920x1080)  | Screen resolution                                                                               |
+| `MAINUSER_NAME`       | No (default: mainuser)   | Name of the main user. If set to `root`, no user will be created and the main user will be root |
+| `MAINUSER_PASS`       | No (default: `mainuser`) | Password of the main user (if `MAINUSER_NAME != root`)                                          |
+| `MAINUSER_NOPASSWORD` | No (default: `false`)    | Whether or not the main user should be allowed to `sudo` without password                       |
+| `VNC_PASS`            | No (default: none)       | Password for the VNC server                                                                     |
+| `VNC_PORT`            | No (default: 5901)       | TCP port of the VNC server                                                                      |
+| `NOVNC_PORT`          | No (default: 6901)       | TCP port of the noVNC webserver                                                                 |
 
 ## Development
 

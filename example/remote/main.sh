@@ -63,9 +63,6 @@ bash helpers/shellinabox.sh
 
 echo 'Performing basic mainuser setup'
 
-install -m440 <(echo 'mainuser ALL=(ALL) NOPASSWD: ALL') \
-    /etc/sudoers.d/mainuser-nopassword
-
 install -d -omainuser -gmainuser -m700 ~mainuser/.ssh
 
 install -omainuser -gmainuser -m600 authorized-keys-mainuser.txt \

@@ -17,6 +17,7 @@ services:
       - data:/data
     environment:
       MAINUSER_PASS: mypassword
+      MAINUSER_NOPASSWORD: "true"
       VNC_PASS: mypassword
 
 volumes:

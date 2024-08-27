@@ -9,6 +9,7 @@ resolution=${RESOLUTION:-1920x1080}
 mainuser_name=${MAINUSER_NAME:-mainuser}
 mainuser_pass=${MAINUSER_PASS:-mainuser}
 unset MAINUSER_PASS
+mainuser_nopassword=${MAINUSER_NOPASSWORD:-false}
 
 vnc_pass=${VNC_PASS:-}
 unset VNC_PASS
@@ -45,6 +46,12 @@ else
 
         echo "Setting the user's password"
         echo "$mainuser_name:$mainuser_pass" | chpasswd
+    fi
+
+    if [ "$mainuser_nopassword" = true ]; then
+        echo "Enabling sudo without password for user $mainuser_name"
+        install -m440 <(echo "$mainuser_name ALL=(ALL) NOPASSWD: ALL") \
+            "/etc/sudoers.d/$mainuser_name-nopassword"
     fi
 fi
 
