@@ -5,7 +5,8 @@ set -e
 [ "$EUID" = 0 ] || { echo 'This script must be run as root' >&2; exit 1; }
 
 options=$(getopt -o + -l user: -l authorized-keys-file: \
-    -l allow-tcp-forwarding: -l permit-listen: -l permit-open: -- "$@")
+    -l allow-tcp-forwarding: -l permit-listen: -l permit-open: \
+    -l client-alive-interval: -- "$@")
 eval "set -- $options"
 
 # See https://man.openbsd.org/sshd_config#AllowTcpForwarding for more info on
@@ -16,6 +17,7 @@ authorized_keys_file=''
 allow_tcp_forwarding='no' # Available options: yes, no, local, remote
 permit_listen='none'
 permit_open='none'
+client_alive_interval=''
 
 while :; do
     case $1 in
@@ -24,6 +26,7 @@ while :; do
         --allow-tcp-forwarding) shift; allow_tcp_forwarding=$1;;
         --permit-listen) shift; permit_listen=$1;;
         --permit-open) shift; permit_open=$1;;
+        --client-alive-interval) shift; client_alive_interval=$1;;
         --) shift; break;;
     esac
     shift
@@ -38,6 +41,10 @@ if ! id "$user" >/dev/null 2>&1; then
     useradd -Ums/bin/bash "$user"
 fi
 
+if [ -n "$client_alive_interval" ]; then
+    line_client_alive_interval="ClientAliveInterval $client_alive_interval"
+fi
+
 echo "Creating sshd config file $user.conf"
 
 cat << EOF > "/etc/ssh/sshd_config.d/user-$user.conf"
@@ -50,7 +57,7 @@ Match User $user
     PermitListen $permit_listen
     PermitOpen $permit_open
     PermitTTY no
-    ClientAliveInterval 30
+    $line_client_alive_interval
     ForceCommand echo "This account can only be used for port forwarding"
 EOF
 
