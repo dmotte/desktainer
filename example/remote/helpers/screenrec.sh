@@ -4,7 +4,7 @@ set -e
 
 [ "$EUID" = 0 ] || { echo 'This script must be run as root' >&2; exit 1; }
 
-data_dir=${1:?}
+readonly data_dir=${1:?}
 
 apt_update_if_old() {
     if [ -z "$(find /var/lib/apt/lists -maxdepth 1 -mmin -60)" ]; then
@@ -31,7 +31,7 @@ install -omainuser -gmainuser -m700 /dev/stdin /opt/screenrec.sh << EOF
 
 set -e
 
-data_dir=${data_dir@Q}
+readonly data_dir=${data_dir@Q}
 
 mkdir -p "\$data_dir"
 

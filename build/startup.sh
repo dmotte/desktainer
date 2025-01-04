@@ -4,17 +4,17 @@ set -e
 
 ################################## VARIABLES ###################################
 
-resolution=${RESOLUTION:-1920x1080}
+readonly resolution=${RESOLUTION:-1920x1080}
 
-mainuser_name=${MAINUSER_NAME:-mainuser}
-mainuser_pass=${MAINUSER_PASS:-mainuser}
+readonly mainuser_name=${MAINUSER_NAME:-mainuser}
+readonly mainuser_pass=${MAINUSER_PASS:-mainuser}
 unset MAINUSER_PASS
-mainuser_nopassword=${MAINUSER_NOPASSWORD:-false}
+readonly mainuser_nopassword=${MAINUSER_NOPASSWORD:-false}
 
-vnc_pass=${VNC_PASS:-}
+readonly vnc_pass=${VNC_PASS:-}
 unset VNC_PASS
-vnc_port=${VNC_PORT:-5901}
-novnc_port=${NOVNC_PORT:-6901}
+readonly vnc_port=${VNC_PORT:-5901}
+readonly novnc_port=${NOVNC_PORT:-6901}
 
 ################### INCLUDE SCRIPTS FROM /opt/startup-early ####################
 
