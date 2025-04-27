@@ -19,8 +19,8 @@ tail -f /var/log/supervisor/portmap-ssh-stderr-* |
     grep --line-buffered client_request_forwarded_tcpip |
     withprefix 'portmap-ssh.E: ' &
 
-rm -f /tmp/lognot-misc.sock
-socat UNIX-LISTEN:/tmp/lognot-misc.sock,mode=666,fork - | withprefix 'misc: ' &
+socat UNIX-LISTEN:/tmp/lognot-misc.sock,mode=666,fork,unlink-early - |
+    withprefix 'misc: ' &
 
 wait # until all jobs finish
 trap - EXIT
