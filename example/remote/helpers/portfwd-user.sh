@@ -63,11 +63,11 @@ EOF
 
 user_home=$(eval "echo ~$user")
 
-install -d -o"$user" -g"$user" -m700 "$user_home/.ssh"
+install -o"$user" -g"$user" -dm700 "$user_home/.ssh"
 
 if [ -n "$authorized_keys_file" ]; then
     echo "Creating authorized_keys file for $user"
 
-    install -o"$user" -g"$user" -m600 "$authorized_keys_file" \
+    install -o"$user" -g"$user" -Tm600 "$authorized_keys_file" \
         "$user_home/.ssh/authorized_keys"
 fi

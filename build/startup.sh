@@ -50,7 +50,7 @@ else
 
     if [ "$mainuser_nopassword" = true ]; then
         echo "Enabling sudo without password for user $mainuser_name"
-        install -m440 <(echo "$mainuser_name ALL=(ALL) NOPASSWD: ALL") \
+        install -Tm440 <(echo "$mainuser_name ALL=(ALL) NOPASSWD: ALL") \
             "/etc/sudoers.d/$mainuser_name-nopassword"
     fi
 fi

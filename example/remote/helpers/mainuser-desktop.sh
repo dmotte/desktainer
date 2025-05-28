@@ -45,7 +45,7 @@ if [ -n "$mimeapps_file" ]; then
         echo 'Mimeapps file already exists. Skipping'
     else
         echo "Installing mimeapps file $mimeapps_file"
-        install -omainuser -gmainuser -m600 "$mimeapps_file" \
+        install -omainuser -gmainuser -Tm600 "$mimeapps_file" \
             ~mainuser/.config/mimeapps.list
     fi
 fi
@@ -53,10 +53,10 @@ fi
 if [ -n "$dconf_file" ]; then
     echo "Installing dconf file $dconf_file and autostart launcher"
 
-    install -omainuser -gmainuser -m644 "$dconf_file" \
+    install -omainuser -gmainuser -Tm644 "$dconf_file" \
         ~mainuser/.config/initial.dconf
 
-    install -omainuser -gmainuser -m644 /dev/stdin \
+    install -omainuser -gmainuser -Tm644 /dev/stdin \
         ~mainuser/.config/autostart/dconf-load.desktop << 'EOF'
 [Desktop Entry]
 Type=Application
@@ -68,7 +68,7 @@ fi
 
 echo "Installing autostart launcher to set resolution to $xrandr_fb at startup"
 
-install -omainuser -gmainuser -m644 /dev/stdin \
+install -omainuser -gmainuser -Tm644 /dev/stdin \
     ~mainuser/.config/autostart/xrandr-fb.desktop << EOF
 [Desktop Entry]
 Type=Application
@@ -82,7 +82,7 @@ if [ -e ~mainuser/.config/pcmanfm/LXDE/pcmanfm.conf ]; then
     echo 'The pcmanfm.conf file already exists. Skipping'
 else
     echo 'Installing pcmanfm.conf file'
-    install -omainuser -gmainuser -m644 <(echo -e '[ui]\nshow_hidden=1') \
+    install -omainuser -gmainuser -Tm644 <(echo -e '[ui]\nshow_hidden=1') \
         ~mainuser/.config/pcmanfm/LXDE/pcmanfm.conf
 fi
 

@@ -26,7 +26,7 @@ priority=30
 user=mainuser
 EOF
 
-install -omainuser -gmainuser -m700 /dev/stdin /opt/screenrec.sh << EOF
+install -omainuser -gmainuser -Tm700 /dev/stdin /opt/screenrec.sh << EOF
 #!/bin/bash
 
 set -e
