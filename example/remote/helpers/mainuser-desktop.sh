@@ -86,10 +86,9 @@ else
         ~mainuser/.config/pcmanfm/LXDE/pcmanfm.conf
 fi
 
-if [[ "$wallpaper" = \#* ]]; then
-    wallpaper_mode=color; wallpaper_key=desktop_bg
-else
-    wallpaper_mode=crop; wallpaper_key=wallpaper
+if [[ "$wallpaper" = \#* ]]
+    then readonly wallpaper_mode=color wallpaper_key=desktop_bg
+    else readonly wallpaper_mode=crop wallpaper_key=wallpaper
 fi
 
 echo "Setting wallpaper_mode=$wallpaper_mode, $wallpaper_key=$wallpaper"
