@@ -100,6 +100,6 @@ sed -Ei ~mainuser/.config/pcmanfm/LXDE/desktop-items-0.conf \
 install -d -omainuser -gmainuser ~mainuser/Desktop
 
 if [ ! -e ~mainuser/Desktop/persistent ]; then
-    ln -s /data/mainuser ~mainuser/Desktop/persistent
+    ln -Ts /data/mainuser ~mainuser/Desktop/persistent
     chown -h mainuser:mainuser ~mainuser/Desktop/persistent
 fi
