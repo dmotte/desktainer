@@ -59,6 +59,10 @@ bash helpers/sshd.sh
 
 bash helpers/shellinabox.sh
 
+bash helpers/logtosupd.sh /bin/bash -ec \
+    \''socat UNIX-LISTEN:/tmp/logtosupd.sock,mode=666,fork,unlink-early - |' \
+    'while read -r i; do echo "logtosupd: $i"; done'\'
+
 ################################################################################
 
 echo 'Performing basic mainuser setup'
