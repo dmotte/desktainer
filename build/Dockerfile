@@ -14,7 +14,7 @@ RUN apt-get update && \
 
 COPY --chown=root:root --chmod=755 startup.sh /
 
-RUN install -dm700 /opt/startup-early /opt/startup-late
+RUN install -dvm700 /opt/startup-early /opt/startup-late
 
 COPY --chown=root:root --chmod=644 supervisord.conf \
     /etc/supervisor/supervisord.conf
@@ -37,16 +37,16 @@ RUN arch=$(uname -m); \
         /usr/share/novnc/core/rfb.js; \
     fi && \
     \
-    mv -T /usr/share/novnc/vnc.html /usr/share/novnc/index.html && \
+    mv -Tv /usr/share/novnc/vnc.html /usr/share/novnc/index.html && \
     \
     sed -i "s/\(WebUtil\.getConfigVar[(]'autoconnect', \)false/\1true/" \
     /usr/share/novnc/app/ui.js && \
     \
     update-alternatives --set x-terminal-emulator /usr/bin/lxterminal && \
     \
-    rm /etc/xdg/autostart/light-locker.desktop && \
+    rm -v /etc/xdg/autostart/light-locker.desktop && \
     \
-    rm /etc/xdg/autostart/lxpolkit.desktop && \
-    mv -T /usr/bin/lxpolkit /usr/bin/lxpolkit.bak
+    rm -v /etc/xdg/autostart/lxpolkit.desktop && \
+    mv -Tv /usr/bin/lxpolkit /usr/bin/lxpolkit.bak
 
 ENTRYPOINT ["/startup.sh"]

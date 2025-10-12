@@ -33,7 +33,7 @@ set -e
 
 readonly data_dir=${data_dir@Q}
 
-mkdir -p "\$data_dir"
+mkdir -pv "\$data_dir"
 
 sleep 10
 

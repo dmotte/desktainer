@@ -53,7 +53,7 @@ bash helpers/supervisorctl.sh
 # shellcheck disable=SC2016
 # setup_lognot -b"$lognot_bot_token" -c'(put-chat-id-here)' \
 #     'bash /opt/lognot/get.sh | while read -r i; do echo "$HOSTNAME: $i"; done'
-# install -Tm700 lognot-get.sh /opt/lognot/get.sh
+# install -Tvm700 lognot-get.sh /opt/lognot/get.sh
 
 bash helpers/sshd.sh
 
@@ -67,17 +67,17 @@ bash helpers/logtosupd.sh /bin/bash -ec \
 
 echo 'Performing basic mainuser setup'
 
-install -omainuser -gmainuser -dm700 ~mainuser/.ssh
+install -omainuser -gmainuser -dvm700 ~mainuser/.ssh
 
-install -omainuser -gmainuser -Tm600 authorized-keys-mainuser.txt \
+install -omainuser -gmainuser -Tvm600 authorized-keys-mainuser.txt \
     ~mainuser/.ssh/authorized_keys
 
-install -omainuser -gmainuser -dm700 /data/mainuser
+install -omainuser -gmainuser -dvm700 /data/mainuser
 
 ################################################################################
 
 # [ -e ~mainuser/.ssh/known_hosts ] ||
-#     install -omainuser -gmainuser -Tm600 /dev/null ~mainuser/.ssh/known_hosts
+#     install -omainuser -gmainuser -Tvm600 /dev/null ~mainuser/.ssh/known_hosts
 
 # if ! grep '^myserver\.example\.com ' \
 #     ~mainuser/.ssh/known_hosts >/dev/null 2>&1; then
@@ -86,7 +86,7 @@ install -omainuser -gmainuser -dm700 /data/mainuser
 # EOF
 # fi
 
-# install -omainuser -gmainuser -Tm600 {,~mainuser/.ssh/}portmap-ssh.pem
+# install -omainuser -gmainuser -Tvm600 {,~mainuser/.ssh/}portmap-ssh.pem
 
 # setup_portmap -nssh -rmainuser -- '-i /home/mainuser/.ssh/portmap-ssh.pem' \
 #     'myuser@myserver.example.com -NvR12345:127.0.0.1:22'

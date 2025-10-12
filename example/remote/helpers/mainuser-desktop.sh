@@ -97,9 +97,9 @@ sed -Ei ~mainuser/.config/pcmanfm/LXDE/desktop-items-0.conf \
     -e "s/^wallpaper_mode=.*$/wallpaper_mode=$wallpaper_mode/" \
     -e "s|^$wallpaper_key=.*$|$wallpaper_key=$wallpaper|"
 
-install -d -omainuser -gmainuser ~mainuser/Desktop
+install -dv -omainuser -gmainuser ~mainuser/Desktop
 
 if [ ! -e ~mainuser/Desktop/persistent ]; then
-    ln -Ts /data/mainuser ~mainuser/Desktop/persistent
+    ln -Tsv /data/mainuser ~mainuser/Desktop/persistent
     chown -h mainuser:mainuser ~mainuser/Desktop/persistent
 fi
