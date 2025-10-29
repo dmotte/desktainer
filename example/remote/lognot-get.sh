@@ -4,7 +4,7 @@ set -e
 
 withprefix() { while read -r i; do echo "$1$i"; done }
 
-trap 'kill $(jobs -p)' EXIT
+trap 'jobs -p | xargs -rd\\n kill; wait' EXIT
 
 tail -f /var/log/supervisor/noVNC-stdout-* | withprefix 'noVNC.O: ' &
 tail -f /var/log/supervisor/noVNC-stderr-* | withprefix 'noVNC.E: ' &
