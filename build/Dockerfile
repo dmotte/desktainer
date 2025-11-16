@@ -49,4 +49,4 @@ RUN arch=$(uname -m); \
     rm -v /etc/xdg/autostart/lxpolkit.desktop && \
     mv -Tv /usr/bin/lxpolkit /usr/bin/lxpolkit.bak
 
-ENTRYPOINT ["/startup.sh"]
+ENTRYPOINT ["/bin/bash", "/startup.sh"]
