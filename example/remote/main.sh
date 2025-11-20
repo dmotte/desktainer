@@ -52,7 +52,7 @@ bash helpers/supervisorctl.sh
 
 # shellcheck disable=SC2016
 # setup_lognot -b"$lognot_bot_token" -c'(put-chat-id-here)' \
-#     'bash /opt/lognot/get.sh | while read -r i; do echo "$HOSTNAME: $i"; done'
+#     'bash /opt/lognot/get.sh | while IFS= read -r i; do echo "$HOSTNAME: $i"; done'
 # install -Tvm700 lognot-get.sh /opt/lognot/get.sh
 
 bash helpers/sshd.sh
@@ -61,7 +61,7 @@ bash helpers/shellinabox.sh
 
 bash helpers/logtosupd.sh /bin/bash -ec \
     \''socat UNIX-LISTEN:/tmp/logtosupd.sock,mode=666,fork,unlink-early - |' \
-    'while read -r i; do echo "logtosupd: $i"; done'\'
+    'while IFS= read -r i; do echo "logtosupd: $i"; done'\'
 
 ################################################################################
 
