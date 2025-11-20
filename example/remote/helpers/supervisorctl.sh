@@ -4,11 +4,15 @@ set -e
 
 [ "$EUID" = 0 ] || { echo 'This script must be run as root' >&2; exit 1; }
 
-if ! grep -Fx '[unix_http_server]' \
-    /etc/supervisor/supervisord.conf >/dev/null 2>&1; then
-    echo 'Adding supervisorctl config to supervisord.conf'
+readonly supervisord_conf=/etc/supervisor/supervisord.conf
 
-    cat << 'EOF' >> /etc/supervisor/supervisord.conf
+[ -e "$supervisord_conf" ] ||
+    { echo "File $supervisord_conf not found" >&2; exit 1; }
+
+if ! grep -Fx '[unix_http_server]' "$supervisord_conf" >/dev/null; then
+    echo "Adding supervisorctl config to $supervisord_conf"
+
+    cat << 'EOF' >> "$supervisord_conf"
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
