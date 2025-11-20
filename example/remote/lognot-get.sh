@@ -2,7 +2,7 @@
 
 set -e
 
-withprefix() { while read -r i; do echo "$1$i"; done }
+withprefix() { while IFS= read -r i; do echo "$1$i"; done }
 
 trap 'jobs -p | xargs -rd\\n kill; wait' EXIT
 
