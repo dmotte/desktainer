@@ -81,8 +81,8 @@ if [ -n "$vnc_pass" ]; then
 
         # Store the password encrypted and with 400 permissions
         x11vnc -storepasswd "$vnc_pass" "$mainuser_home/.vnc/passwd"
-        chown "$mainuser_name:$mainuser_name" "$mainuser_home/.vnc/passwd"
-        chmod 400 "$mainuser_home/.vnc/passwd"
+        chown -v "$mainuser_name:$mainuser_name" "$mainuser_home/.vnc/passwd"
+        chmod -v 400 "$mainuser_home/.vnc/passwd"
     fi
 
     echo 'Enabling VNC password'

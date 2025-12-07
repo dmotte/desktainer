@@ -101,5 +101,5 @@ install -dv -omainuser -gmainuser ~mainuser/Desktop
 
 if [ ! -e ~mainuser/Desktop/persistent ]; then
     ln -Tsv /data/mainuser ~mainuser/Desktop/persistent
-    chown -h mainuser:mainuser ~mainuser/Desktop/persistent
+    chown -hv mainuser:mainuser ~mainuser/Desktop/persistent
 fi
