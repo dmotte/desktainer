@@ -1,4 +1,4 @@
-FROM docker.io/library/debian:12
+FROM docker.io/library/debian:13
 
 EXPOSE 5901 6901
 
