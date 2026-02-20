@@ -44,7 +44,7 @@ docker-compose logs -ft
 ## Tips
 
 - :bulb: If you want to **change the resolution** while the container is running, you can use the `xrandr --fb 1024x768` command. The new resolution cannot be larger than the one specified in the `RESOLUTION` environment variable though
-- :bulb: If you need to, you can extend this project by making your own `Dockerfile` starting from this image (i.e. `FROM dmotte/desktainer`) and/or mount custom _supervisor_ configuration files. See the [`example`](example) folder for an example of how to do it
+- :bulb: If you need to, you can extend this project by making your own `Dockerfile` starting from this image (i.e. `FROM docker.io/dmotte/desktainer:latest`) and/or mount custom _supervisor_ configuration files. See the [`example`](example) folder for an example of how to do it
 - :bulb: This image is not meant to be run with the `--user` Docker option, because the [`startup.sh`](build/startup.sh) script needs to run as root in the initial phase. Moreover, the user created via the `MAINUSER_NAME` environment variable (see below) will be a **sudoer**, so running the container as root is useful in any case. If you want a **rootless** version of this image, check out [dmotte/desktainer-rootless](https://github.com/dmotte/desktainer-rootless)
 
 ## Running commands at container startup
