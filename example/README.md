@@ -1,5 +1,7 @@
 # example
 
+TODO get rid of this directory. I guess you can move the useful scripts elsewhere, such as to `misc/scripts` or something
+
 This is an example of how to extend the [dmotte/desktainer](https://github.com/dmotte/desktainer) Docker image. You can use this for inspiration.
 
 ## Usage

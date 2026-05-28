@@ -19,7 +19,7 @@ The simplest way to try this image is:
 docker run -it --rm -p6901:6901 dmotte/desktainer
 ```
 
-> **Note**: since some GUI applications may have issues with Docker's default _seccomp_ profile, you may need to use `--security-opt seccomp=unconfined`
+> **Note**: since some GUI applications may have issues with Docker's default _seccomp_ profile, you may need to use `--security-opt seccomp=unconfined` TODO is this still needed with Wayland? Check and, if not, remove it
 
 Then head over to http://localhost:6901/ to access the remote desktop.
 
@@ -81,3 +81,71 @@ docker-compose down && docker-compose up --build
 ```
 
 > **Note**: I know that this Docker image has many **layers**, but this shouldn't be a problem in most cases. If you want to reduce its number of layers, there are several techniques out there, e.g. see [this](https://stackoverflow.com/questions/39695031/how-make-docker-layer-to-single-layer)
+
+## TODO
+
+Combine rootful+rootless behavior in a single image: the `/opt/desktainer/entrypoint.sh` script checks what the running user is, and:
+
+- if the user is `root`:
+  - if `PUID`/`PGID=$PUID` env vars are set: create such new user (using also `PUSER=user` and `PGROUP=$PUSER` env vars) and drop privileges to such user by running `exec gosu 1000:1000 bash`
+  - else (if `PUID`/`PGID` env vars are NOT set): proceed as rootful behavior
+- else (if the user is non-root): proceed as rootless behavior
+
+Remember to update the screenshot after the rework is completed.
+
+Remove the `/opt/startup-*` feature, as it was primarily meant for `sshd` host keys initialization, but that can be done in a better way.
+
+Draft of the new setup:
+
+```bash
+# The "lxqt-wayland-session" package would be much better, and then the start command would be "startlxqtwayland", but it's only available from Debian 14 (forky) onwards
+apt update && apt install -y labwc lxqt-session wayvnc novnc && apt install -y --no-install-recommends lxqt
+
+# See https://github.com/novnc/noVNC/pull/2057
+sed -Ei 's/^(\s*inputFocus = inputFocus === "none" )(\? "noVNC_username_input" : inputFocus;)$/\1\&\& document.getElementById("noVNC_username_input").value === "" \2/' /usr/share/novnc/app/ui.js
+
+websockify --web=/usr/share/novnc 6900 127.0.0.1:5900
+
+export XDG_RUNTIME_DIR="/tmp/runtime-$USER"
+mkdir -pvm700 "$XDG_RUNTIME_DIR"
+
+# Needed to prevent the "menu-cached 100% CPU usage" bug
+mv -Tv /usr/lib/menu-cache/menu-cached{,.old}
+ln -Tsv /usr/bin/true /usr/lib/menu-cache/menu-cached
+
+# Running xdg-user-dirs-update might be a good idea
+# Don't forget to set USER, HOME, and SHELL with "getent passwd root | cut -d: -f7"
+
+# Workaround: only if the DESKTAINER_DISABLE_MINIMIZE env var is set to "true" and the file doesn't exist yet:
+install -Tvm644 /dev/stdin ~/.config/labwc/rc.xml << 'EOF'
+<?xml version="1.0"?>
+<labwc_config>
+  <mouse>
+    <default />
+
+    <context name="Iconify">
+      <mousebind button="Left" action="Click">
+        <action name="None" />
+      </mousebind>
+    </context>
+  </mouse>
+</labwc_config>
+EOF
+
+export LC_ALL=C.UTF-8 # To avoid warnings about non-UTF-8 locale
+# Known issue: the Task Manager panel doesn't show any window. But LXQt's Wayland support is still experimental in Debian 13 (trixie), and it will be more robust in Debian 14 (forky). For now, we can use Alt+Tab to cycle through open windows
+SHELL=/bin/bash WLR_BACKENDS=headless WLR_RENDERER=pixman QT_QPA_PLATFORM=wayland dbus-run-session -- labwc -S'startlxqt'
+# Support env var DESKTAINER_LABWC_VERBOSE to add the "-V" (verbose) flag to labwc
+
+# Warning: when running as root, "enable_pam=true" makes wayvnc accept any existing user as a valid login
+printf '%s\n' enable_auth=true relax_encryption=true enable_pam=true |
+    install -DTvm644 /dev/stdin ~/.config/wayvnc/config
+
+# Note: wayvnc creates the unix domain socket "$XDG_RUNTIME_DIR/wayvncctl" to make the wayvncctl CLI tool work
+XDG_RUNTIME_DIR=/tmp/runtime-root WAYLAND_DISPLAY=wayland-0 wayvnc -D 0.0.0.0
+# Support env var DESKTAINER_VNC_UNIX to run it like "wayvnc -u"
+
+XDG_RUNTIME_DIR=/tmp/runtime-root wayvncctl -w attach "$WAYLAND_DISPLAY"
+
+dconf write /org/gnome/desktop/interface/gtk-theme "'Adwaita-dark'"
+```
