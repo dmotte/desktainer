@@ -2,6 +2,9 @@
 
 set -e
 
+bash # TODO
+exit # TODO
+
 ################################## VARIABLES ###################################
 
 readonly resolution=${RESOLUTION:-1920x1080}

@@ -90,17 +90,10 @@ Draft of the new setup:
 # The "lxqt-wayland-session" package would be much better, and then the start command would be "startlxqtwayland", but it's only available from Debian 14 (forky) onwards
 apt update && apt install -y labwc lxqt-session wayvnc novnc && apt install -y --no-install-recommends lxqt
 
-# See https://github.com/novnc/noVNC/pull/2057
-sed -Ei 's/^(\s*inputFocus = inputFocus === "none" )(\? "noVNC_username_input" : inputFocus;)$/\1\&\& document.getElementById("noVNC_username_input").value === "" \2/' /usr/share/novnc/app/ui.js
-
 websockify --web=/usr/share/novnc 6900 127.0.0.1:5900
 
 export XDG_RUNTIME_DIR="/tmp/runtime-$USER"
 mkdir -pvm700 "$XDG_RUNTIME_DIR"
-
-# Needed to prevent the "menu-cached 100% CPU usage" bug
-mv -Tv /usr/lib/menu-cache/menu-cached{,.old}
-ln -Tsv /usr/bin/true /usr/lib/menu-cache/menu-cached
 
 # Running xdg-user-dirs-update might be a good idea
 # Don't forget to set USER, HOME, and SHELL with "getent passwd root | cut -d: -f7"
