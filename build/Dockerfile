@@ -7,7 +7,7 @@ EXPOSE 5901 6901
 # Note: at-spi2-core is needed for LXDE apps to work properly (see
 # https://www.raspberrypi.org/forums/viewtopic.php?t=196070)
 RUN apt-get update && \
-    apt-get install -y sudo supervisor novnc xvfb x11vnc \
+    apt-get install -y tini sudo supervisor novnc xvfb x11vnc \
         dbus-x11 at-spi2-core && \
     apt-get install -y --no-install-recommends lxde && \
     rm -rf /var/lib/apt/lists/*
@@ -47,4 +47,4 @@ RUN arch=$(uname -m); \
     rm -v /etc/xdg/autostart/lxpolkit.desktop && \
     mv -Tv /usr/bin/lxpolkit /usr/bin/lxpolkit.bak
 
-ENTRYPOINT ["/bin/bash", "/entrypoint.sh"]
+ENTRYPOINT ["/usr/bin/tini", "--", "/bin/bash", "/entrypoint.sh"]
