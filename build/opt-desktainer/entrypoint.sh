@@ -16,14 +16,6 @@ unset VNC_PASS
 readonly vnc_port=${VNC_PORT:-5901}
 readonly novnc_port=${NOVNC_PORT:-6901}
 
-################### INCLUDE SCRIPTS FROM /opt/startup-early ####################
-
-for i in /opt/startup-early/*.sh; do
-    [ -f "$i" ] || continue
-    # shellcheck source=/dev/null
-    . "$i"
-done
-
 ################################## MAIN USER ###################################
 
 if [ "$mainuser_name" = root ]; then
@@ -95,14 +87,6 @@ fi
 ############################# CLEAR Xvfb LOCK FILE #############################
 
 rm -f /tmp/.X0-lock
-
-#################### INCLUDE SCRIPTS FROM /opt/startup-late ####################
-
-for i in /opt/startup-late/*.sh; do
-    [ -f "$i" ] || continue
-    # shellcheck source=/dev/null
-    . "$i"
-done
 
 ############################## START SUPERVISORD ###############################
 

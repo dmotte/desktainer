@@ -12,9 +12,7 @@ RUN apt-get update && \
     apt-get install -y --no-install-recommends lxde && \
     rm -rf /var/lib/apt/lists/*
 
-COPY --chown=root:root --chmod=755 startup.sh /
-
-RUN install -dvm700 /opt/startup-early /opt/startup-late
+COPY --chown=root:root --chmod=755 entrypoint.sh /
 
 COPY --chown=root:root --chmod=644 supervisord.conf \
     /etc/supervisor/supervisord.conf
@@ -49,4 +47,4 @@ RUN arch=$(uname -m); \
     rm -v /etc/xdg/autostart/lxpolkit.desktop && \
     mv -Tv /usr/bin/lxpolkit /usr/bin/lxpolkit.bak
 
-ENTRYPOINT ["/bin/bash", "/startup.sh"]
+ENTRYPOINT ["/bin/bash", "/entrypoint.sh"]

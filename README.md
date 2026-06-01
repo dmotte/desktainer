@@ -45,18 +45,7 @@ docker-compose logs -ft
 
 - :bulb: If you want to **change the resolution** while the container is running, you can use the `xrandr --fb 1024x768` command. The new resolution cannot be larger than the one specified in the `RESOLUTION` environment variable though
 - :bulb: If you need to, you can extend this project by making your own `Dockerfile` starting from this image (i.e. `FROM docker.io/dmotte/desktainer:latest`) and/or mount custom _supervisor_ configuration files. See the [`example`](example) folder for an example of how to do it
-- :bulb: This image is not meant to be run with the `--user` Docker option, because the [`startup.sh`](build/startup.sh) script needs to run as root in the initial phase. Moreover, the user created via the `MAINUSER_NAME` environment variable (see below) will be a **sudoer**, so running the container as root is useful in any case. If you want a **rootless** version of this image, check out [dmotte/desktainer-rootless](https://github.com/dmotte/desktainer-rootless)
-
-## Running commands at container startup
-
-If you need to run commands at container startup, you can create Bash scripts in the following locations:
-
-- `/opt/startup-early/*.sh`: these scripts will be included in alphabetical order **before** the main container initialization process
-- `/opt/startup-late/*.sh`: these scripts will be included in alphabetical order **after** the main container initialization process
-
-See the [`startup.sh`](build/startup.sh) script for more details.
-
-Moreover, if you need to run commands after the LXDE startup, you can create launcher files in the `/etc/xdg/autostart` or the `~/.config/autostart` directory.
+- :bulb: If you need to run things on desktop environment startup, you can create launcher files in the `/etc/xdg/autostart` or the `~/.config/autostart` directory
 
 ## Environment variables
 
@@ -92,8 +81,6 @@ Combine rootful+rootless behavior in a single image: the `/opt/desktainer/entryp
 - else (if the user is non-root): proceed as rootless behavior
 
 Remember to update the screenshot after the rework is completed.
-
-Remove the `/opt/startup-*` feature, as it was primarily meant for `sshd` host keys initialization, but that can be done in a better way.
 
 Draft of the new setup:
 
