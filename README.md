@@ -80,6 +80,8 @@ Combine rootful+rootless behavior in a single image: the `/opt/desktainer/entryp
   - else (if `PUID`/`PGID` env vars are NOT set): proceed as rootful behavior
 - else (if the user is non-root): proceed as rootless behavior
 
+Or maybe env var like `DESKTAINER_USER=1000:user:1000:user`
+
 Remember to update the screenshot after the rework is completed.
 
 Draft of the new setup:
