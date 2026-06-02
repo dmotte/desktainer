@@ -6,16 +6,20 @@ cd "$(dirname "$0")"
 
 # TODO test this script thoroughly
 
-# TODO read env var DESKTAINER_PASSWORD and unset. Then you can use it with "chpasswd" if [ "$EUID" = 0 ]
+readonly psw=$DESKTAINER_PSW
+unset DESKTAINER_PSW
+
+[ "$EUID" != 0 ] || [ -z "$psw" ] ||
+    { echo "Setting the root user's password"; echo "root:$psw" | chpasswd; }
 
 { [ "$EUID" = 0 ] && [ -n "$DESKTAINER_USER" ]; } ||
     { echo 'Running start.sh'; exec bash start.sh "$@"; }
 
 IFS=: read -ar parts <<< "$DESKTAINER_USER"
-new_uid=${parts[0]:-1000}
-new_user=${parts[1]:-user}
-new_gid=${parts[2]:-$new_uid}
-new_group=${parts[3]:-$new_user}
+readonly new_uid=${parts[0]:-1000}
+readonly new_user=${parts[1]:-user}
+readonly new_gid=${parts[2]:-$new_uid}
+readonly new_group=${parts[3]:-$new_user}
 
 # TODO env var DESKTAINER_SUDOER
 # TODO env var DESKTAINER_NOPASSWD
@@ -33,6 +37,8 @@ if ! getent passwd "$new_uid" >/dev/null &&
     # TODO something like this: useradd -m -s /bin/bash -u "$new_uid" -g "$new_gid" "$new_user"
     # but please write it properly, by reading the command's manual
 fi
+
+# TODO remember to set the password for the unprivileged user if the psw var is not empty
 
 # TODO compare the user+group creation code with the "old" one, currently in start.sh
 
