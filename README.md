@@ -87,9 +87,6 @@ Remember to update the screenshot after the rework is completed.
 Draft of the new setup:
 
 ```bash
-# The "lxqt-wayland-session" package would be much better, and then the start command would be "startlxqtwayland", but it's only available from Debian 14 (forky) onwards
-apt update && apt install -y labwc lxqt-session wayvnc novnc && apt install -y --no-install-recommends lxqt
-
 websockify --web=/usr/share/novnc 6900 127.0.0.1:5900
 
 export XDG_RUNTIME_DIR="/tmp/runtime-$USER"
