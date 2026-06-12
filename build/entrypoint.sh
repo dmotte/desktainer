@@ -15,7 +15,7 @@ unset DESKTAINER_PSW
 { [ "$EUID" = 0 ] && [ -n "$DESKTAINER_USER" ]; } ||
     { echo 'Running start.sh'; exec bash start.sh "$@"; }
 
-IFS=: read -ar parts <<< "$DESKTAINER_USER"
+IFS=: read -ra parts <<< "$DESKTAINER_USER"
 readonly new_uid=${parts[0]:-1000}
 readonly new_user=${parts[1]:-user}
 readonly new_gid=${parts[2]:-$new_uid}
