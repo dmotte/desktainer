@@ -2,45 +2,100 @@
 
 set -e
 
-cd "$(dirname "$0")"
+bash; exit # TODO
 
-# TODO test this script thoroughly
+# TODO you can put the supervisor config to ~/.desktainer/supervisor/supervisord.conf
 
-readonly psw=$DESKTAINER_PSW
-unset DESKTAINER_PSW
+################################## VARIABLES ###################################
 
-[ "$EUID" != 0 ] || [ -z "$psw" ] ||
-    { echo "Setting the root user's password"; echo "root:$psw" | chpasswd; }
+readonly resolution=${RESOLUTION:-1920x1080}
 
-{ [ "$EUID" = 0 ] && [ -n "$DESKTAINER_USER" ]; } ||
-    { echo 'Running start.sh'; exec bash start.sh "$@"; }
+readonly mainuser_name=${MAINUSER_NAME:-mainuser}
+readonly mainuser_pass=${MAINUSER_PASS:-mainuser}
+unset MAINUSER_PASS
+readonly mainuser_nopassword=${MAINUSER_NOPASSWORD:-false}
 
-IFS=: read -ra parts <<< "$DESKTAINER_USER"
-readonly new_uid=${parts[0]:-1000}
-readonly new_user=${parts[1]:-user}
-readonly new_gid=${parts[2]:-$new_uid}
-readonly new_group=${parts[3]:-$new_user}
+readonly vnc_pass=${VNC_PASS:-}
+unset VNC_PASS
+readonly vnc_port=${VNC_PORT:-5901}
+readonly novnc_port=${NOVNC_PORT:-6901}
 
-# TODO env var DESKTAINER_SUDOER
-# TODO env var DESKTAINER_NOPASSWD
+################################## MAIN USER ###################################
 
-if ! getent group "$new_gid" >/dev/null &&
-        ! getent group "$new_group" >/dev/null; then
-    echo "Creating group $new_group ($new_gid)"
-    # TODO something like this: groupadd -g "$new_gid" "$new_group"
-    # but please write it properly, by reading the command's manual
+if [ "$mainuser_name" = root ]; then
+    echo 'The main user is root'
+    mainuser_home=/root
+else
+    mainuser_home=/home/$mainuser_name
+
+    # If the user already exists
+    if id "$mainuser_name" >/dev/null 2>&1; then
+        echo "User $mainuser_name already exists"
+
+        if [ ! -d "$mainuser_home" ]; then
+            echo "Creating home directory $mainuser_home"
+            install -d -o"$mainuser_name" -g"$mainuser_name" "$mainuser_home"
+        fi
+    else
+        echo "Creating user $mainuser_name"
+        useradd -UGsudo -ms/bin/bash "$mainuser_name"
+
+        echo "Setting the user's password"
+        echo "$mainuser_name:$mainuser_pass" | chpasswd
+    fi
+
+    if [ "$mainuser_nopassword" = true ]; then
+        echo "Enabling sudo without password for user $mainuser_name"
+        install -Tm440 <(echo "$mainuser_name ALL=(ALL) NOPASSWD: ALL") \
+            "/etc/sudoers.d/$mainuser_name-nopassword"
+    fi
 fi
 
-if ! getent passwd "$new_uid" >/dev/null &&
-        ! getent passwd "$new_user" >/dev/null; then
-    echo "Creating user $new_user ($new_uid)"
-    # TODO something like this: useradd -m -s /bin/bash -u "$new_uid" -g "$new_gid" "$new_user"
-    # but please write it properly, by reading the command's manual
+##################### SUPERVISORD CONFIG MAIN REPLACEMENTS #####################
+
+echo "Setting VNC port to $vnc_port"
+sed -i "s/%vnc_port%/$vnc_port/g" /etc/supervisor/supervisord.conf
+
+echo "Setting noVNC port to $novnc_port"
+sed -i "s/%novnc_port%/$novnc_port/g" /etc/supervisor/supervisord.conf
+
+echo "Setting resolution to $resolution"
+sed -i "s/%resolution%/$resolution/g" /etc/supervisor/supervisord.conf
+
+# Note: we use the pipe character as delimiter in the expression #2 because the
+# $mainuser_home variable contains slashes
+sed -i "s/%mainuser_name%/$mainuser_name/g;s|%mainuser_home%|$mainuser_home|g" \
+    /etc/supervisor/supervisord.conf
+
+############################# VNC SERVER PASSWORD ##############################
+
+if [ -n "$vnc_pass" ]; then
+    if [ ! -f "$mainuser_home/.vnc/passwd" ]; then
+        echo "Storing the VNC password into $mainuser_home/.vnc/passwd"
+
+        install -d -o"$mainuser_name" -g"$mainuser_name" "$mainuser_home/.vnc"
+
+        # Store the password encrypted and with 400 permissions
+        x11vnc -storepasswd "$vnc_pass" "$mainuser_home/.vnc/passwd"
+        chown "$mainuser_name:$mainuser_name" "$mainuser_home/.vnc/passwd"
+        chmod 400 "$mainuser_home/.vnc/passwd"
+    fi
+
+    echo 'Enabling VNC password'
+    sed -i "s/%vncpwoption%/-usepw/" /etc/supervisor/supervisord.conf
+else
+    echo 'Disabling VNC password'
+    sed -i "s/%vncpwoption%/-nopw/" /etc/supervisor/supervisord.conf
 fi
 
-# TODO remember to set the password for the unprivileged user if the psw var is not empty
+############################# CLEAR Xvfb LOCK FILE #############################
 
-# TODO compare the user+group creation code with the "old" one, currently in start.sh
+rm -f /tmp/.X0-lock
 
-echo "Running start.sh as $new_uid:$new_gid"
-exec gosu "$new_uid:$new_gid" bash start.sh "$@"
+############################## START SUPERVISORD ###############################
+
+# Start supervisord with "exec" to let it become the PID 1 process. This ensures
+# it receives all the stop signals correctly and reaps all the zombie processes
+# inside the container
+echo 'Starting supervisord'
+exec /usr/bin/supervisord -nc /etc/supervisor/supervisord.conf

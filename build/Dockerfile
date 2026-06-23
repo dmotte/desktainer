@@ -37,4 +37,6 @@ RUN <<'EOF' /bin/bash -e
     ln -Tsv /usr/bin/true /usr/lib/menu-cache/menu-cached
 EOF
 
+# TODO use userngo
+
 ENTRYPOINT ["/usr/bin/tini", "--", "/bin/bash", "/opt/desktainer/entrypoint.sh"]

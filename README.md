@@ -73,15 +73,6 @@ docker-compose down && docker-compose up --build
 
 ## TODO
 
-Combine rootful+rootless behavior in a single image: the `/opt/desktainer/entrypoint.sh` script checks what the running user is, and:
-
-- if the user is `root`:
-  - if `PUID`/`PGID=$PUID` env vars are set: create such new user (using also `PUSER=user` and `PGROUP=$PUSER` env vars) and drop privileges to such user by running `exec gosu 1000:1000 bash`
-  - else (if `PUID`/`PGID` env vars are NOT set): proceed as rootful behavior
-- else (if the user is non-root): proceed as rootless behavior
-
-Or maybe env var like `DESKTAINER_USER=1000:user:1000:user`
-
 Remember to update the screenshot after the rework is completed.
 
 Draft of the new setup:
