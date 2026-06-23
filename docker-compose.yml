@@ -6,8 +6,8 @@ services:
     restart: always
     hostname: desktainer
     ports:
-      - "5901:5901"
-      - "6901:6901"
+      - "5900:5900"
+      - "6900:6900"
     volumes:
       - /etc/timezone:/etc/timezone:ro
       - /etc/localtime:/etc/localtime:ro

@@ -16,12 +16,12 @@ Thanks to [fcwu/docker-ubuntu-vnc-desktop](https://github.com/fcwu/docker-ubuntu
 The simplest way to try this image is:
 
 ```bash
-docker run -it --rm -p6901:6901 dmotte/desktainer
+docker run -it --rm -p6900:6900 dmotte/desktainer
 ```
 
 > **Note**: since some GUI applications may have issues with Docker's default _seccomp_ profile, you may need to use `--security-opt seccomp=unconfined` TODO is this still needed with Wayland? Check and, if not, remove it
 
-Then head over to http://localhost:6901/ to access the remote desktop.
+Then head over to http://localhost:6900/ to access the remote desktop.
 
 ![Screenshot](screen-01.png)
 
@@ -58,8 +58,8 @@ List of supported **environment variables**:
 | `MAINUSER_PASS`       | No (default: `mainuser`) | Password of the main user (if `MAINUSER_NAME != root`)                                          |
 | `MAINUSER_NOPASSWORD` | No (default: `false`)    | Whether or not the main user should be allowed to `sudo` without password                       |
 | `VNC_PASS`            | No (default: none)       | Password for the VNC server                                                                     |
-| `VNC_PORT`            | No (default: 5901)       | TCP port of the VNC server                                                                      |
-| `NOVNC_PORT`          | No (default: 6901)       | TCP port of the noVNC webserver                                                                 |
+| `VNC_PORT`            | No (default: 5900)       | TCP port of the VNC server                                                                      |
+| `NOVNC_PORT`          | No (default: 6900)       | TCP port of the noVNC webserver                                                                 |
 
 ## Development
 
@@ -115,7 +115,7 @@ printf '%s\n' enable_auth=true relax_encryption=true enable_pam=true |
 
 # Note: wayvnc creates the unix domain socket "$XDG_RUNTIME_DIR/wayvncctl" to make the wayvncctl CLI tool work
 XDG_RUNTIME_DIR=/tmp/runtime-root WAYLAND_DISPLAY=wayland-0 wayvnc -D 0.0.0.0
-# Support env var DESKTAINER_VNC_UNIX to run it like "wayvnc -u"
+# Support DESKTAINER_PORT_VNC=unix to run it like "wayvnc -u"
 
 XDG_RUNTIME_DIR=/tmp/runtime-root wayvncctl -w attach "$WAYLAND_DISPLAY"
 
