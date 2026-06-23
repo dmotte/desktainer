@@ -21,8 +21,6 @@ ADD --chown=root:root --chmod=755 \
 
 COPY --chown=root:root --chmod=755 *.sh /opt/desktainer/
 
-# TODO test everything in this file
-
 # To avoid warnings about non-UTF-8 locale
 ENV LC_ALL=C.UTF-8
 
