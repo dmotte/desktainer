@@ -30,7 +30,7 @@ ENV LC_ALL=C.UTF-8
 # TODO make sure x-terminal-emulator is set
 
 RUN <<'EOF' /bin/bash -e
-    mv -Tv /usr/share/novnc/vnc.html /usr/share/novnc/index.html
+    ln -Tsv vnc.html /usr/share/novnc/index.html
 
     sed -Ei "s/^(\s*UI\.initSetting\('autoconnect', )false/\1true/" \
         /usr/share/novnc/app/ui.js
