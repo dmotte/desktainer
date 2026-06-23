@@ -75,6 +75,8 @@ docker-compose down && docker-compose up --build
 
 Remember to update the screenshot after the rework is completed.
 
+Note in the README, I guess in the usage example: This Docker image runs [userngo](https://github.com/dmotte/misc/tree/main/scripts/userngo) at startup. See https://github.com/dmotte/misc/tree/main/scripts/userngo#examples.
+
 Draft of the new setup:
 
 ```bash

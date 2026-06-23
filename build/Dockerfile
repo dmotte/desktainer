@@ -1,3 +1,5 @@
+# syntax=docker/dockerfile:1
+
 FROM docker.io/library/debian:13
 
 # We install the "lxqt-session" package instead of "lxqt-wayland-session"
@@ -5,12 +7,17 @@ FROM docker.io/library/debian:13
 # desktop, it's only available from Debian 14 (forky) onwards
 RUN <<'EOF' /bin/bash -e
     apt-get update
-    apt-get install -y tini supervisor sudo labwc lxqt-session wayvnc novnc
+    apt-get install -y tini gosu supervisor sudo labwc lxqt-session wayvnc novnc
     apt-get install -y --no-install-recommends lxqt
     rm -rf /var/lib/apt/lists/*
 EOF
 
 EXPOSE 6900
+
+ADD --chown=root:root --chmod=755 \
+    --checksum=sha256:b350a393494f8de7d51b3309d8f7f40274392826938ef73a5da9cd9631541b62 \
+    https://raw.githubusercontent.com/dmotte/misc/refs/heads/main/scripts/userngo/userngo-debian.sh \
+    /opt/userngo/main.sh
 
 COPY --chown=root:root --chmod=755 *.sh /opt/desktainer/
 
@@ -37,6 +44,5 @@ RUN <<'EOF' /bin/bash -e
     ln -Tsv /usr/bin/true /usr/lib/menu-cache/menu-cached
 EOF
 
-# TODO use userngo
-
-ENTRYPOINT ["/usr/bin/tini", "--", "/bin/bash", "/opt/desktainer/entrypoint.sh"]
+ENTRYPOINT ["/usr/bin/tini", "--", "/bin/bash", "/opt/userngo/main.sh", \
+    "/bin/bash", "/opt/desktainer/entrypoint.sh"]
