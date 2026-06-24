@@ -82,12 +82,6 @@ Draft of the new setup:
 ```bash
 websockify --web=/usr/share/novnc 6900 127.0.0.1:5900
 
-export XDG_RUNTIME_DIR="/tmp/runtime-$USER"
-mkdir -pvm700 "$XDG_RUNTIME_DIR"
-
-# Running xdg-user-dirs-update might be a good idea
-# Don't forget to set USER, HOME, and SHELL with "getent passwd root | cut -d: -f7"
-
 # Workaround: only if the DESKTAINER_DISABLE_MINIMIZE env var is set to "true" and the file doesn't exist yet:
 install -Tvm644 /dev/stdin ~/.config/labwc/rc.xml << 'EOF'
 <?xml version="1.0"?>
@@ -104,7 +98,6 @@ install -Tvm644 /dev/stdin ~/.config/labwc/rc.xml << 'EOF'
 </labwc_config>
 EOF
 
-export LC_ALL=C.UTF-8 # To avoid warnings about non-UTF-8 locale
 # Known issue: the Task Manager panel doesn't show any window. But LXQt's Wayland support is still experimental in Debian 13 (trixie), and it will be more robust in Debian 14 (forky). For now, we can use Alt+Tab to cycle through open windows
 SHELL=/bin/bash WLR_BACKENDS=headless WLR_RENDERER=pixman QT_QPA_PLATFORM=wayland dbus-run-session -- labwc -S'startlxqt'
 # Support env var DESKTAINER_LABWC_VERBOSE to add the "-V" (verbose) flag to labwc
