@@ -25,7 +25,6 @@ COPY --chown=root:root --chmod=755 *.sh /opt/desktainer/
 ENV LC_ALL=C.UTF-8
 
 # TODO test Tight* encodings on ARM, and restore the workaround if not working properly
-# TODO make sure x-terminal-emulator is set
 
 RUN <<'EOF' /bin/bash -e
     ln -Tsv vnc.html /usr/share/novnc/index.html
