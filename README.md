@@ -102,12 +102,8 @@ EOF
 SHELL=/bin/bash WLR_BACKENDS=headless WLR_RENDERER=pixman QT_QPA_PLATFORM=wayland dbus-run-session -- labwc -S'startlxqt'
 # Support env var DESKTAINER_LABWC_VERBOSE to add the "-V" (verbose) flag to labwc
 
-# Warning: when running as root, "enable_pam=true" makes wayvnc accept any existing user as a valid login
-printf '%s\n' enable_auth=true relax_encryption=true enable_pam=true |
-    install -DTvm644 /dev/stdin ~/.config/wayvnc/config
-
 # Note: wayvnc creates the unix domain socket "$XDG_RUNTIME_DIR/wayvncctl" to make the wayvncctl CLI tool work
-XDG_RUNTIME_DIR=/tmp/runtime-root WAYLAND_DISPLAY=wayland-0 wayvnc -D 0.0.0.0
+XDG_RUNTIME_DIR=/tmp/runtime-root WAYLAND_DISPLAY=wayland-0 wayvnc -D 0.0.0.0 # TODO what if nothing started yet (not even dbus/labwc)? Try to start wayvnc before the actual desktop and see what happens
 # Support DESKTAINER_PORT_VNC=unix to run it like "wayvnc -u"
 
 XDG_RUNTIME_DIR=/tmp/runtime-root wayvncctl -w attach "$WAYLAND_DISPLAY"
