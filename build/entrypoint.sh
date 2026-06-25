@@ -39,7 +39,9 @@ install -dvm700 ~/.config/wayvnc
     printf '%s\n' enable_auth=true relax_encryption=true enable_pam=true |
         install -Tvm644 /dev/stdin ~/.config/wayvnc/config
 
-# xdg-user-dirs-update # TODO needed? Not completely sure, because the page https://manpages.debian.org/trixie/xdg-user-dirs/xdg-user-dirs-update.1.en.html says that it's "run automatically at the start of a user session"
+# Not strictly required, because the LXQt session should create the
+# directories anyway if they don't exist, but we do it in advance, just in case
+xdg-user-dirs-update
 
 install -dvm700 ~/.supervisor{,/conf.d}
 
