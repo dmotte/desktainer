@@ -52,10 +52,15 @@ command=/usr/bin/dbus-run-session -- /usr/bin/labwc -S/usr/bin/startlxqt
 environment=WLR_BACKENDS="headless",WLR_RENDERER="pixman",QT_QPA_PLATFORM="wayland"
 
 [program:wayvnc]
-command=/usr/bin/sleep infinity ; TODO
+; Note: wayvnc creates the Unix Domain Socket "$XDG_RUNTIME_DIR/wayvncctl" to
+; make the wayvncctl CLI tool work
+command=/usr/bin/wayvnc -D 0.0.0.0
+; TODO support DESKTAINER_PORT_VNC=unix to run it like "wayvnc -u"
+; TODO support custom port number
 
 [program:novnc]
-; TODO support VNC as socket file TODO support custom port numbers
+; TODO support VNC as socket file
+; TODO support custom port numbers
 command=/usr/bin/websockify --web=/usr/share/novnc 6900 127.0.0.1:5900
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

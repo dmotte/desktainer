@@ -100,10 +100,6 @@ EOF
 SHELL=/bin/bash WLR_BACKENDS=headless WLR_RENDERER=pixman QT_QPA_PLATFORM=wayland dbus-run-session -- labwc -S'startlxqt'
 # Support env var DESKTAINER_LABWC_VERBOSE to add the "-V" (verbose) flag to labwc
 
-# Note: wayvnc creates the unix domain socket "$XDG_RUNTIME_DIR/wayvncctl" to make the wayvncctl CLI tool work
-XDG_RUNTIME_DIR=/tmp/runtime-root wayvnc -D 0.0.0.0
-# Support DESKTAINER_PORT_VNC=unix to run it like "wayvnc -u"
-
 XDG_RUNTIME_DIR=/tmp/runtime-root wayvncctl -w attach "$WAYLAND_DISPLAY"
 
 dconf write /org/gnome/desktop/interface/gtk-theme "'Adwaita-dark'"
