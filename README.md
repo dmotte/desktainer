@@ -97,7 +97,7 @@ install -Tvm644 /dev/stdin ~/.config/labwc/rc.xml << 'EOF'
 EOF
 
 # Known issue: the Task Manager panel doesn't show any window. But LXQt's Wayland support is still experimental in Debian 13 (trixie), and it will be more robust in Debian 14 (forky). For now, we can use Alt+Tab to cycle through open windows
-SHELL=/bin/bash WLR_BACKENDS=headless WLR_RENDERER=pixman QT_QPA_PLATFORM=wayland dbus-run-session -- labwc -S'startlxqt'
+WLR_BACKENDS=headless WLR_RENDERER=pixman QT_QPA_PLATFORM=wayland dbus-run-session -- labwc -S'startlxqt'
 # Support env var DESKTAINER_LABWC_VERBOSE to add the "-V" (verbose) flag to labwc
 
 XDG_RUNTIME_DIR=/tmp/runtime-root wayvncctl -w attach "$WAYLAND_DISPLAY"

@@ -12,7 +12,8 @@ readonly port_novnc=${DESKTAINER_PORT_NOVNC:-6900}
 USER=$(id -un); export USER
 export HOME=~
 
-# Set the SHELL env var with 'getent passwd "$USER" | cut -d: -f7'? Maybe only if it's NOT set in the LXQt terminal? But I guess I added it because, when running as root, the /bin/sh shell is used for some reason. But check this pls!
+# Needed to have the correct shell inside the terminal emulator
+SHELL=$(getent passwd "$USER" | cut -d: -f7); export SHELL
 
 export XDG_RUNTIME_DIR="/tmp/runtime-$USER"
 install -dvm700 "$XDG_RUNTIME_DIR"
