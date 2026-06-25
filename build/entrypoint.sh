@@ -49,8 +49,13 @@ childlogdir=%(here)s ; TODO test, and consider subdir "log" like in svcbox-rootl
 programs=desktop,wayvnc,novnc
 
 [program:desktop]
+; Known issue: the Task Manager panel doesn't show any window. But LXQt's
+; Wayland support is still experimental in Debian 13 (trixie), and
+; it will be more robust in Debian 14 (forky). For now, we
+; can use Alt+Tab to cycle through open windows
 command=/usr/bin/dbus-run-session -- /usr/bin/labwc -S/usr/bin/startlxqt
 environment=WLR_BACKENDS="headless",WLR_RENDERER="pixman",QT_QPA_PLATFORM="wayland"
+; TODO Support env var DESKTAINER_LABWC_VERBOSE to add the "-V" (verbose) flag to labwc
 
 [program:wayvnc]
 ; Note: wayvnc creates the Unix Domain Socket "$XDG_RUNTIME_DIR/wayvncctl" to

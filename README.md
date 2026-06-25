@@ -77,6 +77,8 @@ Remember to update the screenshot after the rework is completed.
 
 Note in the README, I guess in the usage example: This Docker image runs [userngo](https://github.com/dmotte/misc/tree/main/scripts/userngo) at startup. See https://github.com/dmotte/misc/tree/main/scripts/userngo#examples.
 
+Note in the README somewhere: see warnings and known issues in the code (or just move them to the README?)
+
 Draft of the new setup:
 
 ```bash
@@ -95,10 +97,6 @@ install -Tvm644 /dev/stdin ~/.config/labwc/rc.xml << 'EOF'
   </mouse>
 </labwc_config>
 EOF
-
-# Known issue: the Task Manager panel doesn't show any window. But LXQt's Wayland support is still experimental in Debian 13 (trixie), and it will be more robust in Debian 14 (forky). For now, we can use Alt+Tab to cycle through open windows
-WLR_BACKENDS=headless WLR_RENDERER=pixman QT_QPA_PLATFORM=wayland dbus-run-session -- labwc -S'startlxqt'
-# Support env var DESKTAINER_LABWC_VERBOSE to add the "-V" (verbose) flag to labwc
 
 XDG_RUNTIME_DIR=/tmp/runtime-root wayvncctl -w attach "$WAYLAND_DISPLAY"
 
