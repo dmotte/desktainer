@@ -9,7 +9,7 @@ readonly disable_minimize=${DESKTAINER_DISABLE_MINIMIZE:-false}
 
 ################################################################################
 
-# rm -rf /tmp/* /tmp/.* # TODO good?
+find /tmp -mindepth 1 -delete
 
 USER=$(id -un); export USER
 export HOME=~
