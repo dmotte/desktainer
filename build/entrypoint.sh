@@ -5,6 +5,8 @@ set -e
 readonly port_vnc=${DESKTAINER_PORT_VNC:-5900}
 readonly port_novnc=${DESKTAINER_PORT_NOVNC:-6900}
 
+readonly disable_minimize=${DESKTAINER_DISABLE_MINIMIZE:-false}
+
 ################################################################################
 
 # rm -rf /tmp/* /tmp/.* # TODO good?
@@ -24,7 +26,30 @@ cd
 
 install -dvm700 ~/.config{,/autostart}
 
-install -Tvm644 /dev/stdin ~/.config/autostart/wayvncctl-attach.desktop << 'EOF'
+install -dvm700 ~/.config/labwc
+if [ "$disable_minimize" = true ]; then
+    # This is a workaround for the fact that the Task Manager panel doesn't
+    # show any window
+    [ -e ~/.config/labwc/rc.xml ] ||
+        install -Tvm644 /dev/stdin ~/.config/labwc/rc.xml << 'EOF'
+<?xml version="1.0"?>
+<labwc_config>
+  <mouse>
+    <default />
+
+    <context name="Iconify">
+      <mousebind button="Left" action="Click">
+        <action name="None" />
+      </mousebind>
+    </context>
+  </mouse>
+</labwc_config>
+EOF
+fi
+
+[ -e ~/.config/autostart/wayvncctl-attach.desktop ] ||
+    install -Tvm644 /dev/stdin \
+        ~/.config/autostart/wayvncctl-attach.desktop << 'EOF'
 [Desktop Entry]
 Type=Application
 Name=wayvncctl-attach
@@ -87,6 +112,6 @@ EOF
 
 # TODO is leaving the already existing /etc/supervisor/supervisord.conf there an issue? Is the socket for supervisorctl created? Moreover, read it so you compare yours with the official one
 
-bash; exit # TODO
+exec bash # TODO
 
 exec /usr/bin/supervisord -nc ~/.supervisor/supervisord.conf

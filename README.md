@@ -79,24 +79,8 @@ Note in the README, I guess in the usage example: This Docker image runs [userng
 
 Note in the README somewhere: see warnings and known issues in the code (or just move them to the README?)
 
-Draft of the new setup:
+TODO If you want dark theme for GTK apps:
 
 ```bash
-# Workaround: only if the DESKTAINER_DISABLE_MINIMIZE env var is set to "true" and the file doesn't exist yet:
-install -Tvm644 /dev/stdin ~/.config/labwc/rc.xml << 'EOF'
-<?xml version="1.0"?>
-<labwc_config>
-  <mouse>
-    <default />
-
-    <context name="Iconify">
-      <mousebind button="Left" action="Click">
-        <action name="None" />
-      </mousebind>
-    </context>
-  </mouse>
-</labwc_config>
-EOF
-
-dconf write /org/gnome/desktop/interface/gtk-theme "'Adwaita-dark'"
+dconf write /org/gnome/desktop/interface/gtk-theme "'Adwaita-dark'" # TODO test this
 ```
