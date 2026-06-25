@@ -22,7 +22,15 @@ install -dvm700 "$XDG_RUNTIME_DIR"
 
 cd
 
-install -dvm700 ~/.config
+install -dvm700 ~/.config{,/autostart}
+
+install -Tvm644 /dev/stdin ~/.config/autostart/wayvncctl-attach.desktop << 'EOF'
+[Desktop Entry]
+Type=Application
+Name=wayvncctl-attach
+Exec=/bin/sh -ec '/usr/bin/wayvncctl -w attach "$WAYLAND_DISPLAY"'
+NoDisplay=true
+EOF
 
 install -dvm700 ~/.config/wayvnc
 # WARNING: when running as root, "enable_pam=true" makes wayvnc accept any

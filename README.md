@@ -98,7 +98,5 @@ install -Tvm644 /dev/stdin ~/.config/labwc/rc.xml << 'EOF'
 </labwc_config>
 EOF
 
-XDG_RUNTIME_DIR=/tmp/runtime-root wayvncctl -w attach "$WAYLAND_DISPLAY"
-
 dconf write /org/gnome/desktop/interface/gtk-theme "'Adwaita-dark'"
 ```
