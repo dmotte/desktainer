@@ -24,8 +24,6 @@ COPY --chown=root:root --chmod=755 *.sh /opt/desktainer/
 # To avoid warnings about non-UTF-8 locale
 ENV LC_ALL=C.UTF-8
 
-# TODO test Tight* encodings on ARM, and restore the workaround if not working properly
-
 RUN <<'EOF' /bin/bash -e
     ln -Tsv vnc.html /usr/share/novnc/index.html
 
