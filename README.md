@@ -80,8 +80,6 @@ Note in the README, I guess in the usage example: This Docker image runs [userng
 Draft of the new setup:
 
 ```bash
-websockify --web=/usr/share/novnc 6900 127.0.0.1:5900
-
 # Workaround: only if the DESKTAINER_DISABLE_MINIMIZE env var is set to "true" and the file doesn't exist yet:
 install -Tvm644 /dev/stdin ~/.config/labwc/rc.xml << 'EOF'
 <?xml version="1.0"?>
@@ -103,7 +101,7 @@ SHELL=/bin/bash WLR_BACKENDS=headless WLR_RENDERER=pixman QT_QPA_PLATFORM=waylan
 # Support env var DESKTAINER_LABWC_VERBOSE to add the "-V" (verbose) flag to labwc
 
 # Note: wayvnc creates the unix domain socket "$XDG_RUNTIME_DIR/wayvncctl" to make the wayvncctl CLI tool work
-XDG_RUNTIME_DIR=/tmp/runtime-root WAYLAND_DISPLAY=wayland-0 wayvnc -D 0.0.0.0 # TODO what if nothing started yet (not even dbus/labwc)? Try to start wayvnc before the actual desktop and see what happens
+XDG_RUNTIME_DIR=/tmp/runtime-root wayvnc -D 0.0.0.0
 # Support DESKTAINER_PORT_VNC=unix to run it like "wayvnc -u"
 
 XDG_RUNTIME_DIR=/tmp/runtime-root wayvncctl -w attach "$WAYLAND_DISPLAY"

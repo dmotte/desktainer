@@ -34,7 +34,6 @@ install -dvm700 ~/.config/wayvnc
 
 install -dvm700 ~/.supervisor{,/conf.d}
 
-# TODO test this config!
 [ -e ~/.supervisor/supervisord.conf ] ||
     install -Tvm644 /dev/stdin ~/.supervisor/supervisord.conf << EOF
 [supervisord]
@@ -46,7 +45,7 @@ childlogdir=%(here)s ; TODO test, and consider subdir "log" like in svcbox-rootl
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 [group:main]
-programs=desktop,wayvnc
+programs=desktop,wayvnc,novnc
 
 [program:desktop]
 command=/usr/bin/dbus-run-session -- /usr/bin/labwc -S/usr/bin/startlxqt
@@ -54,6 +53,10 @@ environment=WLR_BACKENDS="headless",WLR_RENDERER="pixman",QT_QPA_PLATFORM="wayla
 
 [program:wayvnc]
 command=/usr/bin/sleep infinity ; TODO
+
+[program:novnc]
+; TODO support VNC as socket file TODO support custom port numbers
+command=/usr/bin/websockify --web=/usr/share/novnc 6900 127.0.0.1:5900
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
