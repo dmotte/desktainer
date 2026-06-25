@@ -60,7 +60,7 @@ command=/usr/bin/wayvnc -D 0.0.0.0
 
 [program:novnc]
 ; TODO support VNC as socket file
-; TODO support custom port numbers
+; TODO support custom port numbers, and maybe also "none" to disable it
 command=/usr/bin/websockify --web=/usr/share/novnc 6900 127.0.0.1:5900
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
