@@ -19,7 +19,7 @@ The simplest way to try this image is:
 docker run -it --rm -p6900:6900 dmotte/desktainer
 ```
 
-> **Note**: since some GUI applications may have issues with Docker's default _seccomp_ profile, you may need to use `--security-opt seccomp=unconfined` TODO is this still needed with Wayland? Check and, if not, remove it
+> **Note**: since some GUI applications may have issues with Docker's default _seccomp_ profile, you may need to use `--security-opt seccomp=unconfined`
 
 Then head over to http://localhost:6900/ to access the remote desktop.
 
