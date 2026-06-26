@@ -79,8 +79,10 @@ Note in the README, I guess in the usage example: This Docker image runs [userng
 
 Note in the README somewhere: see warnings and known issues in the code (or just move them to the README?)
 
-TODO If you want dark theme for GTK apps:
+Add to tips: To make GTK-based applications use a dark theme:
 
 ```bash
-dconf write /org/gnome/desktop/interface/gtk-theme "'Adwaita-dark'" # TODO test this
+sudo apt update && sudo apt install -y dconf-cli
+
+dconf write /org/gnome/desktop/interface/gtk-theme "'Adwaita-dark'"
 ```
