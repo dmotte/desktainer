@@ -102,14 +102,14 @@ environment=WLR_BACKENDS="headless",WLR_RENDERER="pixman",
 [program:wayvnc]
 ; Note: wayvnc creates the Unix Domain Socket "$XDG_RUNTIME_DIR/wayvncctl" to
 ; make the wayvncctl CLI tool work
-command=/usr/bin/wayvnc -D 0.0.0.0
+command=/usr/bin/wayvnc -D 0.0.0.0 $port_vnc
 ; TODO support DESKTAINER_PORT_VNC=unix to run it like "wayvnc -u"
-; TODO support custom port number
 
 [program:novnc]
 ; TODO support VNC as socket file
-; TODO support custom port numbers, and maybe also "none" to disable it
-command=/usr/bin/websockify --web=/usr/share/novnc 6900 127.0.0.1:5900
+; TODO support maybe noVNC port "none" to disable it
+command=/usr/bin/websockify --web=/usr/share/novnc
+    $port_novnc 127.0.0.1:$port_vnc
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
