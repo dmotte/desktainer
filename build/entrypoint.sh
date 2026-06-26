@@ -109,7 +109,7 @@ command=/usr/bin/wayvnc -D 0.0.0.0 $port_vnc
 ; TODO support VNC as socket file
 ; TODO support maybe noVNC port "none" to disable it
 command=/usr/bin/websockify --web=/usr/share/novnc
-    $port_novnc 127.0.0.1:$port_vnc
+    0.0.0.0:$port_novnc 127.0.0.1:$port_vnc
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
