@@ -66,15 +66,15 @@ install -dvm700 ~/.config/wayvnc
 # directories anyway if they don't exist, but we do it in advance, just in case
 xdg-user-dirs-update
 
-install -dvm700 ~/.supervisor{,/conf.d}
+install -dvm700 ~/.supervisor{,/conf.d,/log}
 
 [ -e ~/.supervisor/supervisord.conf ] ||
     install -Tvm644 /dev/stdin ~/.supervisor/supervisord.conf << EOF
 [supervisord]
 nodaemon=true
-logfile=%(here)s/supervisord.log ; TODO test, and consider subdir "log" like in svcbox-rootless (does it get automatically created?)
-pidfile=%(here)s/supervisord.pid ; TODO test
-childlogdir=%(here)s ; TODO test, and consider subdir "log" like in svcbox-rootless (does it get automatically created?)
+logfile=%(here)s/log/supervisord.log
+pidfile=%(here)s/supervisord.pid
+childlogdir=%(here)s/log
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -105,10 +105,8 @@ command=/usr/bin/websockify --web=/usr/share/novnc 6900 127.0.0.1:5900
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 [include]
-files=%(here)s/conf.d/*.conf ; TODO test
+files=%(here)s/conf.d/*.conf
 EOF
-
-# TODO is leaving the already existing /etc/supervisor/supervisord.conf there an issue? Is the socket for supervisorctl created? Moreover, read it so you compare yours with the official one
 
 exec bash # TODO
 
