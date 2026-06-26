@@ -79,10 +79,18 @@ Note in the README, I guess in the usage example: This Docker image runs [userng
 
 Note in the README somewhere: see warnings and known issues in the code (or just move them to the README?)
 
-Add to tips: To make GTK-based applications use a dark theme:
+Add to tips: To make **GTK-based applications** use a **dark theme**:
 
 ```bash
 sudo apt update && sudo apt install -y dconf-cli
 
 dconf write /org/gnome/desktop/interface/gtk-theme "'Adwaita-dark'"
+```
+
+Add to tips: To set **custom display resolution** (and optionally **refresh rate**):
+
+```bash
+sudo apt update && sudo apt install -y wlr-randr
+
+wlr-randr --output=HEADLESS-1 --custom-mode=1920x1080@5Hz
 ```
