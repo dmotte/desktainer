@@ -14,6 +14,10 @@ readonly disable_minimize=${DESKTAINER_DISABLE_MINIMIZE:-false}
 args_labwc=(-S/usr/bin/startlxqt)
 if [ "$labwc_verbose" = true ]; then args_labwc+=(-V); fi
 
+args_wayvnc=(-D 0.0.0.0 "$port_vnc")
+
+args_websockify=(--web=/usr/share/novnc "0.0.0.0:$port_novnc" "127.0.0.1:$port_vnc")
+
 # TODO support -Du ${XDG_RUNTIME_DIR@Q}/desktainer-vnc.sock
 # TODO support --web=/usr/share/novnc --unix-target=${XDG_RUNTIME_DIR@Q}/desktainer-vnc.sock 0.0.0.0:$port_novnc
 
@@ -103,14 +107,13 @@ environment=WLR_BACKENDS="headless",WLR_RENDERER="pixman",
 [program:wayvnc]
 ; Note: wayvnc creates the Unix Domain Socket ${XDG_RUNTIME_DIR@Q}/wayvncctl to
 ; make the wayvncctl CLI tool work
-command=/usr/bin/wayvnc -D 0.0.0.0 $port_vnc
+command=/usr/bin/wayvnc ${args_wayvnc[*]@Q}
 ; TODO support DESKTAINER_PORT_VNC=unix to run it like "wayvnc -u"
 
 [program:novnc]
 ; TODO support VNC as socket file
 ; TODO support maybe noVNC port "none" to disable it
-command=/usr/bin/websockify --web=/usr/share/novnc
-    0.0.0.0:$port_novnc 127.0.0.1:$port_vnc
+command=/usr/bin/websockify ${args_websockify[*]@Q}
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
