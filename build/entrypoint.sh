@@ -20,8 +20,6 @@ SHELL=$(getent passwd "$USER" | cut -d: -f7); export SHELL
 export XDG_RUNTIME_DIR="/tmp/runtime-$USER"
 install -dvm700 "$XDG_RUNTIME_DIR"
 
-# TODO XDG_CONFIG_HOME env var needed? Other XDG_ env vars?
-
 cd
 
 install -dvm700 ~/.config{,/autostart}
