@@ -11,9 +11,11 @@ readonly disable_minimize=${DESKTAINER_DISABLE_MINIMIZE:-false}
 
 ################################################################################
 
-labwc_add_args=''
+args_labwc=(-S/usr/bin/startlxqt)
+if [ "$labwc_verbose" = true ]; then args_labwc+=(-V); fi
 
-if [ "$labwc_verbose" = true ]; then labwc_add_args+='-V '; fi
+# TODO support -Du ${XDG_RUNTIME_DIR@Q}/desktainer-vnc.sock
+# TODO support --web=/usr/share/novnc --unix-target=${XDG_RUNTIME_DIR@Q}/desktainer-vnc.sock 0.0.0.0:$port_novnc
 
 ################################################################################
 
@@ -94,13 +96,12 @@ programs=desktop,wayvnc,novnc
 ; Wayland support is still experimental in Debian 13 (trixie), and
 ; it will be more robust in Debian 14 (forky). For now, we
 ; can use Alt+Tab to cycle through open windows
-command=/usr/bin/dbus-run-session -- /usr/bin/labwc $labwc_add_args
-    -S/usr/bin/startlxqt
+command=/usr/bin/dbus-run-session -- /usr/bin/labwc ${args_labwc[*]@Q}
 environment=WLR_BACKENDS="headless",WLR_RENDERER="pixman",
     QT_QPA_PLATFORM="wayland"
 
 [program:wayvnc]
-; Note: wayvnc creates the Unix Domain Socket "$XDG_RUNTIME_DIR/wayvncctl" to
+; Note: wayvnc creates the Unix Domain Socket ${XDG_RUNTIME_DIR@Q}/wayvncctl to
 ; make the wayvncctl CLI tool work
 command=/usr/bin/wayvnc -D 0.0.0.0 $port_vnc
 ; TODO support DESKTAINER_PORT_VNC=unix to run it like "wayvnc -u"
