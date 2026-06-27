@@ -32,26 +32,6 @@ xdg-user-dirs-update
 
 ################################################################################
 
-args_labwc=(-S/usr/bin/startlxqt)
-if [ "$labwc_verbose" = true ]; then args_labwc+=(-V); fi
-
-args_wayvnc=(-D)
-if [ "$port_vnc" = unix ]
-    then args_wayvnc+=(-u "$XDG_RUNTIME_DIR/desktainer-vnc.sock")
-    else args_wayvnc+=(0.0.0.0 "$port_vnc")
-fi
-
-args_websockify=(--web=/usr/share/novnc)
-if [ "$port_vnc" = unix ]
-    then args_websockify+=(--unix-target="$XDG_RUNTIME_DIR/desktainer-vnc.sock"
-        "0.0.0.0:$port_novnc")
-    else args_websockify+=("0.0.0.0:$port_novnc" "127.0.0.1:$port_vnc")
-fi
-
-# TODO support maybe noVNC port "none" to disable it
-
-################################################################################
-
 install -dvm700 ~/.config{,/autostart}
 
 install -dvm700 ~/.config/labwc
@@ -75,6 +55,13 @@ if [ "$disable_minimize" = true ]; then
 EOF
 fi
 
+install -dvm700 ~/.config/wayvnc
+# WARNING: when running as root, "enable_pam=true" makes wayvnc accept any
+# existing user as a valid login!
+[ -e ~/.config/wayvnc/config ] ||
+    printf '%s\n' enable_auth=true relax_encryption=true enable_pam=true |
+        install -Tvm644 /dev/stdin ~/.config/wayvnc/config
+
 [ -e ~/.config/autostart/wayvncctl-attach.desktop ] ||
     install -Tvm644 /dev/stdin \
         ~/.config/autostart/wayvncctl-attach.desktop << 'EOF'
@@ -85,14 +72,27 @@ Exec=/bin/sh -ec '/usr/bin/wayvncctl -w attach "$WAYLAND_DISPLAY"'
 NoDisplay=true
 EOF
 
-install -dvm700 ~/.config/wayvnc
-# WARNING: when running as root, "enable_pam=true" makes wayvnc accept any
-# existing user as a valid login!
-[ -e ~/.config/wayvnc/config ] ||
-    printf '%s\n' enable_auth=true relax_encryption=true enable_pam=true |
-        install -Tvm644 /dev/stdin ~/.config/wayvnc/config
+################################################################################
+
+# TODO support maybe noVNC port "none" to disable it
 
 install -dvm700 ~/.supervisor{,/conf.d,/log}
+
+args_labwc=(-S/usr/bin/startlxqt)
+if [ "$labwc_verbose" = true ]; then args_labwc+=(-V); fi
+
+args_wayvnc=(-D)
+if [ "$port_vnc" = unix ]
+    then args_wayvnc+=(-u "$XDG_RUNTIME_DIR/desktainer-vnc.sock")
+    else args_wayvnc+=(0.0.0.0 "$port_vnc")
+fi
+
+args_websockify=(--web=/usr/share/novnc)
+if [ "$port_vnc" = unix ]
+    then args_websockify+=(--unix-target="$XDG_RUNTIME_DIR/desktainer-vnc.sock"
+        "0.0.0.0:$port_novnc")
+    else args_websockify+=("0.0.0.0:$port_novnc" "127.0.0.1:$port_vnc")
+fi
 
 [ -e ~/.supervisor/supervisord.conf ] ||
     install -Tvm644 /dev/stdin ~/.supervisor/supervisord.conf << EOF
