@@ -2,25 +2,14 @@
 
 set -e
 
+# TODO recheck this file and possibly reorder the code lines
+
 readonly port_vnc=${DESKTAINER_PORT_VNC:-5900}
 readonly port_novnc=${DESKTAINER_PORT_NOVNC:-6900}
 
 readonly labwc_verbose=${DESKTAINER_LABWC_VERBOSE:-false}
 
 readonly disable_minimize=${DESKTAINER_DISABLE_MINIMIZE:-false}
-
-################################################################################
-
-args_labwc=(-S/usr/bin/startlxqt)
-if [ "$labwc_verbose" = true ]; then args_labwc+=(-V); fi
-
-args_wayvnc=(-D 0.0.0.0 "$port_vnc")
-
-args_websockify=(--web=/usr/share/novnc "0.0.0.0:$port_novnc" "127.0.0.1:$port_vnc")
-
-# TODO support DESKTAINER_PORT_VNC=unix: -Du ${XDG_RUNTIME_DIR@Q}/desktainer-vnc.sock
-# TODO support --web=/usr/share/novnc --unix-target=${XDG_RUNTIME_DIR@Q}/desktainer-vnc.sock 0.0.0.0:$port_novnc
-# TODO support maybe noVNC port "none" to disable it
 
 ################################################################################
 
@@ -36,6 +25,32 @@ export XDG_RUNTIME_DIR="/tmp/runtime-$USER"
 install -dvm700 "$XDG_RUNTIME_DIR"
 
 cd
+
+# Not strictly required, because the LXQt session should create the
+# directories anyway if they don't exist, but we do it in advance, just in case
+xdg-user-dirs-update
+
+################################################################################
+
+args_labwc=(-S/usr/bin/startlxqt)
+if [ "$labwc_verbose" = true ]; then args_labwc+=(-V); fi
+
+args_wayvnc=(-D)
+if [ "$port_vnc" = unix ]
+    then args_wayvnc+=(-u "$XDG_RUNTIME_DIR/desktainer-vnc.sock")
+    else args_wayvnc+=(0.0.0.0 "$port_vnc")
+fi
+
+args_websockify=(--web=/usr/share/novnc)
+if [ "$port_vnc" = unix ]
+    then args_websockify+=(--unix-target="$XDG_RUNTIME_DIR/desktainer-vnc.sock"
+        "0.0.0.0:$port_novnc")
+    else args_websockify+=("0.0.0.0:$port_novnc" "127.0.0.1:$port_vnc")
+fi
+
+# TODO support maybe noVNC port "none" to disable it
+
+################################################################################
 
 install -dvm700 ~/.config{,/autostart}
 
@@ -77,10 +92,6 @@ install -dvm700 ~/.config/wayvnc
     printf '%s\n' enable_auth=true relax_encryption=true enable_pam=true |
         install -Tvm644 /dev/stdin ~/.config/wayvnc/config
 
-# Not strictly required, because the LXQt session should create the
-# directories anyway if they don't exist, but we do it in advance, just in case
-xdg-user-dirs-update
-
 install -dvm700 ~/.supervisor{,/conf.d,/log}
 
 [ -e ~/.supervisor/supervisord.conf ] ||
@@ -118,5 +129,7 @@ command=/usr/bin/websockify ${args_websockify[*]@Q}
 [include]
 files=%(here)s/conf.d/*.conf
 EOF
+
+################################################################################
 
 exec /usr/bin/supervisord -nc ~/.supervisor/supervisord.conf
