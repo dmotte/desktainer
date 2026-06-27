@@ -78,23 +78,24 @@ EOF
 
 install -dvm700 ~/.supervisor{,/conf.d,/log}
 
-args_labwc=(-S/usr/bin/startlxqt)
-if [ "$labwc_verbose" = true ]; then args_labwc+=(-V); fi
+if [ ! -e ~/.supervisor/supervisord.conf ]; then
+    args_labwc=(-S/usr/bin/startlxqt)
+    if [ "$labwc_verbose" = true ]; then args_labwc+=(-V); fi
 
-args_wayvnc=(-D)
-if [ "$port_vnc" = unix ]
-    then args_wayvnc+=(-u "$XDG_RUNTIME_DIR/desktainer-vnc.sock")
-    else args_wayvnc+=(0.0.0.0 "$port_vnc")
-fi
+    args_wayvnc=(-D)
+    if [ "$port_vnc" = unix ]
+        then args_wayvnc+=(-u "$XDG_RUNTIME_DIR/desktainer-vnc.sock")
+        else args_wayvnc+=(0.0.0.0 "$port_vnc")
+    fi
 
-args_websockify=(--web=/usr/share/novnc)
-if [ "$port_vnc" = unix ]
-    then args_websockify+=(--unix-target="$XDG_RUNTIME_DIR/desktainer-vnc.sock"
-        "0.0.0.0:$port_novnc")
-    else args_websockify+=("0.0.0.0:$port_novnc" "127.0.0.1:$port_vnc")
-fi
+    args_websockify=(--web=/usr/share/novnc)
+    if [ "$port_vnc" = unix ]
+        then args_websockify+=(
+            --unix-target="$XDG_RUNTIME_DIR/desktainer-vnc.sock"
+            "0.0.0.0:$port_novnc")
+        else args_websockify+=("0.0.0.0:$port_novnc" "127.0.0.1:$port_vnc")
+    fi
 
-[ -e ~/.supervisor/supervisord.conf ] ||
     install -Tvm644 /dev/stdin ~/.supervisor/supervisord.conf << EOF
 [supervisord]
 nodaemon=true
@@ -129,6 +130,7 @@ command=/usr/bin/websockify ${args_websockify[*]@Q}
 [include]
 files=%(here)s/conf.d/*.conf
 EOF
+fi
 
 ################################################################################
 
