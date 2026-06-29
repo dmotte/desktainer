@@ -73,8 +73,6 @@ docker-compose down && docker-compose up --build
 
 ## TODO
 
-Remember to update the screenshot after the rework is completed.
-
 Note in the README, I guess in the usage example: This Docker image runs [userngo](https://github.com/dmotte/misc/tree/main/scripts/userngo) at startup. See https://github.com/dmotte/misc/tree/main/scripts/userngo#examples.
 
 Add to tips: To make **GTK-based applications** use a **dark theme**:
