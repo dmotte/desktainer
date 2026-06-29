@@ -1,6 +1,6 @@
 ---
 services:
-  main: # TODO test this file
+  main:
     image: docker.io/dmotte/desktainer:latest
     build: build
     restart: always

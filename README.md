@@ -21,11 +21,15 @@ docker run -it --rm -p6900:6900 -eUSERNGO_{NAME=myuser,PSW=myuser} dmotte/deskta
 
 > **Note**: since some GUI applications may have issues with Docker's default _seccomp_ profile, you may need to use `--security-opt seccomp=unconfined`
 
+> **Note**: this Docker image runs [userngo](https://github.com/dmotte/misc/tree/main/scripts/userngo) at startup to handle user creation and setup. See https://github.com/dmotte/misc/tree/main/scripts/userngo#examples for documentation and usage examples.
+
+:warning: **Warning**: when running **wayvnc** as `root`, the `enable_pam=true` config line makes it **accept any existing user** as a valid login. This can be an issue if you create more users in the container and set passwords for them. It is therefore **highly discouraged** to run as `root`.
+
 Then head over to http://localhost:6900/ to access the remote desktop.
 
 ![Screenshot](screen-01.png)
 
-> **Note**: this Docker image runs [userngo](https://github.com/dmotte/misc/tree/main/scripts/userngo) at startup to handle user creation and setup. See https://github.com/dmotte/misc/tree/main/scripts/userngo#examples for documentation and usage examples.
+> :bug: **Known issue**: the **Task Manager** panel **doesn't show any window**. This is because LXQt's Wayland support is **still experimental** in Debian 13 (trixie), and hopefully it will be more robust in Debian 14 (forky). For now, you can use `Alt+Tab` to cycle through open windows.
 
 ## Standard usage
 
@@ -72,9 +76,3 @@ docker-compose down && docker-compose up --build
 ```
 
 > **Note**: I know that this Docker image has many **layers**, but this shouldn't be a problem in most cases. If you want to reduce its number of layers, there are several techniques out there, e.g. see [this](https://stackoverflow.com/questions/39695031/how-make-docker-layer-to-single-layer)
-
-## TODO
-
-Known issue: the **Task Manager** panel **doesn't show any window**. But LXQt's Wayland support is still experimental in Debian 13 (trixie), and hopefully it will be more robust in Debian 14 (forky). For now, we can use `Alt+Tab` to cycle through open windows.
-
-Warning: when running **wayvnc** as `root`, the `enable_pam=true` config line makes it **accept any existing user** as a valid login! This can be an issue if you create more users in the container and set passwords for them. It is therefore **highly discouraged** to run it as `root`.
