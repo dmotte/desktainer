@@ -25,6 +25,8 @@ Then head over to http://localhost:6900/ to access the remote desktop.
 
 ![Screenshot](screen-01.png)
 
+> **Note**: this Docker image runs [userngo](https://github.com/dmotte/misc/tree/main/scripts/userngo) at startup to handle user creation and setup. See https://github.com/dmotte/misc/tree/main/scripts/userngo#examples for documentation and usage examples.
+
 ## Standard usage
 
 The [`docker-compose.yml`](docker-compose.yml) file contains a complete usage example for this image. Feel free to simplify it and adapt it to your needs. Unless you want to build the image from scratch, comment out the `build: build` line to use the pre-built one from _Docker Hub_ instead.
@@ -43,23 +45,23 @@ docker-compose logs -ft
 
 ## Tips
 
-- :bulb: If you want to **change the resolution** while the container is running, you can use the `xrandr --fb 1024x768` command. The new resolution cannot be larger than the one specified in the `RESOLUTION` environment variable though
-- :bulb: If you need to, you can extend this project by making your own `Dockerfile` starting from this image (i.e. `FROM docker.io/dmotte/desktainer:latest`) and/or mount custom _supervisor_ configuration files. See the [`example`](example) folder for an example of how to do it
-- :bulb: If you need to run things on desktop environment startup, you can create launcher files in the `/etc/xdg/autostart` or the `~/.config/autostart` directory
+:bulb: If you need to run things on desktop **startup**, you can create **launcher files** in the `/etc/xdg/autostart` or the `~/.config/autostart` directory.
 
-## Environment variables
+:bulb: To make **GTK-based applications** use a **dark theme**:
 
-List of supported **environment variables**:
+```bash
+sudo apt update && sudo apt install -y dconf-cli
 
-| Variable              | Required                 | Description                                                                                     |
-| --------------------- | ------------------------ | ----------------------------------------------------------------------------------------------- |
-| `RESOLUTION`          | No (default: 1920x1080)  | Screen resolution                                                                               |
-| `MAINUSER_NAME`       | No (default: mainuser)   | Name of the main user. If set to `root`, no user will be created and the main user will be root |
-| `MAINUSER_PASS`       | No (default: `mainuser`) | Password of the main user (if `MAINUSER_NAME != root`)                                          |
-| `MAINUSER_NOPASSWORD` | No (default: `false`)    | Whether or not the main user should be allowed to `sudo` without password                       |
-| `VNC_PASS`            | No (default: none)       | Password for the VNC server                                                                     |
-| `VNC_PORT`            | No (default: 5900)       | TCP port of the VNC server                                                                      |
-| `NOVNC_PORT`          | No (default: 6900)       | TCP port of the noVNC webserver                                                                 |
+dconf write /org/gnome/desktop/interface/gtk-theme "'Adwaita-dark'"
+```
+
+:bulb: To set a **custom display resolution** (and optionally **refresh rate**):
+
+```bash
+sudo apt update && sudo apt install -y wlr-randr
+
+wlr-randr --output=HEADLESS-1 --custom-mode=1920x1080@5Hz
+```
 
 ## Development
 
@@ -72,24 +74,6 @@ docker-compose down && docker-compose up --build
 > **Note**: I know that this Docker image has many **layers**, but this shouldn't be a problem in most cases. If you want to reduce its number of layers, there are several techniques out there, e.g. see [this](https://stackoverflow.com/questions/39695031/how-make-docker-layer-to-single-layer)
 
 ## TODO
-
-Note in the README, I guess in the usage example: This Docker image runs [userngo](https://github.com/dmotte/misc/tree/main/scripts/userngo) at startup. See https://github.com/dmotte/misc/tree/main/scripts/userngo#examples.
-
-Add to tips: To make **GTK-based applications** use a **dark theme**:
-
-```bash
-sudo apt update && sudo apt install -y dconf-cli
-
-dconf write /org/gnome/desktop/interface/gtk-theme "'Adwaita-dark'"
-```
-
-Add to tips: To set **custom display resolution** (and optionally **refresh rate**):
-
-```bash
-sudo apt update && sudo apt install -y wlr-randr
-
-wlr-randr --output=HEADLESS-1 --custom-mode=1920x1080@5Hz
-```
 
 Known issue: the **Task Manager** panel **doesn't show any window**. But LXQt's Wayland support is still experimental in Debian 13 (trixie), and hopefully it will be more robust in Debian 14 (forky). For now, we can use `Alt+Tab` to cycle through open windows.
 
