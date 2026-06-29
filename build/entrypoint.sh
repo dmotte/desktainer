@@ -74,13 +74,32 @@ EOF
 
 ################################################################################
 
-# TODO support maybe noVNC port "none" to disable it
-
 install -dvm700 ~/.supervisor{,/conf.d,/log}
 
 if [ ! -e ~/.supervisor/supervisord.conf ]; then
+    programs=(desktop wayvnc)
+
+    cfg_programs=''
+
+    ############################################################################
+
     args_labwc=(-S/usr/bin/startlxqt)
     if [ "$labwc_verbose" = true ]; then args_labwc+=(-V); fi
+
+    envs_labwc=('WLR_BACKENDS="headless"' 'WLR_RENDERER="pixman"'
+        'QT_QPA_PLATFORM="wayland"')
+
+    # Known issue: the Task Manager panel doesn't show any window. But LXQt's
+    # Wayland support is still experimental in Debian 13 (trixie), and
+    # it will likely be more robust in Debian 14 (forky). For now, we
+    # can use Alt+Tab to cycle through open windows
+
+    cfg_programs+=$'[program:desktop]\n'
+    cfg_programs+='command=/usr/bin/dbus-run-session -- /usr/bin/labwc '
+    cfg_programs+="${args_labwc[*]@Q}"$'\n'
+    cfg_programs+="environment=$(IFS=,; echo "${envs_labwc[*]}")"$'\n'
+
+    ############################################################################
 
     args_wayvnc=(-D)
     if [ "$port_vnc" = unix ]
@@ -88,13 +107,30 @@ if [ ! -e ~/.supervisor/supervisord.conf ]; then
         else args_wayvnc+=(0.0.0.0 "$port_vnc")
     fi
 
-    args_websockify=(--web=/usr/share/novnc)
-    if [ "$port_vnc" = unix ]
-        then args_websockify+=(
-            --unix-target="$XDG_RUNTIME_DIR/desktainer-vnc.sock"
-            "0.0.0.0:$port_novnc")
-        else args_websockify+=("0.0.0.0:$port_novnc" "127.0.0.1:$port_vnc")
+    # Note: wayvnc creates the Unix Domain Socket "$XDG_RUNTIME_DIR/wayvncctl"
+    # to make the wayvncctl CLI tool work
+
+    cfg_programs+=$'[program:wayvnc]\n'
+    cfg_programs+="command=/usr/bin/wayvnc ${args_wayvnc[*]@Q}"$'\n'
+
+    ############################################################################
+
+    if [ "$port_novnc" != none ]; then
+        args_websockify=(--web=/usr/share/novnc)
+        if [ "$port_vnc" = unix ]
+            then args_websockify+=(
+                --unix-target="$XDG_RUNTIME_DIR/desktainer-vnc.sock"
+                "0.0.0.0:$port_novnc")
+            else args_websockify+=("0.0.0.0:$port_novnc" "127.0.0.1:$port_vnc")
+        fi
+
+        programs+=(novnc)
+
+        cfg_programs+=$'[program:novnc]\n'
+        cfg_programs+="command=/usr/bin/websockify ${args_websockify[*]@Q}"$'\n'
     fi
+
+    ############################################################################
 
     install -Tvm644 /dev/stdin ~/.supervisor/supervisord.conf << EOF
 [supervisord]
@@ -103,29 +139,10 @@ logfile=%(here)s/log/supervisord.log
 pidfile=%(here)s/supervisord.pid
 childlogdir=%(here)s/log
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
 [group:main]
-programs=desktop,wayvnc,novnc
+programs=$(IFS=,; echo "${programs[*]}")
 
-[program:desktop]
-; Known issue: the Task Manager panel doesn't show any window. But LXQt's
-; Wayland support is still experimental in Debian 13 (trixie), and
-; it will be more robust in Debian 14 (forky). For now, we
-; can use Alt+Tab to cycle through open windows
-command=/usr/bin/dbus-run-session -- /usr/bin/labwc ${args_labwc[*]@Q}
-environment=WLR_BACKENDS="headless",WLR_RENDERER="pixman",
-    QT_QPA_PLATFORM="wayland"
-
-[program:wayvnc]
-; Note: wayvnc creates the Unix Domain Socket ${XDG_RUNTIME_DIR@Q}/wayvncctl to
-; make the wayvncctl CLI tool work
-command=/usr/bin/wayvnc ${args_wayvnc[*]@Q}
-
-[program:novnc]
-command=/usr/bin/websockify ${args_websockify[*]@Q}
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+$cfg_programs
 
 [include]
 files=%(here)s/conf.d/*.conf
