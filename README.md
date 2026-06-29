@@ -16,7 +16,7 @@ Thanks to [fcwu/docker-ubuntu-vnc-desktop](https://github.com/fcwu/docker-ubuntu
 The simplest way to try this image is:
 
 ```bash
-docker run -it --rm -p6900:6900 dmotte/desktainer
+docker run -it --rm -p6900:6900 -eUSERNGO_{NAME=myuser,PSW=myuser} dmotte/desktainer
 ```
 
 > **Note**: since some GUI applications may have issues with Docker's default _seccomp_ profile, you may need to use `--security-opt seccomp=unconfined`
