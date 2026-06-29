@@ -2,8 +2,6 @@
 
 set -e
 
-# TODO recheck this file and possibly reorder the code lines
-
 readonly port_vnc=${DESKTAINER_PORT_VNC:-5900}
 readonly port_novnc=${DESKTAINER_PORT_NOVNC:-6900}
 
@@ -36,8 +34,9 @@ install -dvm700 ~/.config{,/autostart}
 
 install -dvm700 ~/.config/labwc
 if [ "$disable_minimize" = true ]; then
-    # This is a workaround for the fact that the Task Manager panel doesn't
-    # show any window
+    # This is a workaround for the fact that the LXQt Task Manager panel doesn't
+    # show any window when using Wayland. Hopefully this bug will be fixed in
+    # Debian 14 (forky)
     [ -e ~/.config/labwc/rc.xml ] ||
         install -Tvm644 /dev/stdin ~/.config/labwc/rc.xml << 'EOF'
 <?xml version="1.0"?>
@@ -88,11 +87,6 @@ if [ ! -e ~/.supervisor/supervisord.conf ]; then
 
     envs_labwc=('WLR_BACKENDS="headless"' 'WLR_RENDERER="pixman"'
         'QT_QPA_PLATFORM="wayland"')
-
-    # Known issue: the Task Manager panel doesn't show any window. But LXQt's
-    # Wayland support is still experimental in Debian 13 (trixie), and
-    # it will likely be more robust in Debian 14 (forky). For now, we
-    # can use Alt+Tab to cycle through open windows
 
     cfg_programs+=$'[program:desktop]\n'
     cfg_programs+='command=/usr/bin/dbus-run-session -- /usr/bin/labwc '

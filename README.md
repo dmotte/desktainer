@@ -77,8 +77,6 @@ Remember to update the screenshot after the rework is completed.
 
 Note in the README, I guess in the usage example: This Docker image runs [userngo](https://github.com/dmotte/misc/tree/main/scripts/userngo) at startup. See https://github.com/dmotte/misc/tree/main/scripts/userngo#examples.
 
-Note in the README somewhere: see warnings and known issues in the code (or just move them to the README?)
-
 Add to tips: To make **GTK-based applications** use a **dark theme**:
 
 ```bash
@@ -94,3 +92,7 @@ sudo apt update && sudo apt install -y wlr-randr
 
 wlr-randr --output=HEADLESS-1 --custom-mode=1920x1080@5Hz
 ```
+
+Known issue: the **Task Manager** panel **doesn't show any window**. But LXQt's Wayland support is still experimental in Debian 13 (trixie), and hopefully it will be more robust in Debian 14 (forky). For now, we can use `Alt+Tab` to cycle through open windows.
+
+Warning: when running **wayvnc** as `root`, the `enable_pam=true` config line makes it **accept any existing user** as a valid login! This can be an issue if you create more users in the container and set passwords for them. It is therefore **highly discouraged** to run it as `root`.
