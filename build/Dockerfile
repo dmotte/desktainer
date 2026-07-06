@@ -10,6 +10,8 @@ RUN <<'EOF' /bin/bash -e
     apt-get install -y tini gosu supervisor sudo labwc lxqt-session wayvnc novnc
     apt-get install -y --no-install-recommends lxqt
     rm -rf /var/lib/apt/lists/*
+
+    install -dvm755 /opt/{userngo,desktainer}
 EOF
 
 EXPOSE 6900
