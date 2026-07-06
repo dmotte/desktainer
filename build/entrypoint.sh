@@ -16,7 +16,7 @@ find /tmp -mindepth 1 -delete
 USER=$(id -un); export USER
 export HOME=~
 
-# Needed to have the correct shell inside the terminal emulator
+# Needed to have the correct shell inside terminal emulator windows
 SHELL=$(getent passwd "$USER" | cut -d: -f7); export SHELL
 
 export XDG_RUNTIME_DIR="/tmp/runtime-$USER"
