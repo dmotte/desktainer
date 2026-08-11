@@ -11,6 +11,10 @@ RUN <<'EOF' /bin/bash -e
     apt-get install -y --no-install-recommends lxqt
     rm -rf /var/lib/apt/lists/*
 
+    # Force UTF-8 to avoid encoding warnings from some tools (e.g. Perl)
+    printf '%s\n' '# shellcheck shell=sh' 'export LC_ALL=C.UTF-8' |
+        install -Tvm644 /dev/stdin /etc/profile.d/50-c-utf8.sh
+
     install -dvm755 /opt/{userngo,desktainer}
 EOF
 
@@ -23,7 +27,7 @@ ADD --chown=root:root --chmod=755 \
 
 COPY --chown=root:root --chmod=755 *.sh /opt/desktainer/
 
-# To avoid warnings about non-UTF-8 locale
+# Force UTF-8 to avoid encoding warnings from some tools (e.g. Perl)
 ENV LC_ALL=C.UTF-8
 
 RUN <<'EOF' /bin/bash -e
