@@ -38,7 +38,7 @@ if [ "$disable_minimize" = true ]; then
     # show any window when using Wayland. Hopefully this bug will be fixed in
     # Debian 14 (forky)
     [ -e ~/.config/labwc/rc.xml ] ||
-        install -Tvm644 /dev/stdin ~/.config/labwc/rc.xml << 'EOF'
+        install -Tvm644 /dev/stdin ~/.config/labwc/rc.xml <<'EOF'
 <?xml version="1.0"?>
 <labwc_config>
   <mouse>
@@ -63,7 +63,7 @@ install -dvm700 ~/.config/wayvnc
 
 [ -e ~/.config/autostart/wayvncctl-attach.desktop ] ||
     install -Tvm644 /dev/stdin \
-        ~/.config/autostart/wayvncctl-attach.desktop << 'EOF'
+        ~/.config/autostart/wayvncctl-attach.desktop <<'EOF'
 [Desktop Entry]
 Type=Application
 Name=wayvncctl-attach
@@ -126,7 +126,7 @@ if [ ! -e ~/.supervisor/supervisord.conf ]; then
 
     ############################################################################
 
-    install -Tvm644 /dev/stdin ~/.supervisor/supervisord.conf << EOF
+    install -Tvm644 /dev/stdin ~/.supervisor/supervisord.conf <<EOF
 [supervisord]
 nodaemon=true
 logfile=%(here)s/log/supervisord.log
