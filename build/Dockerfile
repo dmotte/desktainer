@@ -21,7 +21,7 @@ EOF
 EXPOSE 6900
 
 ADD --chown=root:root --chmod=755 \
-    --checksum=sha256:b70d61ebf193b0f2feb3ebf20724f4a1332304ea3ca847ad4e3fdf1401e51ba4 \
+    --checksum=sha256:3e290185e3b6a7b4fd985c87bf1f45b9f82a474b7c87b2d0357b42aff9f9a7d1 \
     https://raw.githubusercontent.com/dmotte/misc/refs/heads/main/scripts/userngo/userngo-debian.sh \
     /opt/userngo/main.sh
 
